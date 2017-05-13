@@ -8,12 +8,6 @@ require 'nokogiri'
 
 module Justimmo
   class RealtyBuilder < Justimmo::Utils::XMLBuilder
-    def build
-      @attributes.map do |elem|
-        Realty.new(elem)
-      end
-    end
-
     private
 
     def mapper
@@ -50,7 +44,7 @@ module Justimmo
 
   class RealtyDetailBuilder < RealtyBuilder
     def build
-      Realty.new(@attributes)
+      @klass.new(@attributes)
     end
 
     private

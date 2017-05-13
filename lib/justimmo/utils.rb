@@ -6,8 +6,9 @@ module Justimmo
     class XMLBuilder
       attr_reader :attributes
 
-      def initialize(xml)
+      def initialize(klass, xml)
         @attributes = []
+        @klass = klass
 
         xml = Nokogiri::XML(xml) do |config|
           config.noblanks
@@ -18,7 +19,12 @@ module Justimmo
         parse(xml)
       end
 
-      def build; end
+      def build
+        LOGGER.debug("Building new object of type #{@klass}")
+        @attributes.map do |elem|
+          @klass.new(elem)
+        end
+      end
 
       private
 

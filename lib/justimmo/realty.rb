@@ -20,11 +20,11 @@ module Justimmo
 
     class << self
       def new_from_list(xml)
-        RealtyListBuilder.new(xml).build
+        RealtyListBuilder.new(self, xml).build
       end
 
       def new_from_detail(xml)
-        RealtyDetailBuilder.new(xml).build
+        RealtyDetailBuilder.new(self, xml).build
       end
 
       # queries
@@ -34,7 +34,7 @@ module Justimmo
       end
 
       def ids(filter, **attributes)
-        response = RealtyQuery.ids(filter, attributes)
+        RealtyQuery.ids(filter, attributes)
       end
 
       def detail(object_id, **attributes)
