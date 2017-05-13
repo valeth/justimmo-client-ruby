@@ -64,7 +64,7 @@ module Justimmo
       parse_areas(realty.xpath('flaechen').first)
       parse_equipment(realty.xpath('ausstattung').first)
       # realty.xpath('zustand_angaben')
-      # realty.xpath('freitexte')
+      parse_freetext(realty.xpath('freitexte').first)
       # realty.xpath('anhaenge')
       # realty.xpath('verwaltung_objekt')
       # realty.xpath('verwaltung_techn')
@@ -97,6 +97,14 @@ module Justimmo
       xml.children.each do |child|
         @attributes[mapper[xml.name]].update(Justimmo::Utils.attributes_only(xml, child.name, mapper))
       end
+    end
+
+    def parse_freetext(xml)
+      elem = xml.xpath('objekttitel').first
+      @attributes[mapper[elem.name]] = Justimmo::Utils.parse_value(elem.text)
+
+      elem = xml.xpath('objektbeschreibung').first
+      @attributes[mapper[elem.name]] = Justimmo::Utils.parse_value(elem.text)
     end
   end
 end

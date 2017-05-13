@@ -30,6 +30,7 @@ module Justimmo
       id:                                 :id,
       objektnummer:                       :property_number,
       titel:                              :title,
+      objekttitel:                        :title,
       dreizeiler:                         :teaser,
       naehe:                              :proximity,
       objektbeschreibung:                 :description,
