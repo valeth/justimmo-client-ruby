@@ -1,5 +1,10 @@
-require "justimmo/version"
+require 'justimmo/version'
+require 'justimmo/errors'
+require 'justimmo/config'
+require 'justimmo/logger'
 
 module Justimmo
-  # Your code goes here...
+  def self.configure(&block)
+    Justimmo::Config.configure(&block)
+  end
 end
