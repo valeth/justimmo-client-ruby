@@ -9,7 +9,10 @@ Dotenv.load
 Justimmo.configure do |config|
   config.username = ENV['JUSTIMMO_USERNAME']
   config.password = ENV['JUSTIMMO_PASSWORD']
-  config.mapper_raises_error = false
+
+  config.debug = ENV['DEBUG']
+
+  config.on_mapper_error = :raise
 end
 
 begin
