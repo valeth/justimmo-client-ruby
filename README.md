@@ -1,3 +1,6 @@
+[![build status](https://gitlab.com/valeth/justimmo-ruby/badges/master/build.svg)](https://gitlab.com/valeth/justimmo-ruby/commits/master)
+[![coverage report](https://gitlab.com/valeth/justimmo-ruby/badges/master/coverage.svg)](https://gitlab.com/valeth/justimmo-ruby/commits/master)
+
 # justimmo
 
 Ruby wrapper for the [Justimmo](http://www.justimmo.at) REST API.
