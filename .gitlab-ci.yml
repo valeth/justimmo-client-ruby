@@ -1,0 +1,21 @@
+image: 'ruby:2.3'
+
+.test_job: &test_job
+  environment: testing
+  cache:
+    paths:
+      - /cache
+  before_script:
+    - bundle install --path=/cache
+  tags:
+    - ruby
+
+test:rubocop:
+  <<: *test_job
+  script: bundle exec rake rubocop
+  only:
+    - dev
+
+test:rspec:
+  <<: *test_job
+  script: bundle exec rake spec
