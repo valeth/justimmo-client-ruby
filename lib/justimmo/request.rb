@@ -18,12 +18,12 @@ module Justimmo
 
     def raw_request(url, params = {})
       response = RestClient.get(url, params)
-      LOGGER.debug(response.request.url)
+      Logger.debug(response.request.url)
       response.body
     rescue RestClient::Unauthorized
       raise AuthenticationFailed, 'Authentication failed.'
     rescue RestClient::BadRequest, RestClient::NotFound => err
-      LOGGER.error(err.response.request.url)
+      Logger.error(err.response.request.url)
       raise RetrievalFailed, err.response.body
     rescue RestClient::InternalServerError
       raise RetrievalFailed, 'Internal server error'

@@ -20,7 +20,7 @@ module Justimmo
       end
 
       def build
-        LOGGER.debug("Building new object of type #{@klass}")
+        Logger.debug("Building new object of type #{@klass}")
         @attributes.map do |elem|
           @klass.new(elem)
         end
