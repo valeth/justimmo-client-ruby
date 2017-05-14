@@ -1,8 +1,10 @@
-# Justimmo
+# justimmo
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/justimmo`. To experiment with that code, run `bin/console` for an interactive prompt.
+Ruby wrapper for the [Justimmo](http://www.justimmo.at) REST API.
 
-TODO: Delete this and the text above, and describe your gem
+## Dependencies
+
+* Ruby 2.3+
 
 ## Installation
 
@@ -22,20 +24,31 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+require 'justimmo'
+
+Justimmo.configure do |config|
+  config.username = 'your-username'
+  config.password = 'your_password'
+end
+
+Justimmo::Realty.find({ zip_code: 6020 }, limit: 5)
+```
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+After checking out the repo, run `bin/setup` to install dependencies.
+Then, run `rake spec` to run the tests.
+You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/justimmo. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and merge requests are welcome on
+[GitLab](https://github.com/valeth/justimmo-ruby).
 
 
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
 
+Check the [LICENSE](LICENSE) file for more information.
