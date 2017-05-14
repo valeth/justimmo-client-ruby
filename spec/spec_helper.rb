@@ -1,4 +1,7 @@
 require 'bundler/setup'
+require 'simplecov'
+SimpleCov.start
+
 require 'justimmo'
 
 RSpec.configure do |config|

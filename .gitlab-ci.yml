@@ -19,3 +19,19 @@ test:rubocop:
 test:rspec:
   <<: *test_job
   script: bundle exec rake spec
+  artifacts:
+    paths:
+      - coverage/
+
+pages:
+  stage: deploy
+  dependencies:
+    - test:rspec
+  script:
+    - mv coverage/ public/
+  artifacts:
+    paths:
+      - public
+    expire_in: 30 days
+  only:
+    - master
