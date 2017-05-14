@@ -12,7 +12,7 @@ Justimmo.configure do |config|
 
   config.debug = ENV['DEBUG']
 
-  config.on_mapper_error = :raise
+  config.on_mapper_error = ENV['JUSTIMMO_MAPPER_ERROR']&.to_sym || :raise
 end
 
 begin

@@ -64,7 +64,7 @@ module Justimmo
       sub_objektart_name:                 :sub_realty_type_name,
       ausstattung_beschreibung:           :equipment_description, # ?
       geokoordinaten_breitengrad:         :latitude, # ?
-      geokoordinaten_laengengrad:         :longitude,  # ?
+      geokoordinaten_laengengrad:         :longitude, # ?
       geokoordinaten_breitengrad_exakt:   :latitude_precise,
       geokoordinaten_laengengrad_exakt:   :longitude_precise,
       ausrichtung:                        :orientation,
@@ -88,7 +88,7 @@ module Justimmo
       nettoertrag_monatlich:              :net_earning_monthly,
       nettoertrag_jaehrlich:              :net_earning_yearly,
       gesamtmiete_ust:                    :total_rent_vat,
-      zusatzkosten:                       :additional_costs,  # ?
+      zusatzkosten:                       :additional_costs, # ?
       grunderwerbssteuer:                 :transfer_tax,
       grundbucheintragung:                :land_registration,
       anhaenge:                           :attachments, # ?
@@ -152,7 +152,7 @@ module Justimmo
       epass_hwbwert:                      :thermal_heat_requirement_value, # ?
       epass_hwbklasse:                    :thermal_heat_requirement_class, # ?
       epass_fgeewert:                     :energy_efficiency_factor_value, # ?
-      epass_fgeeklasse:                   :energy_efficiency_factor_class, # ?
+      epass_fgeeklasse:                   :energy_efficiency_factor_class # ?
     }.freeze
 
     @params_mapping = {

@@ -29,6 +29,7 @@ module Justimmo
       private
 
       def parse; end
+
       def mapper; end
     end
 

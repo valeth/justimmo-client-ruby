@@ -39,7 +39,7 @@ module Justimmo
       end
 
       xml.children.each do |child|
-        next if %[miete zusatzkosten].include?(child.name)
+        next if %i[miete zusatzkosten].include?(child.name)
 
         @attributes[mapper[child.name]] = Justimmo::Utils.parse_value(child.text)
       end

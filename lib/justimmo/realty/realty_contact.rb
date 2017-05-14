@@ -26,7 +26,7 @@ module Justimmo
         end
 
       xml.children.each do |child|
-        next if %[user_defined_anyfield bild land].include?(child.name)
+        next if %i[user_defined_anyfield bild land].include?(child.name)
 
         @attributes[mapper[child.name]] = Justimmo::Utils.parse_value(child.text)
       end

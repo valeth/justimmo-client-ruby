@@ -1,0 +1,22 @@
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  TargetRubyVersion: 2.3
+  Exclude:
+    - bin/**
+
+Metrics/BlockLength:
+  Exclude:
+    - spec/**/*_spec.rb
+
+Metrics/ModuleLength:
+  Exclude:
+    - lib/justimmo/realty/realty_mapper.rb
+
+Style/Documentation:
+  Enabled: false
+  Exclude:
+    - spec/**
+
+Style/FrozenStringLiteralComment:
+  Enabled: false

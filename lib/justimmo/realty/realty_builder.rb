@@ -27,15 +27,16 @@ module Justimmo
     def parse_realty(realty)
       tmp = {}
 
-      mapper.each do |key, value|
+      mapper.each do |key, _value|
         elem = realty.xpath(key.to_s)
         next if elem.empty?
 
-        if key == :objektkategorie
-          tmp[mapper[key]] = RealtyCategory.new(elem)
-        else
-          tmp[mapper[key]] = Justimmo::Utils.parse_value(elem.text)
-        end
+        tmp[mapper[key]] =
+          if key == :objektkategorie
+            RealtyCategory.new(elem)
+          else
+            Justimmo::Utils.parse_value(elem.text)
+          end
       end
 
       @attributes << tmp

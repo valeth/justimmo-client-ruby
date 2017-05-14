@@ -1,4 +1,5 @@
 # coding: utf-8
+
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'justimmo/version'
@@ -10,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.email         = ['patrick.auernig@mykolab.com']
   spec.license       = 'MIT'
 
-  spec.summary       = %q(Ruby wrapper for the Justimmo API.)
+  spec.summary       = 'Ruby wrapper for the Justimmo API.'
   spec.homepage      = 'https://gitlab.com/valeth/justimmo-ruby'
   spec.license       = 'MIT'
 
