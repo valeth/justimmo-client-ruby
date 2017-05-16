@@ -10,6 +10,25 @@ RSpec.describe Justimmo::Parser do
     expect(Justimmo::Parser.parse(false)).to eq({})
   end
 
+  it 'handles empty XML documents' do
+    xml = <<~XML
+      <?xml version="1.0" encoding="UTF-8"?>
+    XML
+
+    expect(Justimmo::Parser.parse(xml)).to eq({})
+  end
+
+  it 'handles invalid XML documents' do
+    xml = <<~XML
+      <?xml version="1.0" encoding="UTF-8"?>
+      <foo>
+        <bar >x</bar>
+      </notfoo>
+    XML
+
+    expect(Justimmo::Parser.parse(xml)).to eq({})
+  end
+
   it 'parses XML documents' do
     xml = <<~XML
       <?xml version="1.0" encoding="UTF-8"?>
