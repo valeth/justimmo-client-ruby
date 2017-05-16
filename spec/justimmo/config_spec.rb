@@ -4,7 +4,7 @@ RSpec.describe Justimmo::Config do
   USERPASS = { username: 'user', password: 'pass' }.freeze
 
   it 'validates configuration' do
-    expect { Justimmo::Config.new }.to raise_error(Justimmo::ConfigurationError)
+    expect { Justimmo::Config.new }.to raise_error(Justimmo::Config::ConfigurationError)
     expect { Justimmo::Config.new(USERPASS) }.not_to raise_error
   end
 
@@ -23,7 +23,7 @@ RSpec.describe Justimmo::Config do
     expect(config.credentials).to eq('dXNlcjpwYXNz')
   end
 
-  it 'returns and url based on version' do
+  it 'returns an url based on version' do
     config = Justimmo::Config.new(USERPASS)
 
     expect(config.url).to eq('https://api.justimmo.at/rest/v1')

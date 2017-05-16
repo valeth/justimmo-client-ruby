@@ -3,13 +3,15 @@
 require 'base64'
 
 module Justimmo
-  class ConfigurationError < JustimmoError
-    def initialize(missing)
-      super "Required configuration missing: #{missing}"
-    end
-  end
-
+  # Holds configuration for the Justimmo API.
   class Config
+    # Raised when configuration validation fails.
+    class ConfigurationError < JustimmoError
+      def initialize(missing)
+        super "Required configuration missing: #{missing}"
+      end
+    end
+
     DEFAULTS = {
       base_url: 'https://api.justimmo.at/rest',
       api_ver:  1,
@@ -24,6 +26,17 @@ module Justimmo
     # global config
     @config = nil
 
+    # Justimmo API configuration.
+    # The configuration options are validated on creation.
+    # @param  options [Hash]  The configuration attributes.
+    # @option  options [String]  :base_url  The first part of the request URL.
+    # @option  options [Integer]  :api_ver  The API version.
+    # @option  options [String]  :username  The username for authentication.
+    # @option  options [String]  :password  The password for authentication.
+    # @option  options [Symbol]  :on_mapper_error  The action to use when a mapper lookup fails.
+    # @option  options [Boolean]  :debug  Enable debug mode.
+    # @yield  The block is used to configure the {Config} object.
+    # @yieldparam  config [self]
     def initialize(options = {})
       @attributes = DEFAULTS.merge(options)
 
@@ -57,6 +70,9 @@ module Justimmo
     end
 
     class << self
+      # Convenience method that sets configuration.
+      # @yield  The configuration block.
+      # @yieldparam  config [Justimmo::Config]  The configuration object.
       def configure(options = {})
         @config =
           new(options) do |config|
