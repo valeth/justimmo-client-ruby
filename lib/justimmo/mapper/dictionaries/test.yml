@@ -1,0 +1,8 @@
+# This dictionary is just used in unit tests
+
+main:
+  test: notest
+  alter: oida
+
+other:
+  other: anders
