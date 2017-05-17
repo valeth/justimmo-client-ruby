@@ -173,11 +173,27 @@ filter:
   updated_at:           aktualisiert_am
 
 params:
-  limit:       Limit
-  offset:      Offset
-  language:    culture
-  orderby:     orderby
-  order:       ordertype
+  # list
+  limit: Limit
+  offset: Offset
+  language: culture
+  orderby: orderby
+  order: ordertype
   picturesize: picturesize
-  all:         alleProjektObjekte
-  realty_id:   objekt_id
+  all: alleProjektObjekte
+  # detail
+  realty_id: objekt_id
+  # expose
+  expose: expose
+  # inquiry
+  salutation_id: anrede_id
+  title: titel
+  first_name: vorname
+  last_name: nachname
+  email: email
+  phone: tel
+  message: message
+  street: strasse
+  zip_code: plz
+  location: ort
+  country: land

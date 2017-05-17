@@ -6,9 +6,10 @@ module Justimmo
   # The XML parser.
   module Parser
     # Convert a XML document to a Ruby hash.
-    # @param  data [String]  The XML string to convert
-    # @return  [Hash]  A converted structure or an empty hash
-    def self.parse(data)
+    # @param data [String] The XML string to convert
+    # @param mapper [Mapper] The optional mapper to convert keys and attributes.
+    # @return [Hash] A converted structure or an empty hash
+    def self.parse(data, mapper: nil)
       return {} unless data.is_a?(String)
 
       doc = Nokogiri::XML(data) do |config|
@@ -17,7 +18,7 @@ module Justimmo
         config.nonet
       end
 
-      doc.to_h
+      doc.to_h(mapper)
     rescue Nokogiri::XML::SyntaxError => e
       Logger.error("Failed to parse XML document: #{e}")
       {}
@@ -26,21 +27,21 @@ module Justimmo
     # Extensions to the Nokogiri::XML classes to support *to_h*.
     module Conversions
       module Document # :nodoc:
-        def to_h
-          root.to_h
+        def to_h(mapper = nil)
+          root.to_h({}, mapper)
         end
       end
 
       module Node # :nodoc:
-        def to_h(hash = {})
+        def to_h(hash = {}, mapper = nil)
           node_hash = {}
-          node_name = format_key(name)
+          node_name = apply_mapping(format_key(name), mapper)
 
-          attribute_nodes.each { |a| a.to_h(node_hash) }
+          attribute_nodes.each { |a| a.to_h(node_hash, mapper) }
 
           children.each do |c|
             if c.element?
-              c.to_h(node_hash)
+              c.to_h(node_hash, mapper)
             elsif node_hash.empty?
               node_hash = parse_value(c.content)
             else
@@ -75,11 +76,16 @@ module Justimmo
         def format_key(key)
           key.underscore.to_sym
         end
+
+        def apply_mapping(key, mapper = nil)
+          mapper.nil? ? key : mapper[key]
+        end
       end
 
       module Attr # :nodoc:
-        def to_h(hash = {})
-          hash[format_key("@#{name}")] = parse_value(value)
+        def to_h(hash = {}, mapper = nil)
+          key = "@#{apply_mapping(format_key(name), mapper)}".to_sym
+          hash[key] = apply_mapping(parse_value(value), mapper)
         end
       end
     end

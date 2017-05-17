@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
+require 'yaml'
 require 'active_support/core_ext/string/inflections'
 require 'active_support/core_ext/hash/deep_merge'
 require 'active_support/core_ext/hash/indifferent_access'
-require 'yaml'
 
 module Justimmo
   # Maps values to other values.
@@ -121,10 +121,10 @@ module Justimmo
       val = yield
       return val.to_sym unless val.nil?
       case on_mapper_error
-      when :ignore  then nil
-      when :convert then key.to_sym
-      when :mark    then "!#{key.upcase}"
-      else          raise KeyNotFound.new(key, map)
+      when :ignore then nil
+      when :raise  then raise KeyNotFound.new(key, map)
+      when :mark   then "!#{key.upcase}"
+      else         key.respond_to?(:to_sym) ? key.to_sym : key
       end
     end
   end

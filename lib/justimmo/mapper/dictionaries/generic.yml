@@ -29,3 +29,8 @@ main:
   flur: hallway
   rent: miete
   zimmer: rooms
+  immobilie: realty
+
+  justimmo: justimmo
+  query_result: query_result
+  count: count
