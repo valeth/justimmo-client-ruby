@@ -44,6 +44,17 @@ After checking out the repo, run `bin/setup` to install dependencies.
 Then, run `rake spec` to run the tests.
 You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
+## Architecture
+      ┌────────────┐
+      │            │
+    Query ─ Parser ┴ Resource
+              │
+            Mapper
+
+The query interface retrieves raw XML data from the API, which will be parsed and mapped if necessary.
+
+The resulting data will be converted into a Resource object.
+
 ## Contributing
 
 Bug reports and merge requests are welcome on
