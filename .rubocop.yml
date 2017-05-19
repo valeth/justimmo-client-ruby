@@ -4,19 +4,13 @@ AllCops:
   TargetRubyVersion: 2.3
   Exclude:
     - bin/**
+    - spec/**/*
 
-Metrics/BlockLength:
-  Exclude:
-    - spec/**/*_spec.rb
-
-Metrics/ModuleLength:
-  Exclude:
-    - lib/justimmo/realty/realty_mapper.rb
-
-Style/Documentation:
-  Enabled: false
-  Exclude:
-    - spec/**
+Metrics/MethodLength:
+  Max: 20
 
 Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
   Enabled: false

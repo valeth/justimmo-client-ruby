@@ -35,3 +35,14 @@ pages:
     expire_in: 30 days
   only:
     - master
+
+deploy:rubygems:
+  stage: deploy
+  dependencies:
+    - test:rspec
+  before_script:
+    - gem install dpl
+  script:
+    - dpl --provider=rubygems --api-key=$RUBYGEMS_API_KEY
+  only:
+    - tag
