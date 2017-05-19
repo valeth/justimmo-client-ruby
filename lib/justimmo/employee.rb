@@ -3,5 +3,5 @@
 require 'justimmo/api'
 
 module Justimmo
-  class Realty < Justimmo::API::Realty; end
+  class Employee < Justimmo::API::Employee; end
 end
