@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 require 'logger'
 
 module Justimmo
+  # The Justimmo logger.
   class Logger < Logger
     @logger = nil
 

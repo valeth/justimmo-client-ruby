@@ -6,9 +6,19 @@ module Justimmo
   # Holds configuration for the Justimmo API.
   class Config
     # Raised when configuration validation fails.
-    class ConfigurationError < JustimmoError
+    class ConfigurationError < JustimmoError; end
+
+    # Raised when an unsupported API version is set.
+    class UnsupportedAPIVersion < ConfigurationError
+      def initialize(version)
+        super("API Version #{version} not supported.")
+      end
+    end
+
+    # Raised on missing required configuration options.
+    class MissingConfiguration < ConfigurationError
       def initialize(missing)
-        super "Required configuration missing: #{missing}"
+        super("Required configuration missing: #{missing}.")
       end
     end
 
@@ -21,6 +31,8 @@ module Justimmo
       debug: false
     }.freeze
 
+    SUPPORTED_API_VERSIONS = [1].freeze
+
     REQUIRED = %i[username password].freeze
 
     # global config
@@ -28,21 +40,32 @@ module Justimmo
 
     # Justimmo API configuration.
     # The configuration options are validated on creation.
-    # @param  options [Hash]  The configuration attributes.
-    # @option  options [String]  :base_url  The first part of the request URL.
-    # @option  options [Integer]  :api_ver  The API version.
-    # @option  options [String]  :username  The username for authentication.
-    # @option  options [String]  :password  The password for authentication.
-    # @option  options [Symbol]  :on_mapper_error  The action to use when a mapper lookup fails.
-    # @option  options [Boolean]  :debug  Enable debug mode.
-    # @yield  The block is used to configure the {Config} object.
-    # @yieldparam  config [self]
+    # @param options [Hash]
+    #   The configuration attributes.
+    # @option options [String] :base_url
+    #   The first part of the request URL.
+    # @option options [Integer] :api_ver
+    #   The API version.
+    # @option options [String] :username
+    #   The username for authentication.
+    # @option options [String] :password
+    #   The password for authentication.
+    # @option options [Symbol] :on_mapper_error
+    #   The action to use when a mapper lookup fails.
+    # @option options [Boolean] :debug
+    #   Enable debug mode.
+    # @yield The block is used to configure the {Config} object.
+    # @yieldparam config [self]
     def initialize(options = {})
       @attributes = DEFAULTS.merge(options)
 
-      @attributes.each do |key, value|
-        define_singleton_method("#{key}=") { |x| @attributes[key] = x }
+      @attributes.keys.reject { |k| k == :api_ver }.each do |key|
+        define_singleton_method("#{key}=") do |x|
+          @attributes[key] = x
+        end
+      end
 
+      @attributes.each do |key, value|
         meth = [true, false].include?(value) ? "#{key}?" : key
         define_singleton_method(meth) { @attributes[key] }
       end
@@ -50,6 +73,12 @@ module Justimmo
       yield(self) if block_given?
 
       validate
+    end
+
+    def api_ver=(version)
+      supported_ver = SUPPORTED_API_VERSIONS.include?(version)
+      raise UnsupportedAPIVersion, version unless supported_ver
+      @attributes[:api_ver] = version
     end
 
     def url
@@ -66,7 +95,10 @@ module Justimmo
 
     def validate
       missing = REQUIRED.select { |r| @attributes[r].nil? }
-      raise ConfigurationError, missing unless missing.empty?
+      raise MissingConfiguration, missing unless missing.empty?
+
+      supported_ver = SUPPORTED_API_VERSIONS.include?(@attributes[:api_ver])
+      raise UnsupportedAPIVersion, @attributes[:api_ver] unless supported_ver
     end
 
     class << self
@@ -74,10 +106,7 @@ module Justimmo
       # @yield  The configuration block.
       # @yieldparam  config [Justimmo::Config]  The configuration object.
       def configure(options = {})
-        @config =
-          new(options) do |config|
-            yield(config) if block_given?
-          end
+        @config = new(options) { |config| yield(config) if block_given? }
       end
 
       def clear

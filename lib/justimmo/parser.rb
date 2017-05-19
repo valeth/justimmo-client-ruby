@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'active_support/core_ext/string/inflections' # underscore
 require 'active_support/core_ext/string/conversions' # to_date
 require 'nokogiri'
@@ -9,7 +11,7 @@ module Justimmo
     # @param data [String] The XML string to convert
     # @param mapper [Mapper] The optional mapper to convert keys and attributes.
     # @return [Hash] A converted structure or an empty hash
-    def self.parse(data, mapper: nil)
+    def self.parse(data, mapper = nil)
       return {} unless data.is_a?(String)
 
       doc = Nokogiri::XML(data) do |config|

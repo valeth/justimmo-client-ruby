@@ -4,7 +4,7 @@ RSpec.describe Justimmo::Config do
   USERPASS = { username: 'user', password: 'pass' }.freeze
 
   it 'validates configuration' do
-    expect { Justimmo::Config.new }.to raise_error(Justimmo::Config::ConfigurationError)
+    expect { Justimmo::Config.new }.to raise_error(Justimmo::Config::MissingConfiguration)
     expect { Justimmo::Config.new(USERPASS) }.not_to raise_error
   end
 
@@ -27,9 +27,14 @@ RSpec.describe Justimmo::Config do
     config = Justimmo::Config.new(USERPASS)
 
     expect(config.url).to eq('https://api.justimmo.at/rest/v1')
+  end
 
-    config.api_ver = 2
-    expect(config.url).to eq('https://api.justimmo.at/rest/v2')
+  it 'only allows supported API versions' do
+    expect { Justimmo::Config.new(USERPASS.merge(api_ver: 2)) }.to raise_error(Justimmo::Config::UnsupportedAPIVersion)
+
+    config = Justimmo::Config.new(USERPASS)
+
+    expect { config.api_ver = 2 }.to raise_error(Justimmo::Config::UnsupportedAPIVersion)
   end
 
   it 'can set global config' do
