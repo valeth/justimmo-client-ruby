@@ -4,7 +4,9 @@ RSpec.describe Justimmo::API::Query do
 end
 
 RSpec.describe Justimmo::API::RealtyQuery do
-  Justimmo::Mapper::RealtyMapper.on_mapper_error(:mark)
+  Mapper = Justimmo::API::RealtyMapper
+  Mapper.on_mapper_error(:mark)
+  RealtyQuery = Justimmo::API::RealtyQuery
 
   it 'builds list query parameters' do
     params = {
@@ -27,7 +29,7 @@ RSpec.describe Justimmo::API::RealtyQuery do
       filter: { plz: 6800 }
     }.freeze
 
-    expect(Justimmo::API::RealtyQuery.build_params(params)).to eq(out)
+    expect(RealtyQuery.build_params(params)).to eq(out)
   end
 
   it 'builds detail query parameters' do
@@ -41,7 +43,7 @@ RSpec.describe Justimmo::API::RealtyQuery do
       culture: 'de'
     }.freeze
 
-    expect(Justimmo::API::RealtyQuery.build_params(params)).to eq(out)
+    expect(RealtyQuery.build_params(params)).to eq(out)
   end
 
   it 'builds expose query parameters' do
@@ -57,7 +59,7 @@ RSpec.describe Justimmo::API::RealtyQuery do
       culture: 'de'
     }.freeze
 
-    expect(Justimmo::API::RealtyQuery.build_params(params)).to eq(out)
+    expect(RealtyQuery.build_params(params)).to eq(out)
   end
 
   it 'builds inquiry query parameters' do
@@ -91,6 +93,6 @@ RSpec.describe Justimmo::API::RealtyQuery do
       land: 'On Earth'
     }.freeze
 
-    expect(Justimmo::API::RealtyQuery.build_params(params)).to eq(out)
+    expect(RealtyQuery.build_params(params)).to eq(out)
   end
 end
