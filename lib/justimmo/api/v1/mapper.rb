@@ -5,27 +5,28 @@ require 'active_support/core_ext/string/inflections'
 require 'active_support/core_ext/hash/deep_merge'
 require 'active_support/core_ext/hash/indifferent_access'
 
-module Justimmo
+module Justimmo::API
   # Maps values to other values.
   module Mapper
     # A mapping could not be found in the mappings hash.
-    class MappingNotFound < JustimmoError
+    class MappingNotFound < StandardError
       def initialize(map)
         super("Could not find #{map} mapping.")
       end
     end
 
     # A key could not be found in the specified mapping.
-    class KeyNotFound < JustimmoError
+    class KeyNotFound < StandardError
       def initialize(key, map)
         super("Key #{key} not found in #{map} mapping.")
       end
     end
 
-    DICTIONARY_PATH = File.join(__dir__, 'mapper', 'dictionaries')
+    DICTIONARY_PATH = File.join(__dir__, 'dictionaries')
 
     # Defines the action that's being used on errors
-    # @param key [Symbol] The action to use, can be :ignore, :convert, :raise or :mark.
+    # @param key [Symbol]
+    #   The action to use, can be :ignore, :convert, :raise or :mark.
     # @return [Symbol] The current setting.
     def on_mapper_error(key = nil)
       @on_mapper_error ||= Justimmo::Config.on_mapper_error
@@ -37,13 +38,6 @@ module Justimmo
     # @return [String] The module name.
     def module_name
       name.split('::').last
-    end
-
-    # The resource that this mapper is associated with.
-    # @return [Module] The resource module.
-    def resource
-      res = module_name.underscore.split('_').first.capitalize
-      "Justimmo::Resource::#{res}".constantize
     end
 
     # The path to the dictionary for this mapper.
@@ -87,23 +81,38 @@ module Justimmo
     end
 
     # Get a key from a mapping.
-    # @param key [String, Symbol] The key to search for.
-    # @param map [String, Symbol] The map to search in. Defaults to :main.
-    # @param reverse [Boolean] Look up keys instead of values. Defaults to false.
-    # @raise [KeyNotFound] If on_mapper_error is set to :raise.
-    # @return [Symbol, nil] The value, if found, nil if on_mapper_error is set to :ignore.
+    # @param key [String, Symbol]
+    #   The key to search for.
+    # @param map [String, Symbol]
+    #   The map to search in. Defaults to :main.
+    # @param reverse [Boolean]
+    #   Look up keys instead of values. Defaults to false.
+    # @raise [KeyNotFound]
+    #   If on_mapper_error is set to :raise.
+    # @return [Symbol]
+    #  The value, if found, nil if on_mapper_error is set to :ignore.
     def get(key, map: :main, reverse: false)
       return nil unless key.respond_to?(:to_s)
       handle_key_error(key, map) do
         if reverse
-          mapping(map).key(key.to_s)
+          mapping(map).key(key.to_s)&.to_sym
         else
-          mapping(map).fetch(key, nil)
+          mapping(map).fetch(key, nil)&.to_sym
         end
       end
     end
 
     alias [] get
+
+    def keys(map = :main)
+      return [] unless mapping?(map)
+      mapping(map).keys.map(&:to_sym)
+    end
+
+    def values(map = :main)
+      return [] unless mapping?(map)
+      mapping(map).values.map(&:to_sym)
+    end
 
     # Check if a mapping is available.
     # @param map [String, Symbol] The mapping to look up.
@@ -116,12 +125,11 @@ module Justimmo
     # @param key [String, Symbol]
     # @param map [String, Symbol]
     # @raise [KeyNotFoundError] If on_mapper_error is set to :raise.
-    # @return [String, Symbol, nil] Return value depends on on_mapper_error setting.
+    # @return [String, Symbol] Return value depends on on_mapper_error setting.
     def handle_key_error(key, map)
       val = yield
       return val.to_sym unless val.nil?
       case on_mapper_error
-      when :ignore then nil
       when :raise  then raise KeyNotFound.new(key, map)
       when :mark   then "!#{key.upcase}"
       else         key.respond_to?(:to_sym) ? key.to_sym : key
