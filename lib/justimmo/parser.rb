@@ -5,25 +5,35 @@ require 'active_support/core_ext/string/conversions' # to_date
 require 'nokogiri'
 
 module Justimmo
-  # The XML parser.
+  # The XML to Hash parser.
+  # @api private
   module Parser
-    # Convert a XML document to a Ruby hash.
-    # @param data [String] The XML string to convert
-    # @param mapper [Mapper] The optional mapper to convert keys and attributes.
-    # @return [Hash] A converted structure or an empty hash
-    def self.parse(data, mapper = nil)
-      return {} unless data.is_a?(String)
+    class << self
+      # Convert a XML document to a Ruby hash.
+      # @param data [String]
+      #   The XML string to convert
+      # @param mapper [Mapper]
+      #   The optional mapper to convert keys and attributes.
+      # @return [Hash]
+      #   A converted structure or an empty hash
+      def parse(data, mapper = nil)
+        return {} unless data.is_a?(String)
 
-      doc = Nokogiri::XML(data) do |config|
-        config.noblanks
-        config.norecover
-        config.nonet
+        doc = Nokogiri::XML(data) do |config|
+          config.noblanks # remove superfluous newline nodes
+          config.norecover # fail if the XML is invalid
+          config.nonet # do not allow network connections
+        end
+
+        doc.to_h(mapper)
+      rescue Nokogiri::XML::SyntaxError => e
+        log.error("Parser error: #{e}")
+        {}
       end
 
-      doc.to_h(mapper)
-    rescue Nokogiri::XML::SyntaxError => e
-      Logger.error("Failed to parse XML document: #{e}")
-      {}
+      def log
+        Justimmo::Logger
+      end
     end
 
     # Extensions to the Nokogiri::XML classes to support *to_h*.
@@ -80,7 +90,8 @@ module Justimmo
         end
 
         def apply_mapping(key, mapper = nil)
-          mapper.nil? ? key : mapper[key]
+          mapped = mapper.nil? ? key : mapper[key]
+          mapped.nil? ? key : mapped
         end
       end
 
