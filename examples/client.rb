@@ -11,4 +11,4 @@ Justimmo.configure do |config|
   config.password = ENV['JUSTIMMO_PASSWORD']
 end
 
-pp Justimmo::Realty.find({ zip_code: 6800 }, limit: 5)
+pp Justimmo::Realty.list(filter: { zip_code: 6800 }, limit: 5)

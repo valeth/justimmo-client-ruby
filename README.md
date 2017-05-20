@@ -1,9 +1,10 @@
-[![build status](https://gitlab.com/valeth/justimmo-ruby/badges/master/build.svg)](https://gitlab.com/valeth/justimmo-ruby/commits/master)
-[![coverage report](https://gitlab.com/valeth/justimmo-ruby/badges/master/coverage.svg)](https://gitlab.com/valeth/justimmo-ruby/commits/master)
+[![build status](https://gitlab.com/valeth/justimmo-ruby/badges/master/build.svg)](https://gitlab.com/valeth/justimmo-ruby/pipelines)
+[![coverage report](https://gitlab.com/valeth/justimmo-ruby/badges/master/coverage.svg)](https://valeth.gitlab.io/justimmo-ruby)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/7cfe6c9965214c439470cc0a480e0e49)](https://www.codacy.com/app/valeth/justimmo-ruby?utm_source=gitlab.com&amp;utm_medium=referral&amp;utm_content=valeth/justimmo-ruby&amp;utm_campaign=Badge_Grade)
 
 # justimmo
 
-Ruby wrapper for the [Justimmo](http://www.justimmo.at) REST API.
+Ruby wrapper for the [Justimmo](http://www.justimmo.at) [REST API](http://api-docs.justimmo.at/api/index.html).
 
 ## Dependencies
 
@@ -35,7 +36,7 @@ Justimmo.configure do |config|
   config.password = 'your_password'
 end
 
-Justimmo::Realty.find({ zip_code: 6020 }, limit: 5)
+Justimmo::Realty.list(filter: { zip_code: 6020 }, limit: 5)
 ```
 
 ## Development
@@ -43,17 +44,6 @@ Justimmo::Realty.find({ zip_code: 6020 }, limit: 5)
 After checking out the repo, run `bin/setup` to install dependencies.
 Then, run `rake spec` to run the tests.
 You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-## Architecture
-      ┌────────────┐
-      │            │
-    Query ─ Parser ┴ Resource
-              │
-            Mapper
-
-The query interface retrieves raw XML data from the API, which will be parsed and mapped if necessary.
-
-The resulting data will be converted into a Resource object.
 
 ## Contributing
 
