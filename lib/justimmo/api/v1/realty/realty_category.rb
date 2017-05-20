@@ -33,13 +33,13 @@ module Justimmo::API
     private
 
     def update_attributes(name)
-      tmp = @attributes[name].transform_keys { |k| k.to_s.sub(/^@/, '').to_sym }
+      tmp = @attributes[name]&.transform_keys { |k| k.to_s.sub(/^@/, '').to_sym }
 
-      tmp.keys.each do |k|
+      tmp&.keys&.each do |k|
         define_singleton_method("#{k}?") { @attributes[name][k] }
       end
 
-      @attributes[name] = tmp.transform_values { |v| v == 1 ? true : false }
+      @attributes[name] = tmp&.transform_values { |v| v == 1 ? true : false }
     end
   end
 end

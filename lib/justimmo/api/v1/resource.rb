@@ -43,7 +43,15 @@ module Justimmo::API
     end
 
     def to_h
-      @attributes
+      tmp = {}
+      @attributes.each do |key, value|
+        tmp[key] =
+          case value
+          when Resource then value.to_h
+          else value
+          end
+      end
+      tmp
     end
 
     def to_json(options = nil)

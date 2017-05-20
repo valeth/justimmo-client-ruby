@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'json'
-require 'justimmo/parser'
 require 'justimmo/api/v1/query'
 
 module Justimmo::API
@@ -34,12 +33,7 @@ module Justimmo::API
     #   See {build_filter} for options.
     # @return [Array<Hash>]
     def list(params = {})
-      response = request('objekt/list', params)
-      parsed = Justimmo::Parser.parse(response, mapper)
-      parsed.fetch(:justimmo).fetch(:realty)
-    rescue KeyError => e
-      log.error(e)
-      []
+      request('objekt/list', params)
     end
 
     # Get detailed information about a single realty.
@@ -48,12 +42,7 @@ module Justimmo::API
     # @option params [String] :language
     # @return [Hash]
     def detail(params = {})
-      response = request('objekt/detail', params)
-      parsed = Justimmo::Parser.parse(response, mapper)
-      parsed.fetch(:justimmo).fetch(:realty)
-    rescue KeyError => e
-      log.error(e)
-      {}
+      request('objekt/detail', params)
     end
 
     # Return the content of the expose PDF file as stream.

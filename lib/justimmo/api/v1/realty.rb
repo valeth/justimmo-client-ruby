@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'justimmo/parser'
 require 'justimmo/api/v1/resource'
 require 'justimmo/api/v1/realty/realty_area'
 require 'justimmo/api/v1/realty/realty_attachment'
@@ -12,15 +13,19 @@ require 'justimmo/api/v1/realty/realty_price'
 module Justimmo::API
   # Represents a complete realty resource.
   class Realty < Resource
+    # Subsections that will pull in data from the Realty object.
     SECTIONS = %i[
       category prices areas geo
       management attachments contact
     ].freeze
 
+    # Subsections that will be merged into the Realty object.
     MERGE = %i[
       technical
       free_text
     ].freeze
+
+    private_constant :SECTIONS, :MERGE
 
     def initialize(options = {})
       @attributes = %i[
@@ -33,9 +38,17 @@ module Justimmo::API
       ] + SECTIONS
 
       SECTIONS.each { |x| options[x] = build_section(x, options) }
-      MERGE.each { |x| }
+      MERGE.each { |x| merge_section(x, options) }
 
       super(options)
+    end
+
+    def to_s
+      @attributes[:id].to_s
+    end
+
+    def inspect
+      "<Realty: #{self}>"
     end
 
     def property_number
@@ -55,7 +68,7 @@ module Justimmo::API
     def build_section(section, options)
       klass = "Justimmo::API::Realty#{section.to_s.classify}".constantize
       data = options.delete(section) || {}
-      data = [data[:attachment]].flatten if section == :attachments
+      data = [data[:attachment]].flatten if section == :attachments && data.is_a?(Hash)
 
       if data.is_a?(Array)
         data.compact.map { |x| build_sub_class(klass, x, options) }
@@ -81,20 +94,25 @@ module Justimmo::API
     end
 
     class << self
+      def from_xml(xml)
+        parsed = Justimmo::Parser.parse(xml, mapper)
+        parsed = parsed.fetch(:justimmo, {}).fetch(:realty, {})
+        case parsed
+        when Array then parsed.map { |x| new(x) }
+        when Hash  then new(parsed)
+        end
+      end
+
       # @param params [Hash]
       # @return [Array<Realty>] Array of Realty objects or empty Array
       def list(params = {})
-        response = query.list(params)
-        response.map do |options|
-          new(options)
-        end
+        from_xml(query.list(params))
       end
 
       # @param params [Hash]
       # @return [Realty] The Realty object.
       def detail(params = {})
-        response = query.detail(params)
-        new(response)
+        from_xml(query.detail(params))
       end
 
       def expose(params = {})
