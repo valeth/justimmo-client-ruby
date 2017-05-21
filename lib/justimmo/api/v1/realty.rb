@@ -1,29 +1,15 @@
 # frozen_string_literal: true
 
 require 'justimmo/parser'
-require 'justimmo/api/v1/resource'
-require 'justimmo/api/v1/realty/realty_area'
-require 'justimmo/api/v1/realty/realty_attachment'
-require 'justimmo/api/v1/realty/realty_category'
-require 'justimmo/api/v1/realty/realty_contact'
-require 'justimmo/api/v1/realty/realty_geo'
-require 'justimmo/api/v1/realty/realty_management'
-require 'justimmo/api/v1/realty/realty_price'
 
 module Justimmo::API
   # Represents a complete realty resource.
   class Realty < Resource
     # Subsections that will pull in data from the Realty object.
-    SECTIONS = %i[
-      category prices areas geo
-      management attachments contact
-    ].freeze
+    SECTIONS = %i[category prices areas geo management attachments contact].freeze
 
     # Subsections that will be merged into the Realty object.
-    MERGE = %i[
-      technical
-      free_text
-    ].freeze
+    MERGE = %i[technical free_text].freeze
 
     private_constant :SECTIONS, :MERGE
 
@@ -96,7 +82,7 @@ module Justimmo::API
     class << self
       def from_xml(xml)
         parsed = Justimmo::Parser.parse(xml, mapper)
-        parsed = parsed.fetch(:justimmo, {}).fetch(:realty, {})
+        parsed = parsed.dig(:justimmo, :realty) || {}
         case parsed
         when Array then parsed.map { |x| new(x) }
         when Hash  then new(parsed)
