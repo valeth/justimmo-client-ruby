@@ -7,33 +7,41 @@ module Justimmo
   class Logger < Logger
     @logger = nil
 
-    def initialize(config)
+    # The main logger.
+    #
+    # @param config [Config]
+    #   Logger configuration, must at least define a _debug?_ method.
+    def initialize(config = nil)
       super(STDOUT)
 
-      self.level = config.debug? ? Logger::DEBUG : Logger::INFO
+      self.level = config&.debug? ? Logger::DEBUG : Logger::INFO
       self.formatter = proc do |severity, datetime, _progname, msg|
         "#{severity}  [#{datetime}]  #{msg}\n"
       end
     end
 
     class << self
-      def configure(config)
+      # Configure the global logger.
+      #
+      # @param (see #initialize)
+      # @return [Logger] The global logger instance.
+      def configure(config = nil)
         @logger = new(config)
       end
 
-      def debug(*args)
+      def debug(*args) # :nodoc:
         @logger&.debug(*args)
       end
 
-      def info(*args)
+      def info(*args) # :nodoc
         @logger&.info(*args)
       end
 
-      def warn(*args)
+      def warn(*args) # :nodoc:
         @logger&.warn(*args)
       end
 
-      def error(*args)
+      def error(*args) # :nodoc:
         @logger&.error(*args)
       end
     end

@@ -1,6 +1,8 @@
 [![build status](https://gitlab.com/valeth/justimmo-ruby/badges/master/build.svg)](https://gitlab.com/valeth/justimmo-ruby/pipelines)
 [![coverage report](https://gitlab.com/valeth/justimmo-ruby/badges/master/coverage.svg)](https://valeth.gitlab.io/justimmo-ruby)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/7cfe6c9965214c439470cc0a480e0e49)](https://www.codacy.com/app/valeth/justimmo-ruby?utm_source=gitlab.com&amp;utm_medium=referral&amp;utm_content=valeth/justimmo-ruby&amp;utm_campaign=Badge_Grade)
+[![Inline docs](http://inch-ci.org/github/valeth/justimmo-ruby.svg?branch=master)](http://inch-ci.org/github/valeth/justimmo-ruby)
+
 
 # justimmo
 
@@ -31,6 +33,7 @@ Or install it yourself as:
 ```ruby
 require 'justimmo'
 
+# Configure the API
 Justimmo.configure do |config|
   config.username = 'your-username'
   config.password = 'your_password'
@@ -48,7 +51,7 @@ You can also run `bin/console` for an interactive prompt that will allow you to 
 ## Contributing
 
 Bug reports and merge requests are welcome on
-[GitLab](https://github.com/valeth/justimmo-ruby).
+[GitLab](https://gitlab.com/valeth/justimmo-ruby).
 
 
 ## License

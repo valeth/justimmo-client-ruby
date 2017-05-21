@@ -6,7 +6,6 @@ require 'nokogiri'
 
 module Justimmo
   # The XML to Hash parser.
-  # @api private
   module Parser
     class << self
       # Convert a XML document to a Ruby hash.

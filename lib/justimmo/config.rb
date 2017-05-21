@@ -38,6 +38,36 @@ module Justimmo
     # global config
     @config = nil
 
+    class << self
+      # Convenience method that sets configuration.
+      # @yield  The configuration block.
+      # @yieldparam  config [Justimmo::Config]  The configuration object.
+      def configure(options = {})
+        @config = new(options) { |config| yield(config) if block_given? }
+      end
+
+      def clear
+        @config = nil
+      end
+
+      def url
+        @config&.url || "#{DEFAULTS[:base_url]}/v#{DEFAULTS[:api_ver]}"
+      end
+
+      def credentials
+        @config&.credentials
+      end
+
+      def configured?
+        @config || false
+      end
+
+      DEFAULTS.each do |key, value|
+        meth = [true, false].include?(value) ? "#{key}?" : key
+        define_method(meth) { @config&.send(meth) || DEFAULTS[key] }
+      end
+    end
+
     # Justimmo API configuration.
     # The configuration options are validated on creation.
     # @param options [Hash]
@@ -99,32 +129,6 @@ module Justimmo
 
       supported_ver = SUPPORTED_API_VERSIONS.include?(@attributes[:api_ver])
       raise UnsupportedAPIVersion, @attributes[:api_ver] unless supported_ver
-    end
-
-    class << self
-      # Convenience method that sets configuration.
-      # @yield  The configuration block.
-      # @yieldparam  config [Justimmo::Config]  The configuration object.
-      def configure(options = {})
-        @config = new(options) { |config| yield(config) if block_given? }
-      end
-
-      def clear
-        @config = nil
-      end
-
-      DEFAULTS.each do |key, value|
-        meth = [true, false].include?(value) ? "#{key}?" : key
-        define_method(meth) { @config&.send(meth) || DEFAULTS[key] }
-      end
-
-      def url
-        @config&.url || "#{DEFAULTS[:base_url]}/v#{DEFAULTS[:api_ver]}"
-      end
-
-      def credentials
-        @config&.credentials
-      end
     end
   end
 end
