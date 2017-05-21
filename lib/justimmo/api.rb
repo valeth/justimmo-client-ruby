@@ -1,25 +1,28 @@
 # frozen_string_literal: true
 
+require 'active_support/core_ext/string/inflections'
+require 'justimmo/config'
+require 'justimmo/logger'
+
 module Justimmo
-  # @api private
+  # Internal API
   module API
-    autoload :Mapper,       'justimmo/api/v1/mapper'
-    autoload :Query,        'justimmo/api/v1/query'
-    autoload :RealtyMapper, 'justimmo/api/v1/realty_mapper'
-    autoload :RealtyQuery,  'justimmo/api/v1/realty_query'
-    autoload :Resource,     'justimmo/api/v1/resource'
+    VERSION = Justimmo::Config.api_ver || 1
 
-    autoload :RealtyArea,       'justimmo/api/v1/realty/realty_area'
-    autoload :RealtyAttachment, 'justimmo/api/v1/realty/realty_attachment'
-    autoload :RealtyCategory,   'justimmo/api/v1/realty/realty_category'
-    autoload :RealtyContact,    'justimmo/api/v1/realty/realty_contact'
-    autoload :RealtyFreeText,   'justimmo/api/v1/realty/realty_free_text'
-    autoload :RealtyGeo,        'justimmo/api/v1/realty/realty_geo'
-    autoload :RealtyManagement, 'justimmo/api/v1/realty/realty_management'
-    autoload :RealtyPrice,      'justimmo/api/v1/realty/realty_price'
-    autoload :RealtyTechnical,  'justimmo/api/v1/realty/realty_technical'
+    def self.versioned_autoload(path)
+      autoload_path = File.join('justimmo/api', "v#{VERSION}", path)
+      autoload_sym  = File.split(path).last.camelize.to_sym
+      autoload autoload_sym, autoload_path
+    end
 
-    autoload :Realty,   'justimmo/api/v1/realty'
-    autoload :Employee, 'justimmo/api/v1/employee'
+    private_class_method :versioned_autoload
+
+    %w[mapper query realty_mapper realty_query resource realty employee].each do |f|
+      versioned_autoload(f)
+    end
+
+    %w[area attachment category contact geo management price].each do |f|
+      versioned_autoload("realty/realty_#{f}")
+    end
   end
 end

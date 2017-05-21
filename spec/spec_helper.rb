@@ -3,6 +3,7 @@ require 'simplecov'
 SimpleCov.start
 
 require 'justimmo'
+require 'justimmo/api'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
