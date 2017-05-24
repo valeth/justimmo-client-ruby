@@ -3,6 +3,7 @@
 require 'active_support/core_ext/string/inflections' # underscore
 require 'active_support/core_ext/string/conversions' # to_date
 require 'nokogiri'
+require 'justimmo/config'
 
 module Justimmo
   # The XML to Hash parser.
@@ -11,11 +12,9 @@ module Justimmo
       # Convert a XML document to a Ruby hash.
       # @param data [String]
       #   The XML string to convert
-      # @param mapper [Mapper]
-      #   The optional mapper to convert keys and attributes.
       # @return [Hash]
       #   A converted structure or an empty hash
-      def parse(data, mapper = nil)
+      def parse(data)
         return {} unless data.is_a?(String)
 
         doc = Nokogiri::XML(data) do |config|
@@ -24,35 +23,31 @@ module Justimmo
           config.nonet # do not allow network connections
         end
 
-        doc.to_h(mapper)
+        doc.to_h
       rescue Nokogiri::XML::SyntaxError => e
-        log.error("Parser error: #{e}")
+        Justimmo::Config.logger.error("Parser error: #{e}")
         {}
-      end
-
-      def log
-        Justimmo::Logger
       end
     end
 
-    # Extensions to the Nokogiri::XML classes to support *to_h*.
+    # Extensions to the _Nokogiri::XML_ classes to support *to_h*.
     module Conversions
       module Document # :nodoc:
-        def to_h(mapper = nil)
-          root.to_h({}, mapper)
+        def to_h
+          root.to_h
         end
       end
 
       module Node # :nodoc:
-        def to_h(hash = {}, mapper = nil)
+        def to_h(hash = {})
           node_hash = {}
-          node_name = apply_mapping(format_key(name), mapper)
+          node_name = format_key(name)
 
-          attribute_nodes.each { |a| a.to_h(node_hash, mapper) }
+          attribute_nodes.each { |a| a.to_h(node_hash) }
 
           children.each do |c|
             if c.element?
-              c.to_h(node_hash, mapper)
+              c.to_h(node_hash)
             elsif node_hash.empty?
               node_hash = parse_value(c.content)
             else
@@ -84,20 +79,15 @@ module Justimmo
           end
         end
 
-        def format_key(key)
-          key.underscore.to_sym
-        end
-
-        def apply_mapping(key, mapper = nil)
-          mapped = mapper.nil? ? key : mapper[key]
-          mapped.nil? ? key : mapped
+        def format_key(key, prefix: nil)
+          "#{prefix}#{key.underscore}".to_sym
         end
       end
 
       module Attr # :nodoc:
-        def to_h(hash = {}, mapper = nil)
-          key = "@#{apply_mapping(format_key(name), mapper)}".to_sym
-          hash[key] = apply_mapping(parse_value(value), mapper)
+        def to_h(hash = {})
+          key = format_key(name, prefix: '@')
+          hash[key] = parse_value(value)
         end
       end
     end

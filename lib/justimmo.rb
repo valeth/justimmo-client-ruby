@@ -3,7 +3,6 @@
 require 'justimmo/version'
 require 'justimmo/errors'
 require 'justimmo/config'
-require 'justimmo/logger'
 require 'justimmo/parser'
 
 # The Justimmo API.
@@ -11,10 +10,9 @@ module Justimmo
   class << self
     # Loads configuration and initializes the API.
     # @see Config.configure
-    # @see Logger.configure
     def configure(&block)
       Justimmo::Config.configure(&block)
-      Justimmo::Logger.configure(Justimmo::Config)
+      Justimmo::Config.logger.create
 
       initialize_api
     end

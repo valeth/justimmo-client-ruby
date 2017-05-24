@@ -75,33 +75,4 @@ RSpec.describe Justimmo::Parser do
 
     expect(Justimmo::Parser.parse(xml)).to eq(hash)
   end
-
-  it 'can be mapped with a hash' do
-    mapper = {
-      en: :ja,
-      one: :ichi,
-      two: :ni,
-      three: :san,
-      'number' => 'bangou'
-    }
-
-    xml = <<~XML
-      <?xml version="1.0" encoding="UTF-8"?>
-      <en>
-        <one type="number">1</one>
-        <two type="number">2</two>
-        <three>3</three>
-      </en>
-    XML
-
-    out = {
-      ja: {
-        ichi: { :@type => 'bangou', value: 1 },
-        ni:   { :@type => 'bangou', value: 2 },
-        san: 3
-      }
-    }
-
-    expect(Justimmo::Parser.parse(xml, mapper)).to eq(out)
-  end
 end

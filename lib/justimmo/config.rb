@@ -1,34 +1,23 @@
 # frozen_string_literal: true
 
 require 'base64'
+require 'justimmo/errors'
+require 'justimmo/logger'
+require 'justimmo/cache'
 
 module Justimmo
   # Holds configuration for the Justimmo API.
   class Config
-    # Raised when configuration validation fails.
-    class ConfigurationError < JustimmoError; end
-
-    # Raised when an unsupported API version is set.
-    class UnsupportedAPIVersion < ConfigurationError
-      def initialize(version)
-        super("API Version #{version} not supported.")
-      end
-    end
-
-    # Raised on missing required configuration options.
-    class MissingConfiguration < ConfigurationError
-      def initialize(missing)
-        super("Required configuration missing: #{missing}.")
-      end
-    end
-
     DEFAULTS = {
       base_url: 'https://api.justimmo.at/rest',
       api_ver:  1,
       username: nil,
       password: nil,
-      on_mapper_error: :mark,
-      debug: false
+      debug: false,
+      cache: :memory,
+      cache_options: nil,
+      logger: Justimmo::Logger,
+      on_mapper_error: :convert
     }.freeze
 
     SUPPORTED_API_VERSIONS = [1].freeze
@@ -90,9 +79,7 @@ module Justimmo
       @attributes = DEFAULTS.merge(options)
 
       @attributes.keys.reject { |k| k == :api_ver }.each do |key|
-        define_singleton_method("#{key}=") do |x|
-          @attributes[key] = x
-        end
+        define_singleton_method("#{key}=") { |x| @attributes[key] = x }
       end
 
       @attributes.each do |key, value|
@@ -103,6 +90,7 @@ module Justimmo
       yield(self) if block_given?
 
       validate
+      initialize_cache
     end
 
     def api_ver=(version)
@@ -129,6 +117,16 @@ module Justimmo
 
       supported_ver = SUPPORTED_API_VERSIONS.include?(@attributes[:api_ver])
       raise UnsupportedAPIVersion, @attributes[:api_ver] unless supported_ver
+    end
+
+    def initialize_cache
+      backend = "Justimmo::#{@attributes[:cache].to_s.camelize}Cache".constantize
+      @attributes[:cache] = backend
+    rescue Justimmo::InitializationError => e
+      puts e.message
+      backend = "Justimmo::#{DEFAULTS[:cache].to_s.camelize}Cache".constantize
+      puts "Falling back to default cache backend: #{backend}"
+      @attributes[:cache] = backend
     end
   end
 end

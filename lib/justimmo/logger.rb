@@ -1,17 +1,15 @@
 # frozen_string_literal: true
 
 require 'logger'
+require 'justimmo/config'
 
 module Justimmo
   # The Justimmo logger.
   class Logger < Logger
-    @logger = nil
-
     # The main logger.
-    #
     # @param config [Config]
     #   Logger configuration, must at least define a _debug?_ method.
-    def initialize(config = nil)
+    def initialize(config = Justimmo::Config)
       super(STDOUT)
 
       self.level = config&.debug? ? Logger::DEBUG : Logger::INFO
@@ -21,28 +19,24 @@ module Justimmo
     end
 
     class << self
-      # Configure the global logger.
-      #
-      # @param (see #initialize)
-      # @return [Logger] The global logger instance.
-      def configure(config = nil)
-        @logger = new(config)
+      def create(config = Justimmo::Config)
+        @logger ||= new(config)
       end
 
-      def debug(*args) # :nodoc:
-        @logger&.debug(*args)
+      def debug(*msg)
+        @logger&.debug(*msg)
       end
 
-      def info(*args) # :nodoc
-        @logger&.info(*args)
+      def info(*msg)
+        @logger&.info(*msg)
       end
 
-      def warn(*args) # :nodoc:
-        @logger&.warn(*args)
+      def warn(*msg)
+        @logger&.warn(*msg)
       end
 
-      def error(*args) # :nodoc:
-        @logger&.error(*args)
+      def error(*msg)
+        @logger&.error(*msg)
       end
     end
   end
