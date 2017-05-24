@@ -17,12 +17,13 @@ module Justimmo
 
     private_class_method :versioned_autoload
 
-    %w[mapper query realty_mapper realty_query resource realty employee].each do |f|
+    %w[
+      mapper query resource
+      realty_query realty
+      employee_query employee
+      attachment area price
+    ].each do |f|
       versioned_autoload(f)
-    end
-
-    %w[area attachment category contact geo management price].each do |f|
-      versioned_autoload("realty/realty_#{f}")
     end
   end
 end

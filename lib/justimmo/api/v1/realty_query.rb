@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'json'
-require 'justimmo/api/v1/query'
+require 'justimmo/api/v1/mapper'
 
 module Justimmo::API
   # Get realty information from the API.
@@ -30,22 +30,24 @@ module Justimmo::API
     # @option params [Boolean] :all (false)
     #   Show all realties with projects, disregarding realty state.
     # @option params [Hash] :filter
-    #   See {build_filter} for options.
-    # @return [Array<Hash>]
+    #   See {RealtyQuery.build_filter} for options.
+    # @return [Array<String>]
     def list(params = {})
-      request('objekt/list', params)
+      cache_key = Digest::SHA256.hexdigest("realty/list:#{params}")
+      with_cache(cache_key) { request('objekt/list', params) }
     end
 
-    # Get detailed information about a single realty.
-    # @param params [Hash] Search parameters.
-    # @option params [Integer] :realty_id
+    # @param id [Integer] The realty id to search.
+    # @param params [Hash] Additional parameters.
     # @option params [String] :language
-    # @return [Hash]
-    def detail(params = {})
-      request('objekt/detail', params)
+    # @return [String]
+    def detail(id, params = {})
+      params.update(realty_id: id)
+      cache_key = Digest::SHA256.hexdigest("realty/detail:#{params}")
+      with_cache(cache_key) { request('objekt/detail', params) }
     end
 
-    # Return the content of the expose PDF file as stream.
+    # Get the content of the expose PDF file as stream.
     # @param params [Hash]
     # @option params [Integer] :realty_id
     # @option params [String] :expose
@@ -74,34 +76,22 @@ module Justimmo::API
     # @option params [String] :location
     # @option params [String] :country
     # @return [nil]
-    # @todo Implement this!
     def inquiry(params = {})
       request('objekt/anfrage', params)
+      nil
     end
 
     # List of ids for realties matching the filters.
     # @param (see list)
+    # @option (see list)
     # @return [Array<Integer>] List of ids.
-    # @see list
     def ids(params = {})
-      response = request('objekt/ids', params)
+      cache_key = Digest::SHA256.hexdigest("realty/ids:#{params}")
+      response = with_cache(cache_key) { request('objekt/ids', params) }
       JSON.parse(response).map(&:to_i)
     rescue JSON::ParserError => e
       log.error(e)
       []
-    end
-
-    # Parses parameters and handles requests to the API.
-    # @return [String, nil] The request body or nil on error.
-    # @see Query#request
-    def request(endpoint, params = {})
-      response = nil
-      params   = build_params(params)
-      response = super(endpoint, params)
-    rescue Query::AuthenticationFailed, Query::RetrievalFailed => e
-      log.error(e)
-    ensure
-      response
     end
 
     # Translate internal search parameters to API ones.
@@ -160,6 +150,10 @@ module Justimmo::API
       filter.reduce({}) do |acc, (key, value)|
         acc.update(mapper[key, map: :filter] => value)
       end
+    end
+
+    def mapper
+      Mapper[:realty]
     end
   end
 end

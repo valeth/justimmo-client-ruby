@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'justimmo/api/v1/resource'
+require 'justimmo/api/v1/realty_resource'
 
 module Justimmo::API
   # Holds information about area size and count.
-  class RealtyArea < Resource
+  class Area < RealtyResource
     def initialize(options = {})
       @attributes = %i[
         room_count living_area floor_area sales_area property_area surface_area
@@ -15,7 +15,17 @@ module Justimmo::API
         parking_count parking_area
       ]
 
-      super(options)
+      super(options) do |opts|
+        yield(@attributes.keys, opts)
+      end
+    end
+
+    def to_s
+      @attributes[:room_count].to_s
+    end
+
+    def inspect
+      "<Area: #{self}>"
     end
   end
 end

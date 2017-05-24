@@ -3,37 +3,33 @@
 require 'json'
 require 'set'
 require 'active_support/core_ext/string/inflections'
+require 'active_support/core_ext/hash/deep_merge'
+require 'justimmo/errors'
 
 module Justimmo::API
   # A generic resource.
   # Automatically generates getters and setters for attributes.
   class Resource
     class << self
-      def query
-        "Justimmo::API::#{class_name}Query".constantize
-      end
-
-      def mapper
-        "Justimmo::API::#{class_name}Mapper".constantize
-      end
-
-      def class_name
-        name.split('::').last
+      def from_xml(data)
+        Justimmo::Parser.parse(data)
       end
 
       def from_json(data)
         tmp = data.is_a?(String) ? JSON.parse(data) : data
-        tmp.deep_symbolize_keys!
         new(tmp)
       end
     end
 
     def initialize(options)
       options ||= {}
+      options = mapper.apply_to(options, &formatter)
 
-      @attributes = @attributes.zip([nil]).to_h.merge(options)
+      @attributes = @attributes.zip([nil]).to_h
 
-      yield(@attributes) if block_given?
+      yield(options) if block_given?
+
+      @attributes.deep_merge!(options)
 
       # build getters and setters
       @attributes.keys.each do |key|
@@ -56,6 +52,23 @@ module Justimmo::API
 
     def to_json(options = nil)
       JSON.generate(@attributes, options)
+    end
+
+    private
+
+    def mapper
+      raise Justimmo::NotImplemented, 'mapper'
+    end
+
+    def formatter
+      proc do |mapper, key|
+        match = /^@(?<k>.*)/.match(key)
+        if match
+          "@#{mapper[match[:k]]}".to_sym
+        else
+          (mapper[key] || key).to_sym
+        end
+      end
     end
   end
 end
