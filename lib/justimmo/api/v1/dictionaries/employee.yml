@@ -1,0 +1,6 @@
+main:
+  email_direkt: email
+  email_feedback: feedback
+  personennummer: personal_number
+  tel: phone
+  tel_zentrale: phone

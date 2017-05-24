@@ -1,9 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe Justimmo::API::Mapper do
-  module TestMapper
-    extend Justimmo::API::Mapper
-  end
+  TestMapper = Justimmo::API::Mapper.new(:test)
 
   it 'has a main mapping' do
     expect(TestMapper.mapping?(:main)).to eq(true)
@@ -35,13 +33,8 @@ RSpec.describe Justimmo::API::Mapper do
 
   it 'handles key errors' do
     TestMapper.on_mapper_error(:raise)
-    expect { TestMapper[:not_here] }.to raise_error(Justimmo::API::Mapper::KeyNotFound)
+    expect { TestMapper[:not_here] }.to raise_error(Justimmo::KeyNotFound)
     expect { TestMapper[:alter] }.not_to raise_error
-
-    TestMapper.on_mapper_error(:mark)
-    expect { TestMapper[:not_here] }.not_to raise_error
-    expect { TestMapper[:alter] }.not_to raise_error
-    expect(TestMapper[:not_here]).to eq('!NOT_HERE')
 
     TestMapper.on_mapper_error(:convert)
     expect { TestMapper[:not_here] }.not_to raise_error
@@ -50,7 +43,7 @@ RSpec.describe Justimmo::API::Mapper do
   end
 
   it 'handles mapper errors' do
-    expect { TestMapper[:something, map: :nope] }.to raise_error(Justimmo::API::Mapper::MappingNotFound)
+    expect { TestMapper[:something, map: :nope] }.to raise_error(Justimmo::MappingNotFound)
     expect { TestMapper[:other, map: :other] }.not_to raise_error
   end
 end

@@ -5,6 +5,7 @@ main:
   anhang: attachment
   anhangtitel: attachment_title
   anlage: investment
+  anrede: salutation
   ausrichtung: orientation
   bundesland: federal_state
   bild: image
@@ -12,6 +13,7 @@ main:
   dokumente: documents
   erstellt_am: created_at
   feldname: field_name
+  firma: company
   flaechen: areas
   flur: hallway
   gewerbe: business
@@ -19,15 +21,18 @@ main:
   haus: house
   hausnummer: house_number
   immobilie: realty
+  kategorie: category
   kauf: purcase
   kaufpreis: purcase_price
   land: country
+  mitarbeiter: employee
   nachname: last_name
   naehe: proximity
   name: last_name
   nutzungsart: usage
   ort: location
   pfad: path
+  pfad_medium: path_medium
   plz: zip_code
   preis: price
   preise: prices

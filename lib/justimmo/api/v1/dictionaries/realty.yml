@@ -78,14 +78,6 @@ price: &price
   vertragerrichtungsgebuehr: contract_establishment_costs
   zusatzkosten: additional_costs
 
-contact: &contact
-  anrede: salutation
-  email_direkt: email
-  email_feedback: feedback
-  firma: company
-  personennummer: personal_number
-  tel_zentrale: phone
-
 free_text: &free_text
   objektbeschreibung: description
   objekttitel: title
@@ -120,7 +112,6 @@ realty: &realty
 main:
   <<: *area
   <<: *category
-  <<: *contact
   <<: *geo
   <<: *management
   <<: *price
