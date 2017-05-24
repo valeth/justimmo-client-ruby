@@ -4,8 +4,8 @@ RSpec.describe Justimmo::API::Query do
 end
 
 RSpec.describe Justimmo::API::RealtyQuery do
-  Mapper = Justimmo::API::RealtyMapper
-  Mapper.on_mapper_error(:mark)
+  Mapper = Justimmo::API::Mapper.new(:realty)
+  Mapper.on_mapper_error(:raise)
   RealtyQuery = Justimmo::API::RealtyQuery
 
   it 'builds list query parameters' do

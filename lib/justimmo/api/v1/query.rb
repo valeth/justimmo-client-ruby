@@ -1,43 +1,17 @@
 # frozen_string_literal: true
 
+require 'digest'
 require 'rest_client'
-require 'active_support/core_ext/string/inflections'
 require 'justimmo/errors'
-require 'justimmo/logger'
+require 'justimmo/config'
 
 module Justimmo::API
   # Generic query interface for the API.
   module Query
-    # Raised when authentication with the API fails.
-    class AuthenticationFailed < Justimmo::JustimmoError
-      def initialize
-        super('Authentication failed.')
-      end
-    end
-
-    # Raised when retrieval from the API fails.
-    class RetrievalFailed < Justimmo::JustimmoError
-      def initialize(message)
-        super("Failed to get data from the API: #{message}")
-      end
-    end
-
-    # The module name without the leading path
-    # @return [String] The module name.
-    def module_name
-      name.split('::').last
-    end
-
-    # The mapper that this query is associated with.
-    # @return [Module] The mapper module.
-    def mapper
-      map = module_name.underscore.split('_').first.capitalize
-      "Justimmo::API::#{map}Mapper".constantize
-    end
-
     # Sends a request to the API.
-    # @see request
     def request(path, params = {})
+      params = build_params(params)
+
       options = {
         params: params,
         Authorization: "Basic #{Justimmo::Config.credentials}"
@@ -54,7 +28,7 @@ module Justimmo::API
     def raw_request(url, params = {})
       with_error_handler do
         response = RestClient.get(url, params)
-        log.debug(response.request.url)
+        log.debug("Requesting #{response.request.url}")
         response.body
       end
     end
@@ -77,10 +51,6 @@ module Justimmo::API
       end
     end
 
-    def log
-      Justimmo::Logger
-    end
-
     def with_error_handler
       yield
     rescue RestClient::Unauthorized
@@ -90,6 +60,22 @@ module Justimmo::API
       raise RetrievalFailed, err.response.body
     rescue RestClient::InternalServerError
       raise RetrievalFailed, 'Internal server error'
+    end
+
+    def log
+      Justimmo::Config.logger
+    end
+
+    def build_params(params)
+      params
+    end
+
+    def mapper
+      raise Justimmo::NotImplemented, 'mapper'
+    end
+
+    def with_cache(key, &block)
+      Justimmo::Config.cache.with_cache(key, &block)
     end
   end
 end
