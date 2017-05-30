@@ -241,16 +241,22 @@ module Justimmo::API
     end
 
     def process_attachments(options)
-      attachments = options.delete(:attachments) || {}
-      attachments =
-        case attachments
-        when Array then attachments
-        when Hash  then attachments.fetch(:attachment, [])
-        end
+      attachments = options.delete(:attachments)
 
-      options[:attachments] = attachments.map do |x|
-        Justimmo::API::Attachment.new(x)
-      end
+      options[:attachments] =
+        case attachments
+        when Array
+          attachments.map { |x| Justimmo::API::Attachment.new(x) }
+        when Hash
+          tmp = attachments.fetch(:attachment)
+          case tmp
+          when Array then tmp.map { |x| Justimmo::API::Attachment.new(x) }
+          when Hash  then [Justimmo::API::Attachment.new(tmp)]
+          else       []
+          end
+        else
+          []
+        end
     end
 
     # utility methods
