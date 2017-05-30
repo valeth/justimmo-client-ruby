@@ -15,7 +15,7 @@ module Justimmo
       password: nil,
       debug: false,
       cache: :memory,
-      cache_options: nil,
+      cache_options: {},
       logger: Justimmo::Logger,
       on_mapper_error: :convert
     }.freeze
