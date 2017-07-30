@@ -2,6 +2,7 @@
 
 require 'active_support/core_ext/numeric/time'
 require 'active_support/cache'
+require 'justimmo/core/config'
 
 module Justimmo
   # Caching support
@@ -15,11 +16,14 @@ module Justimmo
       end
 
       def cache=(type, **options)
+        opts = Justimmo::Config.cache_options.merge(options)
         @cache = ActiveSupport::Cache.lookup_store(type, options)
       end
 
       def default_cache
-        @cache = ActiveSupport::Cache.lookup_store(:memory_store)
+        store = Justimmo::Config.cache_store
+        options = Justimmo::Config.cache_options
+        ActiveSupport::Cache.lookup_store(store, options)
       end
     end
 
