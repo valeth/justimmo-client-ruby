@@ -8,6 +8,8 @@ require 'justimmo/config'
 module Justimmo
   # The XML to Hash parser.
   module Parser
+    include Core::Logging
+
     class << self
       # Convert a XML document to a Ruby hash.
       # @param data [String]
@@ -25,7 +27,7 @@ module Justimmo
 
         doc.to_h
       rescue Nokogiri::XML::SyntaxError => e
-        Justimmo::Config.logger.error("Parser error: #{e}")
+        logger.error("Parser error: #{e}")
         {}
       end
     end

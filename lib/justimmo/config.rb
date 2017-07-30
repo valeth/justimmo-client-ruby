@@ -2,7 +2,6 @@
 
 require 'base64'
 require 'justimmo/errors'
-require 'justimmo/logger'
 require 'justimmo/cache'
 
 module Justimmo
@@ -16,7 +15,6 @@ module Justimmo
       debug: false,
       cache: :memory,
       cache_options: {},
-      logger: Justimmo::Logger,
       on_mapper_error: :convert
     }.freeze
 

@@ -2,7 +2,6 @@
 
 require 'active_support/core_ext/string/inflections'
 require 'justimmo/config'
-require 'justimmo/logger'
 
 module Justimmo
   # Internal API
