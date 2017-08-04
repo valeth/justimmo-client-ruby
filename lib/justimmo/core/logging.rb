@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "logger"
+require "justimmo/core/config"
 
 module Justimmo
   # Logging support
@@ -17,7 +18,7 @@ module Justimmo
 
       def default_logger
         logger = Logger.new($stdout)
-        logger.level = Logger::INFO
+        logger.level = Justimmo::Config.debug ? Logger::DEBUG : Logger::INFO
         logger
       end
 

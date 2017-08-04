@@ -24,7 +24,7 @@ module Justimmo
     class << self
       def configure
         super
-        self.credentials = Base64.urlsafe_encode64("#{username} #{password}")
+        self.credentials = Base64.urlsafe_encode64("#{username}:#{password}")
         validate
       end
 
