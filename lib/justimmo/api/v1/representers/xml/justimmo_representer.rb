@@ -1,18 +1,15 @@
 # frozen_string_literal: true
 
-require "roar/decorator"
-require "roar/xml"
-require "roar/coercion"
+require "representable/xml"
+require "representable/coercion"
 
-module Justimmo
-  module V1
-    module XML
-      class JustimmoRepresenter < Roar::Decorator
-        include Roar::XML
-        include Roar::Coercion
+module Justimmo::V1
+  module XML
+    class JustimmoRepresenter < Representable::Decorator
+      include Representable::XML
+      include Representable::Coercion
 
-        defaults render_nil: true
-      end
+      defaults render_nil: true
     end
   end
 end
