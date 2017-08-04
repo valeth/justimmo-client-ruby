@@ -10,7 +10,7 @@ module Justimmo
   # Raised when authentication with the API fails.
   class AuthenticationFailed < JustimmoError
     def initialize
-      super('Authentication failed.')
+      super("Authentication failed.")
     end
   end
 

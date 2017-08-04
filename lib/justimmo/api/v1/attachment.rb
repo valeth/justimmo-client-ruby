@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'justimmo/api/v1/resource'
+require "justimmo/api/v1/resource"
 
 module Justimmo::API
   # An attachment, like images etc.
@@ -31,7 +31,7 @@ module Justimmo::API
 
     def unprefix_attributes(hash)
       hash&.transform_keys! do |key|
-        key.to_s.sub(/^@/, '').to_sym
+        key.to_s.sub(/^@/, "").to_sym
       end
     end
   end

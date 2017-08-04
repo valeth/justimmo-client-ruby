@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'justimmo/api/v1/realty_resource'
+require "justimmo/api/v1/realty_resource"
 
 module Justimmo::API
   # Holds price information like rent and purcase price.

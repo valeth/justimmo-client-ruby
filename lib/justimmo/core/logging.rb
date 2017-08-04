@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'logger'
+require "logger"
 
 module Justimmo
   # Logging support
@@ -24,7 +24,7 @@ module Justimmo
       # The Ruby on Rails logger
       # @return [Logger, nil] The logger object
       def rails_logger
-        if ('true' == ENV.fetch('JUSTIMMO_USE_RAILS_LOGGER', 'true')) && defined?(::Rails)
+        if ("true" == ENV.fetch("JUSTIMMO_USE_RAILS_LOGGER", "true")) && defined?(::Rails)
           ::Rails&.logger
         end
       end

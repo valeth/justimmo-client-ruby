@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'digest'
-require 'rest_client'
-require 'justimmo/errors'
-require 'justimmo/config'
+require "digest"
+require "rest_client"
+require "justimmo/errors"
+require "justimmo/config"
 
 module Justimmo::API
   # Generic query interface for the API.
@@ -59,7 +59,7 @@ module Justimmo::API
       log.error(err.response.request.url)
       raise RetrievalFailed, err.response.body
     rescue RestClient::InternalServerError
-      raise RetrievalFailed, 'Internal server error'
+      raise RetrievalFailed, "Internal server error"
     end
 
     def log
@@ -71,7 +71,7 @@ module Justimmo::API
     end
 
     def mapper
-      raise Justimmo::NotImplemented, 'mapper'
+      raise Justimmo::NotImplemented, "mapper"
     end
 
     def with_cache(key, &block)

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'json'
-require 'justimmo/api/v1/mapper'
+require "json"
+require "justimmo/api/v1/mapper"
 
 module Justimmo::API
   # Get realty information from the API.
@@ -34,7 +34,7 @@ module Justimmo::API
     # @return [Array<String>]
     def list(params = {})
       cache_key = Digest::SHA256.hexdigest("realty/list:#{params}")
-      with_cache(cache_key) { request('objekt/list', params) }
+      with_cache(cache_key) { request("objekt/list", params) }
     end
 
     # @param id [Integer] The realty id to search.
@@ -44,7 +44,7 @@ module Justimmo::API
     def detail(id, params = {})
       params.update(realty_id: id)
       cache_key = Digest::SHA256.hexdigest("realty/detail:#{params}")
-      with_cache(cache_key) { request('objekt/detail', params) }
+      with_cache(cache_key) { request("objekt/detail", params) }
     end
 
     # Get the content of the expose PDF file as stream.
@@ -54,8 +54,8 @@ module Justimmo::API
     # @option params [String] :language
     # @return [Tempfile] The PDF file.
     def expose(params = {})
-      tmpfile = Tempfile.open(['justimmo-expose', '.pdf'])
-      response = request('objekt/expose', params)
+      tmpfile = Tempfile.open(["justimmo-expose", ".pdf"])
+      response = request("objekt/expose", params)
       tmpfile.write(response)
       yield(tmpfile) if block_given?
       tmpfile
@@ -77,7 +77,7 @@ module Justimmo::API
     # @option params [String] :country
     # @return [nil]
     def inquiry(params = {})
-      request('objekt/anfrage', params)
+      request("objekt/anfrage", params)
       nil
     end
 
@@ -87,7 +87,7 @@ module Justimmo::API
     # @return [Array<Integer>] List of ids.
     def ids(params = {})
       cache_key = Digest::SHA256.hexdigest("realty/ids:#{params}")
-      response = with_cache(cache_key) { request('objekt/ids', params) }
+      response = with_cache(cache_key) { request("objekt/ids", params) }
       JSON.parse(response).map(&:to_i)
     rescue JSON::ParserError => e
       log.error(e)

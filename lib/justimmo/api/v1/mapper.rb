@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
-require 'yaml'
-require 'active_support/core_ext/string/inflections'
-require 'active_support/core_ext/hash/deep_merge'
-require 'active_support/core_ext/hash/indifferent_access'
-require 'justimmo/errors'
+require "yaml"
+require "active_support/core_ext/string/inflections"
+require "active_support/core_ext/hash/deep_merge"
+require "active_support/core_ext/hash/indifferent_access"
+require "justimmo/errors"
 
 module Justimmo::API
   # Maps values to other values.
   class Mapper
-    DICTIONARY_PATH   = File.join(__dir__, 'dictionaries')
+    DICTIONARY_PATH   = File.join(__dir__, "dictionaries")
     DEFAULT_MAPPING   = :main
-    DEFAULT_DICT      = 'generic.yml'
+    DEFAULT_DICT      = "generic.yml"
     DEFAULT_FORMATTER = proc { |mapper, key| mapper[key].to_sym }
 
     class << self

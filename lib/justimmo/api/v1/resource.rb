@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'json'
-require 'set'
-require 'active_support/core_ext/string/inflections'
-require 'active_support/core_ext/hash/deep_merge'
-require 'justimmo/errors'
+require "json"
+require "set"
+require "active_support/core_ext/string/inflections"
+require "active_support/core_ext/hash/deep_merge"
+require "justimmo/errors"
 
 module Justimmo::API
   # A generic resource.
@@ -57,7 +57,7 @@ module Justimmo::API
     private
 
     def mapper
-      raise Justimmo::NotImplemented, 'mapper'
+      raise Justimmo::NotImplemented, "mapper"
     end
 
     def formatter

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'active_support/core_ext/string/inflections' # underscore
-require 'active_support/core_ext/string/conversions' # to_date
-require 'nokogiri'
-require 'justimmo/config'
+require "active_support/core_ext/string/inflections" # underscore
+require "active_support/core_ext/string/conversions" # to_date
+require "nokogiri"
+require "justimmo/config"
 
 module Justimmo
   # The XML to Hash parser.
@@ -74,8 +74,8 @@ module Justimmo
           case value
           when /^\d*\.\d+$/ then value.to_f
           when /^\d+$/ then value.to_i
-          when 'true' then true
-          when 'false' then false
+          when "true" then true
+          when "false" then false
           when /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/ then value.to_date
           else value
           end
@@ -88,7 +88,7 @@ module Justimmo
 
       module Attr # :nodoc:
         def to_h(hash = {})
-          key = format_key(name, prefix: '@')
+          key = format_key(name, prefix: "@")
           hash[key] = parse_value(value)
         end
       end

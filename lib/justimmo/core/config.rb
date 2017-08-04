@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'base64'
-require 'active_support/configurable'
-require 'justimmo/errors'
+require "base64"
+require "active_support/configurable"
+require "justimmo/errors"
 
 module Justimmo
   class Config
@@ -11,7 +11,7 @@ module Justimmo
     SUPPORTED_API_VERSIONS = [1].freeze
     REQUIRED = %i[username password].freeze
 
-    config_accessor :base_url { 'api.justimmo.at/rest' }
+    config_accessor :base_url { "api.justimmo.at/rest" }
     config_accessor :secure { true }
     config_accessor :api_ver { 1 }
     config_accessor :username

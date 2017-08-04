@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'justimmo_representer'
+require_relative "justimmo_representer"
 
 module Justimmo
   module V1

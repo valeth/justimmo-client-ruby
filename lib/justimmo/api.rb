@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'active_support/core_ext/string/inflections'
-require 'justimmo/config'
+require "active_support/core_ext/string/inflections"
+require "justimmo/config"
 
 module Justimmo
   # Internal API
@@ -9,7 +9,7 @@ module Justimmo
     VERSION = Justimmo::Config.api_ver || 1
 
     def self.versioned_autoload(path)
-      autoload_path = File.join('justimmo/api', "v#{VERSION}", path)
+      autoload_path = File.join("justimmo/api", "v#{VERSION}", path)
       autoload_sym  = File.split(path).last.camelize.to_sym
       autoload autoload_sym, autoload_path
     end

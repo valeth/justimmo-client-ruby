@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
 # Test coverage reporting
-gem 'simplecov', require: false, group: :test
+gem "simplecov", require: false, group: :test
 
 # Specify your gem's dependencies in justimmo.gemspec
 gemspec

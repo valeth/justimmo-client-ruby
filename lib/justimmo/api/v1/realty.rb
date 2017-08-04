@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'active_support/core_ext/hash/transform_values'
-require 'justimmo/parser'
-require 'justimmo/api/v1/realty_resource'
+require "active_support/core_ext/hash/transform_values"
+require "justimmo/parser"
+require "justimmo/api/v1/realty_resource"
 
 module Justimmo::API
   # Represents a complete realty resource.
@@ -262,7 +262,7 @@ module Justimmo::API
     # utility methods
     def unprefix_attributes(hash)
       hash&.transform_keys do |key|
-        key.to_s.sub(/^@/, '').to_sym
+        key.to_s.sub(/^@/, "").to_sym
       end
     end
 

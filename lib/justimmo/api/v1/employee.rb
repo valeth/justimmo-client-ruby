@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'justimmo/parser'
-require 'justimmo/api/v1/mapper'
+require "justimmo/parser"
+require "justimmo/api/v1/mapper"
 
 module Justimmo::API
   # Holds employee contact information.
