@@ -4,14 +4,12 @@ module Justimmo
   module Realty
     extend Justimmo::Utils
 
-    RealtyList = Struct.new(:realties)
-
     module_function
 
     def list(options = {})
       xml_response = request(:realty).list(options)
-      model = RealtyList.new
-      representer(:realty_list).new(model).from_xml(xml_response).realties
+      # remove first element, because we need to strip the query result
+      representer(:realty).represent([]).from_xml(xml_response)[1..-1]
     end
 
     def detail(id)

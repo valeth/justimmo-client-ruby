@@ -63,6 +63,8 @@ module Justimmo::V1
       property :status_id, type: Integer
       property :created_at, as: :erstellt_am, type: DateTime
       property :updated_at, as: :aktualisiert_am, type: DateTime
+
+      collection_representer class: Realty
     end
   end
 end
