@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 module Justimmo::V1
-  class RealtyMarketing < Base
-    attr_accessor :buy, :rent
+  class RealtyMarketing < JustimmoBase
+    attribute :buy, Boolean
+    attribute :rent, Boolean
   end
 end

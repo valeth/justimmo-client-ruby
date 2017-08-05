@@ -3,17 +3,15 @@
 module Justimmo::V1
   module XML
     class RealtyCategoryRepresenter < JustimmoRepresenter
-      boolean_filter = ->(frag, _opt) { frag == "1" }
-
       property :usage, as: :nutzungsart, class: RealtyUsage do
-        property :living, as: :WOHNEN, attribute: true, parse_filter: boolean_filter
-        property :business, as: :GEWERBE, attribute: true, parse_filter: boolean_filter
-        property :investment, as: :ANLAGE, attribute: true, parse_filter: boolean_filter
+        property :living,     as: :WOHNEN,  attribute: true
+        property :business,   as: :GEWERBE, attribute: true
+        property :investment, as: :ANLAGE,  attribute: true
       end
 
       property :marketing, as: :vermarktungsart, class: RealtyMarketing do
-        property :buy, as: :KAUF, attribute: true, parse_filter: boolean_filter
-        property :rent, as: :MIETE_PACHT, attribute: true, parse_filter: boolean_filter
+        property :buy,  as: :KAUF,        attribute: true
+        property :rent, as: :MIETE_PACHT, attribute: true
       end
 
       type_id_filter = ->(_fragment, options) do
@@ -22,17 +20,13 @@ module Justimmo::V1
 
       property :type_id,
         as: :user_defined_simplefield,
-        parse_filter: type_id_filter,
-        type: Integer
-
-      sub_type_id_filter = ->(_fragment, options) do
-        options[:doc].css("user_defined_simplefield[feldname=sub_objektart_id]").text
-      end
+        parse_filter: type_id_filter
 
       property :sub_type_id,
         as: :user_defined_simplefield,
-        parse_filter: sub_type_id_filter,
-        type: Integer
+        parse_filter: ->(_fragment, options) do
+          options[:doc].css("user_defined_simplefield[feldname=sub_objektart_id]").text
+        end
     end
   end
 end

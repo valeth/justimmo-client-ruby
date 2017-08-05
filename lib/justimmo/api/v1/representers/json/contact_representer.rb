@@ -8,8 +8,8 @@ module Justimmo
   module V1
     module JSON
       class ContactRepresenter < JustimmoRepresenter
-        property :id, type: Integer
-        property :number, type: Integer
+        property :id
+        property :number
         property :last_name
         property :first_name
         property :phone
@@ -19,7 +19,7 @@ module Justimmo
         property :email_feedback
         property :company
         property :street
-        property :zip_code, type: Integer
+        property :zip_code
         property :location
         property :website
 

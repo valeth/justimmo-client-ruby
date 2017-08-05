@@ -1,23 +1,67 @@
 # frozen_string_literal: true
 
 module Justimmo::V1
-  class Realty < Base
-    attr_accessor :id, :number, :category, :title, :description, :status_id,
-      :teaser, :proximity, :floor, :location, :zip_code, :federal_state,
-      :country, :latitude, :longitude, :first_image, :second_image,
-      :created_at, :updated_at, :openimmo_id, :available_from,
-      :contact, :attachments, :description_furniture, :furniture,
-      :documents, :videos, :images360, :links
+  class Realty < JustimmoBase
+    attribute :id, Integer
+    attribute :number, Integer
+    attribute :category, RealtyCategory
+    attribute :title
+    attribute :description
+    attribute :status_id, Integer
+    attribute :teaser
+    attribute :proximity
+    attribute :floor
+    attribute :location
+    attribute :zip_code, Integer
+    attribute :federal_state
+    attribute :country
+    attribute :latitude, Float
+    attribute :longitude, Float
+    attribute :first_image
+    attribute :second_image
+    attribute :created_at, DateTime
+    attribute :updated_at, DateTime
+    attribute :openimmo_id
+    attribute :available_from, DateTime
+    attribute :contact, Employee
+    attribute :attachments, Array[Attachment]
+    attribute :description_furniture, Array[String]
+    attribute :furniture, Array[String]
+    attribute :documents
+    attribute :videos
+    attribute :images360
+    attribute :links
 
     # Area
-    attr_accessor :balcony_terrace_area, :balcony_area, :office_area,
-      :garage_area, :garden_area, :total_area, :surface_area, :property_area,
-      :basement_area, :storage_area, :loggia_area, :floor_area, :parking_area,
-      :terrace_area, :buildable_area, :sales_area, :living_area
+    attribute :balcony_terrace_area, Float
+    attribute :balcony_area, Float
+    attribute :office_area, Float
+    attribute :garage_area, Float
+    attribute :garden_area, Float
+    attribute :total_area, Float
+    attribute :surface_area, Float
+    attribute :property_area, Float
+    attribute :basement_area, Float
+    attribute :storage_area, Float
+    attribute :loggia_area, Float
+    attribute :floor_area, Float
+    attribute :parking_area, Float
+    attribute :terrace_area, Float
+    attribute :buildable_area, Float
+    attribute :sales_area, Float
+    attribute :living_area, Float
 
     # Room count
-    attr_accessor :store_rooms, :bathrooms, :balconies_terraces, :balconies,
-      :gardens, :garages, :loggias, :basements, :toilet_rooms,
-      :parking_spaces, :rooms
+    attribute :store_rooms, Integer
+    attribute :bathrooms, Integer
+    attribute :balconies_terraces, Integer
+    attribute :balconies, Integer
+    attribute :gardens, Integer
+    attribute :garages, Integer
+    attribute :loggias, Integer
+    attribute :basements, Integer
+    attribute :toilet_rooms, Integer
+    attribute :parking_spaces, Integer
+    attribute :rooms, Integer
   end
 end

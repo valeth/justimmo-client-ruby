@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 module Justimmo::V1
-  class RealtyUsage < Base
-    attr_accessor :living, :business, :investment
+  class RealtyUsage < JustimmoBase
+    attribute :living, Boolean
+    attribute :business, Boolean
+    attribute :investment, Boolean
 
     def living?
       @living

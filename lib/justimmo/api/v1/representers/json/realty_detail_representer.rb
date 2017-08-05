@@ -33,25 +33,43 @@ module Justimmo
 
         property :title
         property :description
-        property :description_furniture, type: Array
-        property :furniture, type: Array
+        property :description_furniture
+        property :furniture
 
-        %i[
-          balcony_terrace_area balcony_area office_area garage_area garden_area
-          total_area surface_area property_area basement_area storage_area
-          loggia_area floor_area parking_area terrace_area buildable_area
-          sales_area living_area
-        ].each { |e| property e, type: Float }
+        property :balcony_terrace_area, as: :balkon_terrasse_flaeche
+        property :balcony_area,         as: :balkons_flaeche
+        property :office_area,          as: :bueroflaeche
+        property :garage_area,          as: :garagen_flaeche
+        property :garden_area,          as: :gartenflaeche
+        property :total_area,           as: :gesamtflaeche
+        property :surface_area,         as: :grundflaeche
+        property :property_area,        as: :grundstueksflaeche
+        property :basement_area,        as: :kellerflaeche
+        property :storage_area,         as: :lagerflaeche
+        property :loggia_area,          as: :loggias_flaeche
+        property :floor_area,           as: :nutzflaeche
+        property :parking_area,         as: :stellplatz_flaeche
+        property :terrace_area,         as: :terrassen_flaeche
+        property :buildable_area,       as: :verbaubare_flaeche
+        property :sales_area,           as: :verkaufsflaeche
+        property :living_area,          as: :wohnflaeche
+        property :store_rooms,          as: :anzahl_abstellraum
+        property :bathrooms,            as: :anzahl_badezimmer
+        property :balconies_terraces,   as: :anzahl_balkon_terrassen
+        property :balconies,            as: :anzahl_balkone
+        property :balconies,            as: :anzahl_balkons
+        property :gardens,              as: :anzahl_garten
+        property :garages,              as: :anzahl_garagen
+        property :loggias,              as: :anzahl_loggias
+        property :basements,            as: :anzahl_keller
+        property :toilet_rooms,         as: :anzahl_sep_wc
+        property :parking_spaces,       as: :anzahl_stellplaetze
+        property :rooms,                as: :anzahl_zimmer
 
-        %i[
-          store_rooms bathrooms balconies_terraces balconies gardens garages
-          loggias basements toilet_rooms parking_spaces rooms
-        ].each { |e| property e, type: Integer }
-
-        property :available_from, type: DateTime
-        property :status_id, type: Integer
-        property :id, type: Integer
-        property :number, type: Integer
+        property :available_from
+        property :status_id
+        property :id
+        property :number
         property :openimmo_id
 
         collection :attachments,

@@ -1,11 +1,21 @@
 # frozen_string_literal: true
 
 module Justimmo::V1
-  class AttachmentImage < Base
-    attr_accessor :small, :small2, :medium, :medium2, :big, :big2, :fullhd, :path
+  class AttachmentImage < JustimmoBase
+    attribute :small
+    attribute :small2
+    attribute :medium
+    attribute :medium2
+    attribute :big
+    attribute :big2
+    attribute :fullhd
+
+    def path=(arg)
+      @big = arg
+    end
 
     def to_s
-      big || path
+      big
     end
   end
 end

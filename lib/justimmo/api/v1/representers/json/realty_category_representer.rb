@@ -18,8 +18,8 @@ module Justimmo
           property :rent
         end
 
-        property :type_id, type: Integer
-        property :sub_type_id, type: Integer
+        property :type_id
+        property :sub_type_id
       end
     end
   end

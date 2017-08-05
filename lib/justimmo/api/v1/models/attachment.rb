@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
 module Justimmo::V1
-  class Attachment < Base
-    attr_accessor :category, :origin, :title, :format, :data
+  class Attachment < JustimmoBase
+    attribute :category
+    attribute :origin
+    attribute :title
+    attribute :format
+    attribute :data, AttachmentImage
 
     def to_s
       data.to_s

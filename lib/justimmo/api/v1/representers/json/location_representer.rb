@@ -10,8 +10,8 @@ module Justimmo
         property :location
         property :federal_state
         property :country
-        property :latitude, type: Float
-        property :longitude, type: Float
+        property :latitude
+        property :longitude
       end
     end
   end

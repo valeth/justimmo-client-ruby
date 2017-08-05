@@ -1,11 +1,23 @@
 # frozen_string_literal: true
 
 module Justimmo::V1
-  class Employee < Base
-    attr_accessor :id, :number, :email, :phone, :phone_mobile,
-                  :last_name, :first_name, :salutation, :company,
-                  :street, :zip_code, :location, :email_feedback,
-                  :website, :picture, :attachment
+  class Employee < JustimmoBase
+    attribute :id, Integer
+    attribute :number, Integer
+    attribute :email
+    attribute :phone
+    attribute :phone_mobile
+    attribute :last_name
+    attribute :first_name
+    attribute :salutation
+    attribute :company
+    attribute :street
+    attribute :zip_code, Integer
+    attribute :location
+    attribute :email_feedback
+    attribute :website
+    attribute :picture, AttachmentImage
+    attribute :attachment, Attachment
 
     def full_name(surname_first: false, with_salutation: true)
       name = [first_name, last_name]
