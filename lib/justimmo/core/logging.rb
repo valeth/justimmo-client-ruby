@@ -34,5 +34,7 @@ module Justimmo
     def logger
       Logging.logger
     end
+
+    alias log logger
   end
 end
