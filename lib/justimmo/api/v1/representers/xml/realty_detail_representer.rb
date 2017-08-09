@@ -2,113 +2,125 @@
 
 module Justimmo::V1
   module XML
-    class RealtyDetailRepresenter < RealtyRepresenter
-      # Filters
-      latitude_filter = lambda do |_fragment, options|
-        options[:doc].css("user_defined_simplefield[feldname=geokoordinaten_breitengrad_exakt]").text
+    class RealtyDetailItemRepresenter < RealtyRepresenter
+      nested :verwaltung_techn do
+        property :id,          as: :objektnr_intern
+        property :number,      as: :objektnr_extern
+        property :openimmo_id, as: :openimmo_obid
       end
 
-      longitude_filter = lambda do |_fragment, options|
-        options[:doc].css("user_defined_simplefield[feldname=geokoordinaten_laengengrad_exakt]").text
+      nested :verwaltung_objekt do
+        property :available, as: :verfuegbar_ab
+        property :status_id
+        property :created_at,
+          as: :user_defined_simplefield,
+          parse_filter: ->(_fragment, options) { options[:doc].css("user_defined_simplefield[feldname=erstellt_am]").text }
+        property :updated_at,
+          as: :user_defined_simplefield,
+          parse_filter: ->(_fragment, options) { options[:doc].css("user_defined_simplefield[feldname=aktualisiert_am]").text }
       end
 
-      nested :immobilie do
-        nested :geo do
-          property :federal_state, as: :bundesland
+      property :geo,
+        decorator: GeoLocationRepresenter,
+        class: GeoLocation
 
-          nested :land do
-            property :country, as: :iso_land, attribute: true
+      property :contact,
+        as: :kontaktperson,
+        decorator: EmployeeRepresenter,
+        class: Employee
+
+      nested :freitexte do
+        property :title, as: :objekttitel
+        property :description,
+          as: :objektbeschreibung,
+          parse_filter: ->(frag, _opt) { frag.gsub("\r\n", "\n") }
+        property :description_furniture,
+          as: :ausstatt_beschr,
+          parse_filter: ->(frag, _opt) { frag.split(",").map(&:strip) }
+        nested :user_defined_anyfield do
+          property :furniture, as: :justimmo_moeblierung
+        end
+      end
+
+      property :price,
+        as: :preise,
+        decorator: RealtyPriceRepresenter,
+        class: RealtyPrice
+
+      collection :images,
+        as: :anhang,
+        wrap: :anhaenge,
+        class: Image do
+          property :category, as: :gruppe, attribute: true
+          property :origin, as: :location, attribute: true
+          property :title, as: :anhangtitel
+          nested :daten do
+            %i[pfad small medium big2 medium2 s220x155 fullhd].each do |size|
+              property size,
+              setter: ->(represented:, fragment:, **) do
+                represented.add_url(fragment, default: :big)
+              end
+            end
           end
-
-          property :latitude,
-            as: :user_defined_simplefield,
-            parse_filter: latitude_filter
-
-          property :longitude,
-            as: :user_defined_simplefield,
-            parse_filter: longitude_filter
         end
 
-        property :contact,
-                 as: :kontaktperson,
-                 decorator: EmployeeRepresenter,
-                 class: Employee
-
-        property :category,
-          as: :objektkategorie,
-          decorator: RealtyCategoryRepresenter,
-          class: RealtyCategory
-
-        property :documents, as: :dokumente
-        property :images360, as: :bilder360
-        property :videos
-        property :links
-
-        nested :freitexte do
-          property :title, as: :objekttitel
-
-          property :description,
-            as: :objektbeschreibung,
-            parse_filter: ->(frag, _opt) { frag.gsub("\r\n", "\n") }
-
-          property :description_furniture,
-            as: :ausstatt_beschr,
-            parse_filter: ->(frag, _opt) { frag.split(",").map(&:strip) }
-
-          nested :user_defined_anyfield do
-            property :furniture, as: :justimmo_moeblierung
-          end
+      # FIXME: Get rid of duplicate code!
+      #        Duplicates in RealtyListRepresenter
+      nested :flaechen do
+        { balcony_terrace:  :balkon_terrasse_flaeche,
+          balcony:          :balkons_flaeche,
+          office:           :bueroflaeche,
+          garage:           :garagen_flaeche,
+          garden:           :gartenflaeche,
+          total:            :gesamtflaeche,
+          surface:          :grundflaeche,
+          property:         :grundstuecksflaeche,
+          basement:         :kellerflaeche,
+          storage:          :lagerflaeche,
+          loggia:           :loggias_flaeche,
+          floor:            :nutzflaeche,
+          parking:          :stellplatz_flaeche,
+          terrace:          :terrassen_flaeche,
+          buildable:        :verbaubare_flaeche,
+          sales:            :verkaufsflaeche,
+          living:           :wohnflaeche
+        }.each do |key, api|
+          property key,
+            as: api,
+            setter: ->(fragment:, represented:, **) { represented.area[key] = fragment },
+            getter: ->(represented:, **) { represented.area[key] }
         end
 
-        nested :flaechen do
-          property :balcony_terrace_area, as: :balkon_terrasse_flaeche
-          property :balcony_area,         as: :balkons_flaeche
-          property :office_area,          as: :bueroflaeche
-          property :garage_area,          as: :garagen_flaeche
-          property :garden_area,          as: :gartenflaeche
-          property :total_area,           as: :gesamtflaeche
-          property :surface_area,         as: :grundflaeche
-          property :property_area,        as: :grundstueksflaeche
-          property :basement_area,        as: :kellerflaeche
-          property :storage_area,         as: :lagerflaeche
-          property :loggia_area,          as: :loggias_flaeche
-          property :floor_area,           as: :nutzflaeche
-          property :parking_area,         as: :stellplatz_flaeche
-          property :terrace_area,         as: :terrassen_flaeche
-          property :buildable_area,       as: :verbaubare_flaeche
-          property :sales_area,           as: :verkaufsflaeche
-          property :living_area,          as: :wohnflaeche
-          property :store_rooms,          as: :anzahl_abstellraum
-          property :bathrooms,            as: :anzahl_badezimmer
-          property :balconies_terraces,   as: :anzahl_balkon_terrassen
-          property :balconies,            as: :anzahl_balkone
-          property :balconies,            as: :anzahl_balkons
-          property :gardens,              as: :anzahl_garten
-          property :garages,              as: :anzahl_garagen
-          property :loggias,              as: :anzahl_loggias
-          property :basements,            as: :anzahl_keller
-          property :toilet_rooms,         as: :anzahl_sep_wc
-          property :parking_spaces,       as: :anzahl_stellplaetze
-          property :rooms,                as: :anzahl_zimmer
+        { store:            :anzahl_abstellraum,
+          bathroom:         :anzahl_badezimmer,
+          balcony_terrace:  :anzahl_balkon_terrassen,
+          balcony:          :anzahl_balkone,
+          garden:           :anzahl_garten,
+          garage:           :anzahl_garagen,
+          loggia:           :anzahl_loggias,
+          basement:         :anzahl_keller,
+          toilet:           :anzahl_sep_wc,
+          parking_space:    :anzahl_stellplaetze,
+          total:            :anzahl_zimmer
+        }.each do |key, api|
+          property key,
+            as: api,
+            setter: ->(fragment:, represented:, **) { represented.room_count[key] = fragment },
+            getter: ->(represented:, **) { represented.room_count[key] }
         end
-
-        nested :verwaltung_objekt do
-          property :available_from, as: :verfuegbar_ab
-          property :status_id
-        end
-
-        nested :verwaltung_techn do
-          property :id,          as: :objektnr_intern
-          property :number,      as: :objektnr_extern
-          property :openimmo_id, as: :openimmo_obid
-        end
-
-        collection :attachments,
-          as: :anhang,
-          wrap: :anhaenge,
-          decorator: AttachmentRepresenter,
-          class: Attachment
       end
+
+      property :documents, as: :dokumente
+      property :images360, as: :bilder360
+      property :videos
+      property :links
+    end
+
+    class RealtyDetailRepresenter < JustimmoRepresenter
+      property :realty,
+        as: :immobilie,
+        decorator: RealtyDetailItemRepresenter,
+        class: Realty
     end
   end
 end

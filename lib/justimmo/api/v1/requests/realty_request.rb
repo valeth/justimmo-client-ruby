@@ -22,8 +22,8 @@ module Justimmo::V1
     end
 
     # @return String
-    def ids
-      get("objekt/ids")
+    def ids(options = {})
+      get("objekt/ids", options)
     end
 
     # @return File

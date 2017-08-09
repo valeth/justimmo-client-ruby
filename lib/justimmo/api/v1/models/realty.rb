@@ -7,9 +7,7 @@ module Justimmo::V1
 
     attribute :title
     attribute :description
-    attribute :status_id, Integer
     attribute :teaser
-    attribute :proximity
 
     attribute :usage, RealtyUsage
     attribute :marketing, RealtyMarketing
@@ -20,41 +18,63 @@ module Justimmo::V1
     attribute :area, RealtyArea
     attribute :room_count, RealtyRoomCount
     attribute :price, RealtyPrice
+    attribute :status_id, Integer
     attribute :floor
-<<<<<<< HEAD
-=======
-    attribute :first_image
-    attribute :second_image
->>>>>>> 01a1760... Move realty secions into or out of models.
     attribute :created_at, DateTime
     attribute :updated_at, DateTime
     attribute :openimmo_id
-    attribute :available_from, DateTime
     attribute :contact, Employee
     attribute :description_furniture, Array[String]
     attribute :furniture, Array[String]
-    attribute :documents
-    attribute :videos
-    attribute :images360
-    attribute :links
-<<<<<<< HEAD
+
     attribute :images, Array[Image]
-=======
->>>>>>> 01a1760... Move realty secions into or out of models.
+    attribute :documents, Array
+    attribute :videos, Array
+    attribute :images360, Array
+    attribute :links, Array
+
+    attribute :available, DateTime
+    attribute :created_at, DateTime
+    attribute :updated_at, DateTime
+
     def initialize(**options)
       super(options)
       @area = RealtyArea.new
       @room_count = RealtyRoomCount.new
       @geo = GeoLocation.new
     end
-<<<<<<< HEAD
+
+    # @param date [String]
+    # @return [String, DateTime]
+    def available=(date)
+      @available = DateTime.parse(date)
+    rescue ArgumentError
+      log.error("Failed to convert date: #{date}")
+      @available = date
+    end
+
+    def description=(desc)
+      @description =
+        if @teaser.nil?
+          parts = desc.partition("</ul>\n")
+          @teaser = parts[0..1].join
+          parts.last
+        else
+          desc
+        end
+    end
+
     def add_image(url, **options)
       @images ||= []
       image = Image.new
       image.add_url(url, options)
       @images << image
     end
-=======
->>>>>>> 01a1760... Move realty secions into or out of models.
+
+    def type
+    end
+
+    def sub_type
+    end
   end
 end
