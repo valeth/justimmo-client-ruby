@@ -16,8 +16,8 @@ module Justimmo::V1
     attribute :location
     attribute :email_feedback
     attribute :website
-    attribute :picture, AttachmentImage
-    attribute :attachment, Attachment
+    attribute :picture, Image
+    attribute :attachment, Image
 
     def full_name(surname_first: false, with_salutation: true)
       name = [first_name, last_name]
