@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 module Justimmo::V1
   class RealtyUsage < JustimmoBase
     attribute :living, Boolean

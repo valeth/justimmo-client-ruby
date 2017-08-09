@@ -45,17 +45,34 @@ module Justimmo::V1
       property :toilet_rooms,         as: :anzahl_sep_wc
       property :parking_spaces,       as: :anzahl_stellplaetze
       property :rooms,                as: :anzahl_zimmer
+      nested :category, as: :objektkategorie do
+        property :usage, as: :nutzungsart, class: RealtyUsage do
+          property :living,     as: :WOHNEN,  attribute: true
+          property :business,   as: :GEWERBE, attribute: true
+          property :investment, as: :ANLAGE,  attribute: true
+        end
 
-      property :category,
-        as: :objektkategorie,
-        decorator: RealtyCategoryRepresenter,
-        class: RealtyCategory
+        property :marketing, as: :vermarktungsart, class: RealtyMarketing do
+          property :buy,  as: :KAUF,        attribute: true
+          property :rent, as: :MIETE_PACHT, attribute: true
+        end
 
       property :description,
         as: :objektbeschreibung,
         parse_filter: ->(frag, _opt) { frag.gsub("\r\n", "\n") }
+        property :type_id,
+          as: :user_defined_simplefield,
+          parse_filter: ->(_fragment, options) do
+            options[:doc].css("user_defined_simplefield[feldname=objektart_id]").text
+          end
 
       collection_representer class: Realty
+        property :sub_type_id,
+          as: :user_defined_simplefield,
+          parse_filter: ->(_fragment, options) do
+            options[:doc].css("user_defined_simplefield[feldname=sub_objektart_id]").text
+          end
+      end
     end
   end
 end
