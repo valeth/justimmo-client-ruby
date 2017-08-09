@@ -19,6 +19,7 @@ module Justimmo::V1
     attribute :geo, GeoLocation
     attribute :area, RealtyArea
     attribute :room_count, RealtyRoomCount
+    attribute :price, RealtyPrice
     attribute :floor
 <<<<<<< HEAD
 =======
