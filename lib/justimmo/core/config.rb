@@ -11,15 +11,15 @@ module Justimmo
     SUPPORTED_API_VERSIONS = [1].freeze
     REQUIRED = %i[username password].freeze
 
-    config_accessor :base_url { "api.justimmo.at/rest" }
-    config_accessor :secure { true }
-    config_accessor :api_ver { 1 }
-    config_accessor :username
-    config_accessor :password
-    config_accessor :credentials
-    config_accessor :debug { false }
-    config_accessor :cache_store { :memory_store }
-    config_accessor :cache_options { {} }
+    config_accessor(:base_url) { "api.justimmo.at/rest" }
+    config_accessor(:secure) { true }
+    config_accessor(:api_ver) { 1 }
+    config_accessor(:username)
+    config_accessor(:password)
+    config_accessor(:credentials)
+    config_accessor(:debug) { false }
+    config_accessor(:cache_store) { :memory_store }
+    config_accessor(:cache_options) { {} }
 
     class << self
       def configure
