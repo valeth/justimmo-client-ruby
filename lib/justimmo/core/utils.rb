@@ -13,20 +13,24 @@ module Justimmo
       end
     end
 
-    def versioned_api
-      "Justimmo::V#{Justimmo::Config.api_ver}"
+    def versioned_api(*name)
+      (["Justimmo::V#{Justimmo::Config.api_ver}"] + name).join("::").constantize
+    end
+
+    def api(name)
+      "Justimmo::#{name.to_s.classify}".constantize
     end
 
     def representer(name, type = :xml)
-      "#{versioned_api}::#{type.to_s.upcase}::#{name.to_s.classify}Representer".constantize
+      versioned_api(type.to_s.classify, "#{name.to_s.classify}Representer")
     end
 
     def model(name)
-      "#{versioned_api}::#{name.to_s.classify}".constantize
+      versioned_api(name.to_s.classify)
     end
 
     def request(name)
-      "#{versioned_api}::#{name.to_s.classify}Request".constantize
+      versioned_api("#{name.to_s.classify}Request")
     end
   end
 end
