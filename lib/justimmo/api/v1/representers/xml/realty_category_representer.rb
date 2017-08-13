@@ -3,11 +3,13 @@
 module Justimmo::V1
   module XML
     class RealtyCategoryRepresenter < JustimmoRepresenter
-      nested :objektkategorie do
-        property :id
-        property :name
-        property :sortablerank
-      end
+      self.representation_wrap = :objektkategorie
+
+      property :id
+      property :name
+      property :sortablerank
+
+      collection_representer class: RealtyCategory
     end
   end
 end

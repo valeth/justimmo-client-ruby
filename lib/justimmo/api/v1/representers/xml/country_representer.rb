@@ -3,10 +3,13 @@
 module Justimmo::V1
   module XML
     class CountryRepresenter < JustimmoRepresenter
+      self.representation_wrap = :land
+
       property :id
-      property :name
-      property :iso2
-      property :iso3
+      property :alpha2, as: :iso2
+      property :alpha3, as: :iso3
+
+      collection_representer class: Country
     end
   end
 end

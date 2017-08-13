@@ -3,10 +3,12 @@
 module Justimmo::V1
   module XML
     class RealtyTypeRepresenter < JustimmoRepresenter
+      self.representation_wrap = :objektart
+
       property :id
       property :name
-      property :key
-      property :attributename
+
+      collection_representer class: RealtyType
     end
   end
 end

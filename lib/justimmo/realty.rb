@@ -34,5 +34,47 @@ module Justimmo
     rescue Justimmo::RetrievalFailed
       []
     end
+
+    def categories(options = {})
+      xml_response = request(:realty).categories(options)
+      representer(:realty_category).for_collection.new([]).from_xml(xml_response)
+    rescue Justimmo::RetrievalFailed
+      []
+    end
+
+    def types(options = {})
+      xml_response = request(:realty).types(options)
+      representer(:realty_type).for_collection.new([]).from_xml(xml_response)
+    rescue Justimmo::RetrievalFailed
+      []
+    end
+
+    def countries(options = {})
+      xml_response = request(:realty).countries(options)
+      representer(:country).for_collection.new([]).from_xml(xml_response)
+    rescue Justimmo::RetrievalFailed
+      []
+    end
+
+    def federal_states(options = {})
+      xml_response = request(:realty).federal_states(options)
+      representer(:federal_state).for_collection.new([]).from_xml(xml_response)
+    rescue Justimmo::RetrievalFailed
+      []
+    end
+
+    def regions(options = {})
+      xml_response = request(:realty).regions(options)
+      representer(:region).for_collection.new([]).from_xml(xml_response)
+    rescue Justimmo::RetrievalFailed
+      []
+    end
+
+    def zip_codes_and_cities(options = {})
+      xml_response = request(:realty).zip_codes_and_cities(options)
+      representer(:city).for_collection.new([]).from_xml(xml_response)
+    rescue Justimmo::RetrievalFailed
+      []
+    end
   end
 end
