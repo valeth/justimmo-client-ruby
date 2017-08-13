@@ -4,15 +4,15 @@ module Justimmo::V1
   module XML
     class EmployeeRepresenter < JustimmoRepresenter
       property :id
-      property :email_feedback
       property :number,       as: :personennummer
-      property :last_name,    as: :name
       property :first_name,   as: :vorname
-      property :phone,        as: :tel_zentrale
-      property :phone_mobile, as: :tel_handy
-      property :salutation,   as: :anrede
-      property :email,        as: :email_direkt
-      property :company,      as: :firma
+      property :last_name,    as: :nachname
+      property :salutation,   as: :titel
+      property :position
+      property :phone,        as: :tel
+      property :mobile,       as: :handy
+      property :fax
+      property :email
       property :street,       as: :strasse
       property :zip_code,     as: :plz
       property :location,     as: :ort
@@ -21,7 +21,7 @@ module Justimmo::V1
       property :picture,
         as: :bild,
         class: Image do
-          %i[small medium big].each do |size|
+          %i[small medium big pfad_medium].each do |size|
             property size, setter: ->(represented:, fragment:, **) { represented.add_url(fragment, default: :user_big) }
           end
         end

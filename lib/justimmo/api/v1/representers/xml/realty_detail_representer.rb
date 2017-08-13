@@ -26,7 +26,7 @@ module Justimmo::V1
 
       property :contact,
         as: :kontaktperson,
-        decorator: EmployeeRepresenter,
+        decorator: ContactRepresenter,
         class: Employee
 
       nested :freitexte do

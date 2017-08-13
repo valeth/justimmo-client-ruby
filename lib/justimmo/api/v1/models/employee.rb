@@ -6,7 +6,8 @@ module Justimmo::V1
     attribute :number, Integer
     attribute :email
     attribute :phone
-    attribute :phone_mobile
+    attribute :mobile
+    attribute :fax
     attribute :last_name
     attribute :first_name
     attribute :salutation
@@ -18,16 +19,21 @@ module Justimmo::V1
     attribute :website
     attribute :picture, Image
     attribute :attachment, Image
+    attribute :position
 
     def full_name(surname_first: false, with_salutation: true)
       name = [first_name, last_name]
       name.reverse! if surname_first
       name.unshift(salutation) if with_salutation
-      name.join(" ")
+      name.compact.join(" ")
+    end
+
+    def to_s
+      full_name
     end
 
     def inspect
-      "#<#{self.class.name} #{full_name}>"
+      "#<#{self.class} #{self}>"
     end
   end
 end
