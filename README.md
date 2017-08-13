@@ -1,7 +1,7 @@
-[![build status](https://gitlab.com/exacting/justimmo-ruby/badges/master/build.svg)](https://gitlab.com/valeth/justimmo-ruby/pipelines)
-[![coverage report](https://gitlab.com/exacting/justimmo-ruby/badges/master/coverage.svg)](https://valeth.gitlab.io/justimmo-ruby)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/7cfe6c9965214c439470cc0a480e0e49)](https://www.codacy.com/app/exacting/justimmo-ruby?utm_source=gitlab.com&amp;utm_medium=referral&amp;utm_content=exacting/justimmo-ruby&amp;utm_campaign=Badge_Grade)
-[![Inline docs](http://inch-ci.org/github/exacting/justimmo-ruby.svg?branch=master)](http://inch-ci.org/github/exacting/justimmo-ruby)
+[![build status](https://gitlab.com/exacting/justimmo-client-ruby/badges/master/build.svg)](https://gitlab.com/exacting/justimmo-client-ruby/pipelines)
+[![coverage report](https://gitlab.com/exacting/justimmo-client-ruby/badges/master/coverage.svg)](https://valeth.gitlab.io/justimmo-client-ruby)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/7cfe6c9965214c439470cc0a480e0e49)](https://www.codacy.com/app/exacting/justimmo-client-ruby?utm_source=gitlab.com&amp;utm_medium=referral&amp;utm_content=exacting/justimmo-client-ruby&amp;utm_campaign=Badge_Grade)
+[![Inline docs](http://inch-ci.org/github/exacting/justimmo-client-ruby.svg?branch=master)](http://inch-ci.org/github/exacting/justimmo-client-ruby)
 
 
 # justimmo
@@ -17,7 +17,7 @@ Ruby client for the [Justimmo](http://www.justimmo.at) [REST API](http://api-doc
 Add this line to your application's Gemfile:
 
 ```ruby
-gem "justimmo"
+gem "justimmo_client"
 ```
 
 And then execute:
@@ -26,14 +26,14 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install justimmo
+    $ gem install justimmo_client
 
 
 ## Usage (Rails Example)
 
 > config/initializers/justimmo.rb
 ```ruby
-Justimmo.configure do |config|
+JustimmoClient.configure do |config|
   config.username = "your-username"
   config.password = "your_password"
 end
@@ -45,7 +45,7 @@ end
 ```ruby
 class RealtyController < ApplicationController
   def index
-    @realties = Justimmo::Realty.list(filter: { zip_code: 6020 }, limit: 5)
+    @realties = JustimmoClient::Realty.list(zip_code: 6020, limit: 5)
   end
 end
 ```
@@ -59,7 +59,7 @@ You can also run `bin/console` for an interactive prompt that will allow you to 
 ## Contributing
 
 Bug reports and merge requests are welcome on
-[GitLab](https://gitlab.com/exacting/justimmo-ruby).
+[GitLab](https://gitlab.com/exacting/justimmo-client-ruby).
 
 
 ## License

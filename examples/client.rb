@@ -1,14 +1,14 @@
 #!/usr/bin/env ruby
 
-require "justimmo"
+require "justimmo_client"
 require "dotenv"
 require "pp"
 
 Dotenv.load
 
-Justimmo.configure do |config|
+JustimmoClient.configure do |config|
   config.username = ENV["JUSTIMMO_USERNAME"]
   config.password = ENV["JUSTIMMO_PASSWORD"]
 end
 
-pp Justimmo::Realty.list(zip_code: 6800, limit: 5)
+pp JustimmoClient::Realty.list(zip_code: 6800, limit: 5)
