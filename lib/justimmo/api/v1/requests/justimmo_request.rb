@@ -7,6 +7,7 @@ module Justimmo::V1
     include Justimmo::Logging
     include Justimmo::Caching
 
+    # TODO: add retry logic
     def get(path, params = {})
       options = {
         params: build_params(params),
@@ -16,7 +17,7 @@ module Justimmo::V1
       uri = "#{Justimmo::Config.url}/#{path}"
 
       with_error_handler do
-        logger.debug("Requesting #{uri} with options #{options}")
+        log.debug("Requesting #{uri} with params #{options[:params]}")
         response = RestClient.get(uri, options)
         response.body
       end
@@ -26,13 +27,13 @@ module Justimmo::V1
       yield
     rescue RestClient::Unauthorized
       logger.error("Authentication failed")
-      raise
-    rescue RestClient::BadRequest, RestClient::NotFound => err
-      raise err
-    rescue RestClient::InternalServerError
-      raise
+      raise Justimmo::AuthenticationFailed
+    rescue RestClient::BadRequest, RestClient::NotFound, RestClient::InternalServerError => e
+      log.error("Response: #{e.message}")
+      raise Justimmo::RetrievalFailed, e.message
     end
 
+    # TODO: Parse internal params to JI params
     def build_params(params)
       params
     end

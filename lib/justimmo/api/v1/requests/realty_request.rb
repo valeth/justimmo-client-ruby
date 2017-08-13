@@ -13,7 +13,7 @@ module Justimmo::V1
 
     # @return String
     def detail(id)
-      get("objekt/detail", objekt_id: id)
+      get("objekt/details", objekt_id: id)
     end
 
     # @return String
