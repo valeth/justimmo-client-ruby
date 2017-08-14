@@ -33,7 +33,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "nokogiri",      "~> 1.7"
   spec.add_dependency "multi_json"
   spec.add_dependency "virtus"
-  spec.add_dependency "roar",          "~> 1.0"
+  spec.add_dependency "representable", "~> 3.0"
   spec.add_dependency "activesupport", "~> 5.1"
   spec.add_dependency "iso_country_codes"
   spec.add_dependency "monetize"
