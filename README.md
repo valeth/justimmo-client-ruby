@@ -33,9 +33,11 @@ Or install it yourself as:
 
 > config/initializers/justimmo.rb
 ```ruby
+
 JustimmoClient.configure do |config|
   config.username = "your-username"
   config.password = "your_password"
+  config.cache    = ActiveSupport::Cache.lookup_store(:memory_store)
 end
 ```
 

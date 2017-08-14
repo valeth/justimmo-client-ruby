@@ -1,15 +1,15 @@
 #!/usr/bin/env ruby
 
-require 'bundler/setup'
-require 'justimmo_client'
-require 'dotenv'
+require "bundler/setup"
+require "justimmo_client"
+require "dotenv"
 
 Dotenv.load
 
 JustimmoClient.configure do |config|
   config.username = ENV['JUSTIMMO_USERNAME']
   config.password = ENV['JUSTIMMO_PASSWORD']
-  config.debug = ENV['DEBUG']
+  config.debug    = ENV['DEBUG']
 end
 
 begin

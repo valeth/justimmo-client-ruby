@@ -18,8 +18,7 @@ module JustimmoClient
     config_accessor(:password)
     config_accessor(:credentials)
     config_accessor(:debug) { false }
-    config_accessor(:cache_store) { :memory_store }
-    config_accessor(:cache_options) { {} }
+    config_accessor(:cache) { nil }
 
     class << self
       def configure

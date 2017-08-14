@@ -1,42 +1,51 @@
 # frozen_string_literal: true
 
-require "active_support/core_ext/numeric/time"
-require "active_support/cache"
 require "justimmo_client/core/config"
+require "justimmo_client/core/logging"
 
 module JustimmoClient
   # Caching support
   module Caching
+    extend JustimmoClient::Logging
+
+    class NullCache
+      def write(_key, _data, **options); end
+      def read(_key); end
+    end
+
     class << self
       # Returns the current cache
       # @!attribute [rw] cache
-      # @return [ActiveSupport::Cache::Store]
       def cache
         @cache ||= default_cache
       end
 
-      def cache=(type, **options)
-        opts = JustimmoClient::Config.cache_options.merge(options)
-        @cache = ActiveSupport::Cache.lookup_store(type, opts)
+      def cache=(c)
+        @cache = c
       end
 
       def default_cache
-        store = JustimmoClient::Config.cache_store
-        options = JustimmoClient::Config.cache_options
-        ActiveSupport::Cache.lookup_store(store, options)
+        cache = JustimmoClient::Config.cache || NullCache.new
+        log.info("Using default cache #{cache.class}")
+        cache
       end
     end
 
     def cache
-      self.cache
+      JustimmoClient::Caching.cache
     end
 
+    # TODO: JSON serialize/deserialize the cached value
     def with_cache(key, **options)
+      log.debug("Looking up cache key #{key}")
       data = cache.read(key)
 
       if data.nil?
+        log.debug("Cache miss for #{key}")
         data = yield
         cache.write(key, data, options)
+      else
+        log.debug("Cache hit for #{key}")
       end
 
       data
