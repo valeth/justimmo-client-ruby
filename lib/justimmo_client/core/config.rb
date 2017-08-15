@@ -19,6 +19,7 @@ module JustimmoClient
     config_accessor(:credentials)
     config_accessor(:debug) { false }
     config_accessor(:cache) { nil }
+    config_accessor(:request_retries) { 3 }
 
     class << self
       def configure

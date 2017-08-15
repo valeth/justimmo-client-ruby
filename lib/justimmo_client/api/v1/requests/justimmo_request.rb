@@ -2,22 +2,27 @@
 
 require "rest_client"
 require "digest"
+require "retriable"
 
 module JustimmoClient::V1
   module JustimmoRequest
     include JustimmoClient::Logging
     include JustimmoClient::Caching
+    include Retriable
 
-    # TODO: add retry logic
     def get(path, params = {})
-      with_cache(cache_key(path, params)) do
-        options = {
-          params: build_params(params),
-          Authorization: "Basic #{JustimmoClient::Config.credentials}"
-        }
+      with_cache(cache_key(path, params)) { request(path, params) }
+    end
 
-        uri = "#{JustimmoClient::Config.url}/#{path}"
+    def request(path, params = {})
+      uri = "#{JustimmoClient::Config.url}/#{path}"
 
+      options = {
+        params: build_params(params),
+        Authorization: "Basic #{JustimmoClient::Config.credentials}"
+      }
+
+      with_retries do
         with_error_handler do
           log.debug("Requesting #{uri} with params #{options[:params]}")
           response = RestClient.get(uri, options)
@@ -29,11 +34,24 @@ module JustimmoClient::V1
     def with_error_handler
       yield
     rescue RestClient::Unauthorized
-      logger.error("Authentication failed")
+      log.error("Authentication failed")
       raise JustimmoClient::AuthenticationFailed
     rescue RestClient::BadRequest, RestClient::NotFound, RestClient::InternalServerError => e
-      log.error("Response: #{e.message}")
       raise JustimmoClient::RetrievalFailed, e.message
+    end
+
+    def with_retries
+      options = {
+        base_interval: 2.0,
+        tries: JustimmoClient::Config.request_retries,
+        on_retry: proc do |exception, try, elapsed_time, next_interval|
+          log.error("#{exception.class}: #{exception}")
+          log.error("Try #{try} in #{elapsed_time} seconds, retrying in #{next_interval} seconds.")
+        end,
+        on: JustimmoClient::RetrievalFailed
+      }
+
+      retriable(options) { yield }
     end
 
     # TODO: Parse internal params to JI params

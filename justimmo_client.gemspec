@@ -30,6 +30,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "dotenv"
 
   spec.add_dependency "rest-client",   "~> 2"
+  spec.add_dependency "retriable",     "~> 2.0"
   spec.add_dependency "nokogiri",      "~> 1.7"
   spec.add_dependency "multi_json"
   spec.add_dependency "virtus"
