@@ -12,13 +12,13 @@ image: 'ruby:2.3'
 
 test:rubocop:
   <<: *test_job
-  script: bundle exec rake rubocop
+  script: bundle exec rubocop
   only:
     - dev
 
 test:rspec:
   <<: *test_job
-  script: bundle exec rake spec
+  script: bundle exec rspec
   artifacts:
     paths:
       - coverage/
