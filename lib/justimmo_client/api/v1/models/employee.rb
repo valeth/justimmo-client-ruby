@@ -2,24 +2,24 @@
 
 module JustimmoClient::V1
   class Employee < JustimmoBase
-    attribute :id, Integer
-    attribute :number, Integer
-    attribute :email
-    attribute :phone
-    attribute :mobile
-    attribute :fax
-    attribute :last_name
-    attribute :first_name
-    attribute :salutation
-    attribute :company
-    attribute :street
-    attribute :zip_code, Integer
-    attribute :location
-    attribute :email_feedback
-    attribute :website
-    attribute :picture, Image
-    attribute :attachment, Image
-    attribute :position
+    attribute :id,          Integer
+    attribute :number,      Integer
+    attribute :email,       String
+    attribute :phone,       String
+    attribute :mobile,      String
+    attribute :fax,         String
+    attribute :last_name,   String
+    attribute :first_name,  String
+    attribute :salutation,  String
+    attribute :company,     String
+    attribute :street,      String
+    attribute :zip_code,    Integer
+    attribute :location,    String
+    attribute :email_feedback, String
+    attribute :website,     String
+    attribute :picture,     Image
+    attribute :attachment,  Image
+    attribute :position,    String
 
     def full_name(surname_first: false, with_salutation: true)
       name = [first_name, last_name]
