@@ -5,8 +5,8 @@ module JustimmoClient::V1
     attribute :id,          Integer
     attribute :number,      Integer
     attribute :title,       String
-    attribute :description, String
-    attribute :teaser,      String
+    attribute :description, String, default: ""
+    attribute :teaser,      String, default: ""
     attribute :usage,       RealtyUsage
     attribute :marketing,   RealtyMarketing
     attribute :type_id,     Integer
