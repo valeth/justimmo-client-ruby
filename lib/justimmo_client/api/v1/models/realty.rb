@@ -20,8 +20,6 @@ module JustimmoClient::V1
     attribute :price, RealtyPrice
     attribute :status_id, Integer
     attribute :floor
-    attribute :created_at, DateTime
-    attribute :updated_at, DateTime
     attribute :openimmo_id
     attribute :contact, Employee
     attribute :description_furniture, Array[String]
@@ -42,6 +40,8 @@ module JustimmoClient::V1
       @area = RealtyArea.new
       @room_count = RealtyRoomCount.new
       @geo = GeoLocation.new
+      @usage = RealtyUsage.new
+      @marketing = RealtyMarketing.new
     end
 
     # @param date [String]
@@ -58,7 +58,7 @@ module JustimmoClient::V1
         if @teaser.nil?
           parts = desc.partition("</ul>\n")
           @teaser = parts[0..1].join
-          parts.last
+          parts.last.empty? ? @teaser : parts.last
         else
           desc
         end
