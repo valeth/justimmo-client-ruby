@@ -19,6 +19,11 @@ module JustimmoClient
       def default_logger
         logger = Logger.new($stdout)
         logger.level = JustimmoClient::Config.debug ? Logger::DEBUG : Logger::INFO
+        logger.datetime_format = "%Y-%m-%d %H:%M:%S"
+        logger.progname = "JustimmoClient"
+        logger.formatter = proc do |severity, datetime, progname, message|
+          "[#{format("%-5s", severity)}]  #{datetime}  #{progname}  #{message}\n"
+        end
         logger
       end
 
