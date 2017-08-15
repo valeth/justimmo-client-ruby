@@ -1,7 +1,7 @@
-require 'spec_helper'
+require "spec_helper"
 
-RSpec.describe Justimmo do
-  it 'has a version number' do
-    expect(Justimmo::VERSION).not_to be nil
+describe "JustimmoClient" do
+  it "has a version number" do
+    expect(JustimmoClient::VERSION).not_to be nil
   end
 end
