@@ -3,7 +3,7 @@ AllCops:
   DisabledByDefault: true
   Exclude:
     - bin/**
-    - cache/**
+    - cache/**/*
     - spec/**/*
 
 # [Layout]
