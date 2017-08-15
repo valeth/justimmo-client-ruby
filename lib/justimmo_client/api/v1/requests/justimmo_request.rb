@@ -8,7 +8,6 @@ module JustimmoClient::V1
   module JustimmoRequest
     include JustimmoClient::Logging
     include JustimmoClient::Caching
-    include Retriable
 
     def get(path, params = {})
       with_cache(cache_key(path, params)) { request(path, params) }
@@ -51,7 +50,7 @@ module JustimmoClient::V1
         on: JustimmoClient::RetrievalFailed
       }
 
-      retriable(options) { yield }
+      Retrieable.retriable(options) { yield }
     end
 
     # TODO: Parse internal params to JI params
