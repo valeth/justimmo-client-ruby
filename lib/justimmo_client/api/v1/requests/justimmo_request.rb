@@ -50,7 +50,7 @@ module JustimmoClient::V1
         on: JustimmoClient::RetrievalFailed
       }
 
-      Retrieable.retriable(options) { yield }
+      Retriable.retriable(options) { yield }
     end
 
     # TODO: Parse internal params to JI params
