@@ -4,9 +4,9 @@ image: 'ruby:2.3'
   environment: testing
   cache:
     paths:
-      - /cache
+      - cache/bundler
   before_script:
-    - bundle install --path=/cache
+    - bundle install --without development -j $(nproc) --path=cache/bundler
   tags:
     - ruby
 
