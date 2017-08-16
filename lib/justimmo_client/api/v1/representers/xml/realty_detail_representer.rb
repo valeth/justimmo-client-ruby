@@ -66,49 +66,15 @@ module JustimmoClient::V1
 
       # FIXME: Get rid of duplicate code!
       #        Duplicates in RealtyListRepresenter
-      nested :flaechen do
-        { balcony_terrace:  :balkon_terrasse_flaeche,
-          balcony:          :balkons_flaeche,
-          office:           :bueroflaeche,
-          garage:           :garagen_flaeche,
-          garden:           :gartenflaeche,
-          total:            :gesamtflaeche,
-          surface:          :grundflaeche,
-          property:         :grundstuecksflaeche,
-          basement:         :kellerflaeche,
-          storage:          :lagerflaeche,
-          loggia:           :loggias_flaeche,
-          floor:            :nutzflaeche,
-          parking:          :stellplatz_flaeche,
-          terrace:          :terrassen_flaeche,
-          buildable:        :verbaubare_flaeche,
-          sales:            :verkaufsflaeche,
-          living:           :wohnflaeche
-        }.each do |key, api|
-          property key,
-            as: api,
-            setter: ->(fragment:, represented:, **) { represented.area[key] = fragment },
-            getter: ->(represented:, **) { represented.area[key] }
-        end
+      property :area,
+        as: :flaechen,
+        decorator: RealtyAreaRepresenter,
+        class: RealtyArea
 
-        { store:            :anzahl_abstellraum,
-          bathroom:         :anzahl_badezimmer,
-          balcony_terrace:  :anzahl_balkon_terrassen,
-          balcony:          :anzahl_balkone,
-          garden:           :anzahl_garten,
-          garage:           :anzahl_garagen,
-          loggia:           :anzahl_loggias,
-          basement:         :anzahl_keller,
-          toilet:           :anzahl_sep_wc,
-          parking_space:    :anzahl_stellplaetze,
-          total:            :anzahl_zimmer
-        }.each do |key, api|
-          property key,
-            as: api,
-            setter: ->(fragment:, represented:, **) { represented.room_count[key] = fragment },
-            getter: ->(represented:, **) { represented.room_count[key] }
-        end
-      end
+      property :room_count,
+        as: :flaechen,
+        decorator: RealtyRoomCountRepresenter,
+        class: RealtyRoomCount
 
       property :documents, as: :dokumente
       property :images360, as: :bilder360

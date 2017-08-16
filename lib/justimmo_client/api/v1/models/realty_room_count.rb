@@ -14,8 +14,16 @@ module JustimmoClient::V1
     attribute :parking_space, Integer
     attribute :total, Integer
 
+    def to_i
+      total
+    end
+
+    def to_s
+      to_i.to_s
+    end
+
     def inspect
-      "#<#{self.class} #{total}>"
+      "#<#{self.class} #{self}>"
     end
   end
 end

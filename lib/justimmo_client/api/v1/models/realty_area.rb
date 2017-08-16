@@ -20,8 +20,16 @@ module JustimmoClient::V1
     attribute :sales, Float
     attribute :living, Float
 
+    def to_f
+      living || floor
+    end
+
+    def to_s
+      to_f.to_s
+    end
+
     def inspect
-      "#<#{self.class} #{living}>"
+      "#<#{self.class} #{self}>"
     end
 
     def each(&block)
