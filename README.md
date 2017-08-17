@@ -4,7 +4,7 @@
 [![Inline docs](http://inch-ci.org/github/exacting/justimmo-client-ruby.svg?branch=master)](http://inch-ci.org/github/exacting/justimmo-client-ruby)
 
 
-# justimmo
+# Justimmo Client
 
 Ruby client for the [Justimmo](http://www.justimmo.at) [REST API](http://api-docs.justimmo.at/api/index.html).
 
@@ -22,18 +22,17 @@ gem "justimmo_client"
 
 And then execute:
 
-    $ bundle
+    $ bundle install
 
 Or install it yourself as:
 
     $ gem install justimmo_client
 
 
-## Usage (Rails Example)
+## Usage Example (Rails)
 
 > config/initializers/justimmo.rb
 ```ruby
-
 JustimmoClient.configure do |config|
   config.username = "your-username"
   config.password = "your_password"
@@ -51,6 +50,8 @@ class RealtyController < ApplicationController
   end
 end
 ```
+
+For other examples see `examples/`.
 
 ## Development
 
