@@ -5,6 +5,7 @@ require "justimmo_client/core/logging"
 
 module JustimmoClient
   # Caching support
+  # @api private
   module Caching
     extend JustimmoClient::Logging
 

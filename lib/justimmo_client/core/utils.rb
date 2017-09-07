@@ -3,6 +3,7 @@
 require "active_support/core_ext/string/inflections"
 
 module JustimmoClient
+  # @api private
   module Utils
     def autoload_dir(path)
       dirname = File.dirname(path)

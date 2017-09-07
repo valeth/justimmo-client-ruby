@@ -5,6 +5,7 @@ require "active_support/configurable"
 require "justimmo_client/errors"
 
 module JustimmoClient
+  # @api private
   class Config
     include ActiveSupport::Configurable
 

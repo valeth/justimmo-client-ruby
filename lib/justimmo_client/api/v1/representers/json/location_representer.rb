@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Justimmo::Client::V1
+module JustimmoClient::V1
   module JSON
     class LocationRepresenter < JustimmoRepresenter
       property :zip_code

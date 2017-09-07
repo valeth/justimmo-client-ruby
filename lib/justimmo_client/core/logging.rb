@@ -5,6 +5,7 @@ require "justimmo_client/core/config"
 
 module JustimmoClient
   # Logging support
+  # @api private
   module Logging
     class << self
       # Use the Rails or default logger if none is set.

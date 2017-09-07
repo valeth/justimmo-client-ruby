@@ -3,6 +3,7 @@
 require "justimmo_client/autoload"
 
 module JustimmoClient
+  # @api private
   module V1
     extend JustimmoClient::Utils
 
