@@ -51,7 +51,7 @@ class RealtyController < ApplicationController
 end
 ```
 
-For other examples see `examples/`.
+For other examples see [examples](examples/).
 
 ## Development
 
