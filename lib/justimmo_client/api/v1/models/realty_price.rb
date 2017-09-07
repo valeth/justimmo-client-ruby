@@ -84,8 +84,8 @@ module JustimmoClient::V1
       on_demand? ? "on demand" : "#{get} #{get.symbol}"
     end
 
-    # def inspect
-    #   "#<#{self.class} #{self}>"
-    # end
+    def inspect
+      "#<#{self.class} #{self}>"
+    end
   end
 end

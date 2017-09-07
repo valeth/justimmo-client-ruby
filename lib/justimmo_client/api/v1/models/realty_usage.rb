@@ -4,17 +4,5 @@ module JustimmoClient::V1
     attribute :living, Boolean
     attribute :business, Boolean
     attribute :investment, Boolean
-
-    def living?
-      @living
-    end
-
-    def business?
-      @business
-    end
-
-    def investment?
-      @investment
-    end
   end
 end
