@@ -4,29 +4,32 @@ require "monetize"
 
 module JustimmoClient::V1
   class RealtyPrice < JustimmoBase
-    attribute :currency, Money::Currency
-    attribute :provision, Boolean
-    attribute :including_vat, Boolean
-    attribute :on_demand, Boolean
-    attribute :real_estate_taxes, Float
-    attribute :land_registry, Float
-    attribute :commission, Integer
+    # @!group Attributes
 
-    attribute :purcase, Money
-    attribute :purcase_net, Money
-
-    attribute :rent_vat, Integer
-    attribute :rent, Money
-    attribute :rent_net, Money
-    attribute :rent_cold, Money
+    # @!macro [attach] attribute
+    #   @return [$2]
+    attribute :currency,               Money::Currency
+    attribute :provision,              Boolean
+    attribute :including_vat,          Boolean
+    attribute :on_demand,              Boolean
+    attribute :real_estate_taxes,      Float
+    attribute :land_registry,          Float
+    attribute :commission,             Integer
+    attribute :purcase,                Money
+    attribute :purcase_net,            Money
+    attribute :rent_vat,               Integer
+    attribute :rent,                   Money
+    attribute :rent_net,               Money
+    attribute :rent_cold,              Money
     attribute :rent_including_heating, Money
-    attribute :rent_per_sqm, Money
-    attribute :deposit, Money
-
-    attribute :operating_cost_vat, Integer
-    attribute :operating_cost, Money
-    attribute :operating_cost_net, Money
+    attribute :rent_per_sqm,           Money
+    attribute :deposit,                Money
+    attribute :operating_cost_vat,     Integer
+    attribute :operating_cost,         Money
+    attribute :operating_cost_net,     Money
     attribute :operating_cost_per_sqm, Money
+
+    # @!group Instance Method Summary
 
     %w[purcase purcase_net
        operating_cost operating_cost_net operating_cost_per_sqm

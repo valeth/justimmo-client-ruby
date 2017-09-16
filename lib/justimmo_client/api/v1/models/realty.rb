@@ -2,33 +2,39 @@
 
 module JustimmoClient::V1
   class Realty < JustimmoBase
-    attribute :id,          Integer
-    attribute :number,      Integer
-    attribute :title,       String
-    attribute :description, String, default: ""
-    attribute :teaser,      String, default: ""
-    attribute :usage,       RealtyUsage
-    attribute :marketing,   RealtyMarketing
-    attribute :type_id,     Integer
-    attribute :sub_type_id, Integer
-    attribute :geo,         GeoLocation
-    attribute :area,        RealtyArea
-    attribute :room_count,  RealtyRoomCount
-    attribute :price,       RealtyPrice
-    attribute :status_id,   Integer
-    attribute :floor,       String
-    attribute :openimmo_id, String
-    attribute :contact,     Employee
+    # @!group Attributes
+
+    # @!macro [attach] attribute
+    #   @return [$2]
+    attribute :id,                    Integer
+    attribute :number,                Integer
+    attribute :title,                 String
+    attribute :description,           String, default: ""
+    attribute :teaser,                String, default: ""
+    attribute :usage,                 RealtyUsage
+    attribute :marketing,             RealtyMarketing
+    attribute :type_id,               Integer
+    attribute :sub_type_id,           Integer
+    attribute :geo,                   GeoLocation
+    attribute :area,                  RealtyArea
+    attribute :room_count,            RealtyRoomCount
+    attribute :price,                 RealtyPrice
+    attribute :status_id,             Integer
+    attribute :floor,                 String
+    attribute :openimmo_id,           String
+    attribute :contact,               Employee
     attribute :description_furniture, Array[String]
-    attribute :furniture,   Array[String]
-    attribute :images,      Array[Image]
-    attribute :documents,   Array
-    attribute :videos,      Array
-    attribute :images360,   Array
-    attribute :links,       Array
-    attribute :available,   DateTime
-    attribute :created_at,  DateTime
-    attribute :updated_at,  DateTime
+    attribute :furniture,             Array[String]
+    attribute :images,                Array[Image]
+    attribute :documents,             Array
+    attribute :videos,                Array
+    attribute :images360,             Array
+    attribute :links,                 Array
+    attribute :available,             DateTime
+    attribute :created_at,            DateTime
+    attribute :updated_at,            DateTime
+
+    # @!group Instance Method Summary
 
     def initialize(**options)
       super(options)

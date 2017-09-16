@@ -2,8 +2,12 @@
 
 module JustimmoClient::V1
   class RealtyCategory < JustimmoBase
-    attribute :id, Integer
-    attribute :name
+    # @!group Attributes
+
+    # @!macro [attach] attribute
+    #   @return [$2]
+    attribute :id,           Integer
+    attribute :name,         String
     attribute :sortablerank, Boolean
   end
 end

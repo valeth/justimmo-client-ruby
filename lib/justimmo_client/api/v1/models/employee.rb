@@ -2,6 +2,10 @@
 
 module JustimmoClient::V1
   class Employee < JustimmoBase
+    # @!group Attributes
+
+    # @!macro [attach] attribute
+    #   @return [$2]
     attribute :id,          Integer
     attribute :number,      Integer
     attribute :email,       String
@@ -20,6 +24,8 @@ module JustimmoClient::V1
     attribute :picture,     Image
     attribute :attachment,  Image
     attribute :position,    String
+
+    # @!group Instance Method Summary
 
     def full_name(surname_first: false, with_salutation: true)
       name = [first_name, last_name]

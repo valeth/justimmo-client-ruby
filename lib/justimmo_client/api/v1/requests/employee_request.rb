@@ -3,6 +3,7 @@
 require "json"
 
 module JustimmoClient::V1
+  # @api private
   module EmployeeRequest
     extend JustimmoRequest
 

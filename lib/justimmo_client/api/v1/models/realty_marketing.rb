@@ -2,7 +2,11 @@
 
 module JustimmoClient::V1
   class RealtyMarketing < JustimmoBase
-    attribute :buy, Boolean
+    # @!group Attributes
+
+    # @!macro [attach] attribute
+    #   @return [$2]
+    attribute :buy,  Boolean
     attribute :rent, Boolean
   end
 end

@@ -2,10 +2,14 @@
 
 module JustimmoClient::V1
   class FederalState < JustimmoBase
-    attribute :id, Integer
-    attribute :name
+    # @!group Attributes
+
+    # @!macro [attach] attribute
+    #   @return [$2]
+    attribute :id,         Integer
+    attribute :name,       String
     attribute :country_id, Integer
-    attribute :fips
-    attribute :iso
+    attribute :fips,       String
+    attribute :iso,        String
   end
 end

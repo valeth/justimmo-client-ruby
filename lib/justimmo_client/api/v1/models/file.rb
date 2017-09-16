@@ -4,12 +4,18 @@ module JustimmoClient::V1
   class File < JustimmoBase
     BASE_URL = "https://files.justimmo.at/public"
 
-    attribute :title, String
+    # @!group Attributes
+
+    # @!macro [attach] attribute
+    #   @return [$2]
+    attribute :title,    String
     attribute :category, Symbol
-    attribute :origin, Symbol
-    attribute :type, Symbol
-    attribute :name, String
-    attribute :format, String
+    attribute :origin,   Symbol
+    attribute :type,     Symbol
+    attribute :name,     String
+    attribute :format,   String
+
+    # @!group Instance Method Summary
 
     def initialize(**options)
       super(options)

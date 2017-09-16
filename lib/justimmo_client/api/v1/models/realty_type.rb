@@ -2,7 +2,11 @@
 
 module JustimmoClient::V1
   class RealtyType < JustimmoBase
-    attribute :id, Integer
-    attribute :name
+    # @!group Attributes
+
+    # @!macro [attach] attribute
+    #   @return [$2]
+    attribute :id,   Integer
+    attribute :name, String
   end
 end

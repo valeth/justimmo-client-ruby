@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module JustimmoClient::V1
+  # @api private
   module RealtyRequest
     extend JustimmoRequest
 
@@ -34,10 +35,13 @@ module JustimmoClient::V1
       first_name: :vorname,
       last_name: :nachname,
       phone: :tel,
-      location: :ort
+      location: :ort,
+      all: :alle
     }.freeze
 
     module_function
+
+    # @!group Realty Requests
 
     # @param [Hash] params
     # @return [String] The requested XML.
@@ -49,33 +53,30 @@ module JustimmoClient::V1
     # @param [String, Symbol] lang
     # @return [String] The requested XML.
     def detail(id, lang: nil)
-      get("objekt/detail", objekt_id: id, culture: lang)
+      get("objekt/detail", detail_option_parser.parse(id: id, lang: lang))
     end
 
     # @param [Integer] id
     # @param [Hash] params
     # @return [String] The requested XML.
     def inquiry(id, **params)
-      options = inquiry_option_parser.parse(params)
-      options[:objekt_id] = id
-
-      get("objekt/anfrage", options)
+      get("objekt/anfrage", inquiry_option_parser.parse(params.update(id: id)))
     end
 
     # @param [Hash] params
     # @return [String] A JSON string containing an array of ids.
     def ids(**params)
-      get("objekt/ids", params)
+      get("objekt/ids", ids_option_parser.parse(params))
     end
 
-    # TODO: implement this
+    # @todo implement this
     # @param [Hash] params
     # @return [File] The PDF file.
     def expose(**params)
       get("objekt/expose", params)
     end
 
-    # Basic data
+    # @!group Basic Data Requests
 
     # @param [Boolean] all (false)
     # @return [String] The requested XML.
@@ -118,7 +119,7 @@ module JustimmoClient::V1
       get("objekt/plzsUndOrte", land: country, bundesland: federal_state, alle: all ? 1 : 0)
     end
 
-    # Option parsers
+    # @!group Option Parsers
 
     # @return [Hash]
     def list_option_parser
@@ -171,6 +172,8 @@ module JustimmoClient::V1
       end
     end
 
+    alias ids_option_parser list_option_parser
+
     # @return [Hash]
     def inquiry_option_parser
       @option_parsers ||= {}
@@ -189,6 +192,17 @@ module JustimmoClient::V1
         options.add :zip_code
         options.add :location
         options.add :country
+      end
+    end
+
+    # @return [Hash]
+    def detail_option_parser
+      @option_parsers ||= {}
+      @option_parsers[:detail] = JustimmoClient::OptionParser.new do |options|
+        options.mappings = TRANSLATION_MAPPING
+
+        options.add :all
+        options.add :lang
       end
     end
   end

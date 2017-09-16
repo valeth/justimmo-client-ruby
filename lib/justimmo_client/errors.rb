@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Exceptions for internal use
 module JustimmoClient::Errors
   JustimmoError = Class.new(StandardError)
   InitializationError = Class.new(JustimmoError)

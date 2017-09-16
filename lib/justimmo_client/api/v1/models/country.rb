@@ -4,9 +4,15 @@ require "iso_country_codes"
 
 module JustimmoClient::V1
   class Country < JustimmoBase
-    attribute :id, Integer
-    attribute :alpha2
-    attribute :alpha2
+    # @!group Attributes
+
+    # @!macro [attach] attribute
+    #   @return [$2]
+    attribute :id,     Integer
+    attribute :alpha2, String
+    attribute :alpha2, String
+
+    # @!group Instance Method Summary
 
     def initialize(**options)
       super(options)

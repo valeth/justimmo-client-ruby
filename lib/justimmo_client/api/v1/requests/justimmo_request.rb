@@ -5,6 +5,7 @@ require "digest"
 require "retriable"
 
 module JustimmoClient::V1
+  # @api private
   module JustimmoRequest
     include JustimmoClient::Logging
     include JustimmoClient::Caching
@@ -17,7 +18,7 @@ module JustimmoClient::V1
       uri = "#{JustimmoClient::Config.url}/#{path}"
 
       options = {
-        params: build_params(params),
+        params: params,
         Authorization: "Basic #{JustimmoClient::Config.credentials}"
       }
 
@@ -33,7 +34,7 @@ module JustimmoClient::V1
     def with_error_handler
       yield
     rescue RestClient::Unauthorized
-      log.error("Authentication failed")
+      log.error("Authentication failed, check your configuration.")
       raise JustimmoClient::AuthenticationFailed
     rescue RestClient::BadRequest, RestClient::NotFound, RestClient::InternalServerError => e
       raise JustimmoClient::RetrievalFailed, e.message
@@ -51,11 +52,6 @@ module JustimmoClient::V1
       }
 
       Retriable.retriable(options) { yield }
-    end
-
-    # TODO: Parse internal params to JI params
-    def build_params(params)
-      params
     end
 
     def cache_key(path, params)

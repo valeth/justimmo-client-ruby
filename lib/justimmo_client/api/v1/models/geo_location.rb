@@ -4,15 +4,21 @@ require "iso_country_codes"
 
 module JustimmoClient::V1
   class GeoLocation < JustimmoBase
-    attribute :proximity
-    attribute :federal_state
-    attribute :country
-    attribute :zip_code, Integer
-    attribute :latitude, Float
-    attribute :longitude, Float
-    attribute :location
-    attribute :proximity
-    attribute :floor, Integer
+    # @!group Attributes
+
+    # @!macro [attach] attribute
+    #   @return [$2]
+    attribute :proximity,     String
+    attribute :federal_state, String
+    attribute :country,       String
+    attribute :zip_code,      Integer
+    attribute :latitude,      Float
+    attribute :longitude,     Float
+    attribute :location,      String
+    attribute :proximity,     String
+    attribute :floor,         Integer
+
+    # @!group Instance Method Summary
 
     def country=(iso3)
       @country = IsoCountryCodes.find(iso3)

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module JustimmoClient
+  # @api private
   class OptionParser
     include JustimmoClient::Logging
 
