@@ -66,7 +66,7 @@ module JustimmoClient::V1
     # @param [Hash] params
     # @return [String] A JSON string containing an array of ids.
     def ids(**params)
-      get("objekt/ids", ids_option_parser.parse(params))
+      get("objekt/ids", list_option_parser.parse(params))
     end
 
     # @todo implement this
@@ -171,8 +171,6 @@ module JustimmoClient::V1
         end
       end
     end
-
-    alias ids_option_parser list_option_parser
 
     # @return [Hash]
     def inquiry_option_parser
