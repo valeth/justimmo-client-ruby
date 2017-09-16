@@ -64,4 +64,4 @@ deploy:rubygems:
   script:
     - dpl --provider=rubygems --api-key=$RUBYGEMS_API_KEY
   only:
-    - tag
+    - tags
