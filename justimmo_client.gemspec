@@ -30,12 +30,12 @@ Gem::Specification.new do |spec|
 
   # parsing
   spec.add_dependency "nokogiri", "~> 1.7"
-  spec.add_dependency "multi_json"
+  spec.add_dependency "multi_json", "~> 1"
   spec.add_dependency "representable", "~> 3.0"
 
   # models
-  spec.add_dependency "virtus"
+  spec.add_dependency "virtus", "~> 1"
   spec.add_dependency "activesupport", "~> 5.1"
-  spec.add_dependency "iso_country_codes"
-  spec.add_dependency "monetize"
+  spec.add_dependency "iso_country_codes", "~> 0"
+  spec.add_dependency "monetize", "~> 1"
 end
