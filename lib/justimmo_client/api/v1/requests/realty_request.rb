@@ -203,6 +203,7 @@ module JustimmoClient::V1
 
         options.add :all
         options.add :lang
+        options.add :id
       end
     end
   end

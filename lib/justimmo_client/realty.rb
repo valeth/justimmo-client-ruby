@@ -66,7 +66,7 @@ module JustimmoClient
     # @param [Symbol, String] lang
     # @return [Object, nil] A detailed realty object, or nil if it could not be found.
     def detail(id, lang: nil)
-      xml_response = request(:realty).detail(id: id, lang: lang)
+      xml_response = request(:realty).detail(id, lang: lang)
       model = Struct.new(:realty).new
       representer(:realty_detail).new(model).from_xml(xml_response).realty
     rescue JustimmoClient::RetrievalFailed

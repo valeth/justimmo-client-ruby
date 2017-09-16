@@ -26,6 +26,7 @@ module JustimmoClient
     def group(groupname)
       @context = groupname.to_sym
       yield self if block_given?
+      @context = nil
     end
 
     def parse(options = {})
