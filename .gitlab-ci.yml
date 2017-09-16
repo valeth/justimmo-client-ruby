@@ -1,24 +1,43 @@
-image: 'ruby:2.3'
-
 .test_job: &test_job
   environment: testing
   cache:
     paths:
-      - /cache
+      - cache/bundler
   before_script:
-    - bundle install --path=/cache
+    - bundle install --without development -j $(nproc) --path=cache/bundler
   tags:
     - ruby
 
-test:rubocop:
+.test_job_2_3: &test_job_2_3
+  image: 'ruby:2.3'
   <<: *test_job
-  script: bundle exec rake rubocop
+
+.test_job_2_4: &test_job_2_4
+  image: 'ruby:2.4'
+  <<: *test_job
+
+test:rubocop_2_3:
+  <<: *test_job_2_3
+  script: bundle exec rubocop
   only:
     - dev
 
-test:rspec:
-  <<: *test_job
-  script: bundle exec rake spec
+test:rubocop_2_4:
+  <<: *test_job_2_4
+  script: bundle exec rubocop
+  only:
+    - dev
+
+test:rspec_2_3:
+  <<: *test_job_2_3
+  script: bundle exec rspec
+  artifacts:
+    paths:
+      - coverage/
+
+test:rspec_2_4:
+  <<: *test_job_2_4
+  script: bundle exec rspec
   artifacts:
     paths:
       - coverage/
@@ -26,7 +45,7 @@ test:rspec:
 pages:
   stage: deploy
   dependencies:
-    - test:rspec
+    - test:rspec_2_4
   script:
     - mv coverage/ public/
   artifacts:
@@ -39,7 +58,7 @@ pages:
 deploy:rubygems:
   stage: deploy
   dependencies:
-    - test:rspec
+    - test:rspec_2_4
   before_script:
     - gem install dpl
   script:

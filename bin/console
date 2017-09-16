@@ -1,18 +1,15 @@
 #!/usr/bin/env ruby
 
-require 'bundler/setup'
-require 'justimmo'
-require 'dotenv'
+require "bundler/setup"
+require "justimmo_client"
+require "dotenv"
 
 Dotenv.load
 
-Justimmo.configure do |config|
+JustimmoClient.configure do |config|
   config.username = ENV['JUSTIMMO_USERNAME']
   config.password = ENV['JUSTIMMO_PASSWORD']
-
-  config.debug = ENV['DEBUG']
-
-  config.on_mapper_error = ENV['JUSTIMMO_MAPPER_ERROR']&.to_sym || :raise
+  config.debug    = ENV['DEBUG']
 end
 
 begin

@@ -1,14 +1,16 @@
 #!/usr/bin/env ruby
 
-require 'justimmo'
-require 'dotenv'
-require 'pp'
+require "dotenv"
+require "pp"
+require "active_support/cache"
+require "justimmo_client"
 
 Dotenv.load
 
-Justimmo.configure do |config|
-  config.username = ENV['JUSTIMMO_USERNAME']
-  config.password = ENV['JUSTIMMO_PASSWORD']
+JustimmoClient.configure do |config|
+  config.username = ENV["JUSTIMMO_USERNAME"]
+  config.password = ENV["JUSTIMMO_PASSWORD"]
+  config.cache    = ActiveSupport::Cache.lookup_store(:memory_store)
 end
 
-pp Justimmo::Realty.list(filter: { zip_code: 6800 }, limit: 5)
+pp JustimmoClient::Realty.list(zip_code: 6800, limit: 5)
