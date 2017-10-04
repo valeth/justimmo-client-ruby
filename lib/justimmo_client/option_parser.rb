@@ -33,7 +33,7 @@ module JustimmoClient
       out = {}
 
       options.each do |key, value|
-        raise ArgumentError, "Invalid option: #{key}" unless @options.key?(key.to_sym)
+        raise JustimmoClient::InvalidOption, key unless @options.key?(key.to_sym)
         group = group_of(key)
 
         if group
@@ -94,7 +94,7 @@ module JustimmoClient
 
     def parse_option(key, value)
       values = @options.dig(key, :values)
-      raise ArgumentError, "Value #{value} not supported" unless values.nil? || values.include?(value)
+      raise JustimmoClient::InvalidValue, value unless values.nil? || values.include?(value)
 
       key, value = apply_mod(key.to_sym, value) if has_mod?(key)
 

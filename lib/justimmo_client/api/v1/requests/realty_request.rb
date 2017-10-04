@@ -48,34 +48,44 @@ module JustimmoClient::V1
     # @param [Hash] params
     # @return [String] The requested XML.
     def list(**params)
-      get("objekt/list", list_option_parser.parse(params))
+      with_error_handler do
+        get("objekt/list", list_option_parser.parse(params))
+      end
     end
 
     # @param [Integer] id
     # @param [String, Symbol] lang
     # @return [String] The requested XML.
     def detail(id, lang: nil)
-      get("objekt/detail", detail_option_parser.parse(id: id, lang: lang))
+      with_error_handler do
+        get("objekt/detail", detail_option_parser.parse(id: id, lang: lang))
+      end
     end
 
     # @param [Integer] id
     # @param [Hash] params
     # @return [String] The requested XML.
     def inquiry(id, **params)
-      get("objekt/anfrage", inquiry_option_parser.parse(params.update(id: id)))
+      with_error_handler do
+        get("objekt/anfrage", inquiry_option_parser.parse(params.update(id: id)))
+      end
     end
 
     # @param [Hash] params
     # @return [String] A JSON string containing an array of ids.
     def ids(**params)
-      get("objekt/ids", list_option_parser.parse(params))
+      with_error_handler do
+        get("objekt/ids", list_option_parser.parse(params))
+      end
     end
 
     # @todo implement this
     # @param [Hash] params
     # @return [File] The PDF file.
     def expose(**params)
-      get("objekt/expose", params)
+      with_error_handler do
+        get("objekt/expose", params)
+      end
     end
 
     # @!group Basic Data Requests
@@ -83,26 +93,34 @@ module JustimmoClient::V1
     # @param [Boolean] all (false)
     # @return [String] The requested XML.
     def categories(all: false)
-      get("objekt/kategorien", alle: all ? 1 : 0)
+      with_error_handler do
+        get("objekt/kategorien", alle: all ? 1 : 0)
+      end
     end
 
     # @param [Boolean] all (false)
     # @return [String] The requested XML.
     def types(all: false)
-      get("objekt/objektarten", alle: all ? 1 : 0)
+      with_error_handler do
+        get("objekt/objektarten", alle: all ? 1 : 0)
+      end
     end
 
     # @param [Boolean] all (false)
     # @return [String] The requested XML.
     def countries(all: false)
-      get("objekt/laender", alle: all ? 1 : 0)
+      with_error_handler do
+        get("objekt/laender", alle: all ? 1 : 0)
+      end
     end
 
     # @param [Boolean] all (false)
     # @param [Integer, String] country
     # @return [String] The requested XML.
     def federal_states(country:, all: false)
-      get("objekt/bundeslaender", land: country, alle: all ? 1 : 0)
+      with_error_handler do
+        get("objekt/bundeslaender", land: country, alle: all ? 1 : 0)
+      end
     end
 
     # @param [Boolean] all (false)
@@ -110,7 +128,9 @@ module JustimmoClient::V1
     # @param [Integer] federal_state
     # @return [String] The requested XML.
     def regions(country: nil, federal_state: nil, all: false)
-      get("objekt/regionen", land: country, bundesland: federal_state, alle: all ? 1 : 0)
+      with_error_handler do
+        get("objekt/regionen", land: country, bundesland: federal_state, alle: all ? 1 : 0)
+      end
     end
 
     # @param [Boolean] all (false)
@@ -118,7 +138,16 @@ module JustimmoClient::V1
     # @param [Integer] federal_state
     # @return [String] The requested XML.
     def zip_codes_and_cities(country: nil, federal_state: nil, all: false)
-      get("objekt/plzsUndOrte", land: country, bundesland: federal_state, alle: all ? 1 : 0)
+      with_error_handler do
+        get("objekt/plzsUndOrte", land: country, bundesland: federal_state, alle: all ? 1 : 0)
+      end
+    end
+
+    def with_error_handler
+      yield
+    rescue JustimmoClient::OptionParserError => e
+      log.error(e)
+      raise JustimmoClient::RetrievalFailed, e
     end
 
     # @!group Option Parsers
@@ -133,9 +162,9 @@ module JustimmoClient::V1
         options.add :limit
         options.add :offset
         options.add :lang
-        options.add :orderby, values: %w[price zip_code number created_at updated_at published_at]
-        options.add :ordertype, values: %w[asc desc]
-        options.add :picturesize, values: %w[small_unbranded small2_unbranded small3_unbranded medium_unbranded big_unbranded big2_unbranded medium big bin2]
+        options.add :orderby, values: %i[price zip_code number created_at updated_at published_at]
+        options.add :ordertype, values: %i[asc desc]
+        options.add :picturesize, values: %i[small_unbranded small2_unbranded small3_unbranded medium_unbranded big_unbranded big2_unbranded medium big big2]
         options.add :with_projects, type: :bool
         options.group :filter do |f|
           f.add :price_min

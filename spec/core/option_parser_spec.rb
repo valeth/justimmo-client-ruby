@@ -42,7 +42,7 @@ describe "JustimmoClient::OptionParser" do
   end
 
   it "only accepts defined options" do
-    expect { parser.parse(not_defined: 1) }.to raise_exception(ArgumentError)
+    expect { parser.parse(not_defined: 1) }.to raise_exception(JustimmoClient::InvalidOption)
   end
 
   it "groups specific options" do
@@ -70,7 +70,7 @@ describe "JustimmoClient::OptionParser" do
 
   it "can set a constraint for values" do
     expect(parser.parse(order: :asc)).to eq({ order: :asc })
-    expect { parser.parse(order: :none) }.to raise_exception(ArgumentError)
+    expect { parser.parse(order: :none) }.to raise_exception(JustimmoClient::InvalidValue)
   end
 
   it "can translate values" do
