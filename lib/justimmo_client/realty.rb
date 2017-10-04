@@ -51,6 +51,7 @@ module JustimmoClient
     # @option options [Integer] :parent_id
     # @option options [DateTime] :updated_at_min
     # @option options [DateTime] :updated_at_max
+    # @option options [String] :location
     # @example Filter by zip code and limit to three results.
     #    JustimmoClient::Realty.list(zip_code: 6800, limit: 3)
     # @return [Array<Object>] An array of basic realty objects, or an empty array on error.

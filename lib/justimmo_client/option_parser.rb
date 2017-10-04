@@ -19,8 +19,8 @@ module JustimmoClient
       parse unless options.empty?
     end
 
-    def add(key, **options)
-      add_option(key, options)
+    def add(key, **options, &block)
+      add_option(key, options, &block)
     end
 
     def group(groupname)
@@ -49,17 +49,27 @@ module JustimmoClient
 
     private
 
-    def add_option(key, **options)
+    def add_option(key, **options, &block)
       @options[key.to_sym] = {
         group: @context,
         type: options[:type],
         as: options[:as],
-        values: options[:values]
+        values: options[:values],
+        mod: block_given? ? block : nil
       }
     end
 
     def group_of(key)
       @options.dig(key, :group)
+    end
+
+    def has_mod?(key)
+      @options.dig(key, :mod).is_a?(Proc)
+    end
+
+    def apply_mod(key, value)
+      new_key, new_value = @options.dig(key, :mod).call(key, value)
+      [(new_key || key), (new_value || value)]
     end
 
     def mapping(key)
@@ -85,6 +95,8 @@ module JustimmoClient
     def parse_option(key, value)
       values = @options.dig(key, :values)
       raise ArgumentError, "Value #{value} not supported" unless values.nil? || values.include?(value)
+
+      key, value = apply_mod(key.to_sym, value) if has_mod?(key)
 
       coerced =
         case @options.dig(key, :type)
