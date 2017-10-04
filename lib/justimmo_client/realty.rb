@@ -21,6 +21,7 @@ module JustimmoClient
     # @option options [Float] :price_per_sqm_min
     # @option options [Float] :price_per_sqm_max
     # @option options [Integer] :type_id
+    # @option options [Symbol, String, Array<Symbol, String>] :type
     # @option options [Integer] :sub_type_id
     # @option options [Symbol, String] :tag
     # @option options [String, Integer] :zip_code
@@ -47,7 +48,7 @@ module JustimmoClient
     # @option options [Boolean] :purcase
     # @option options [Integer] :owner_id
     # @option options [Integer] :project_id
-    # @option options [Symbol, String] :type
+    # @option options [String] :system_type
     # @option options [Integer] :parent_id
     # @option options [DateTime] :updated_at_min
     # @option options [DateTime] :updated_at_max
