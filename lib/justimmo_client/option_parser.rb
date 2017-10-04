@@ -100,7 +100,7 @@ module JustimmoClient
 
       coerced =
         case @options.dig(key, :type)
-        when :bool then i_to_bool(value)
+        when :bool then bool_to_i(value)
         else mapping(value)
         end
 
@@ -113,8 +113,12 @@ module JustimmoClient
       { "#{api_param}#{min}": range.first, "#{api_param}#{max}": range.last }
     end
 
-    def i_to_bool(value)
-      value ? 1 : 0
+    def bool_to_i(value)
+      case value
+      when "true" then 1
+      when "false" then 0
+      else value ? 1 : 0
+      end
     end
   end
 end
