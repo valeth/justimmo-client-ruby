@@ -7,6 +7,9 @@ module JustimmoClient::Errors
   # Raised when configuration validation fails.
   ConfigurationError = Class.new(JustimmoError)
 
+  # Raised when option parsing fails
+  OptionParserError = Class.new(JustimmoError)
+
   # Raised when authentication with the API fails.
   class AuthenticationFailed < JustimmoError
     def initialize
@@ -22,9 +25,16 @@ module JustimmoClient::Errors
   end
 
   # Raised when the option parser rejects an option
-  class InvalidOption < JustimmoError
+  class InvalidOption < OptionParserError
     def initialize(key)
       super("Option '#{key}' not supported")
+    end
+  end
+
+  # Raised when the option parser rejects a value
+  class InvalidValue < OptionParserError
+    def initialize(value)
+      super("'#{value}' is not in the list of accepted values")
     end
   end
 

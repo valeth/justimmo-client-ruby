@@ -145,7 +145,7 @@ module JustimmoClient::V1
 
     def with_error_handler
       yield
-    rescue JustimmoClient::InvalidOption => e
+    rescue JustimmoClient::OptionParserError => e
       log.error(e)
       raise JustimmoClient::RetrievalFailed, e
     end
@@ -162,9 +162,9 @@ module JustimmoClient::V1
         options.add :limit
         options.add :offset
         options.add :lang
-        options.add :orderby, values: %w[price zip_code number created_at updated_at published_at]
-        options.add :ordertype, values: %w[asc desc]
-        options.add :picturesize, values: %w[small_unbranded small2_unbranded small3_unbranded medium_unbranded big_unbranded big2_unbranded medium big bin2]
+        options.add :orderby, values: %i[price zip_code number created_at updated_at published_at]
+        options.add :ordertype, values: %i[asc desc]
+        options.add :picturesize, values: %i[small_unbranded small2_unbranded small3_unbranded medium_unbranded big_unbranded big2_unbranded medium big big2]
         options.add :with_projects, type: :bool
         options.group :filter do |f|
           f.add :price_min
