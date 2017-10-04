@@ -15,8 +15,6 @@ module JustimmoClient::V1
       price: :preis,
       zip_code: :plz,
       price_per_sqm: :preis_per_m2,
-      type: :objektart,
-      subtype: :subobjektart,
       tag: :tagname,
       rooms: :zimmer,
       area: :flaeche,
@@ -38,7 +36,10 @@ module JustimmoClient::V1
       location: :ort,
       all: :alle,
       rent: :miete,
-      purcase: :kauf
+      purcase: :kauf,
+      type: :objektart,
+      sub_type: :subobjektart,
+      system_type: :realty_type
     }.freeze
 
     module_function
@@ -172,7 +173,13 @@ module JustimmoClient::V1
           f.add :price_per_sqm_min
           f.add :price_per_sqm_max
           f.add :type_id
-          f.add :subtype_id
+          f.add :type do |key, *values|
+            values = [values].flatten.map(&:to_sym)
+            log.debug(values)
+            types = JustimmoClient::Realty.types
+            [:type_id, types.select { |x| values.include?(x.name) }.map(&:id)]
+          end
+          f.add :sub_type_id
           f.add :tag
           f.add :zip_code
           f.add :zip_code_min
@@ -195,7 +202,7 @@ module JustimmoClient::V1
           f.add :federal_state_id
           f.add :status_id
           f.add :project_id
-          f.add :type
+          f.add :system_type
           f.add :parent_id
           f.add :rent, type: :bool
           f.add :purcase, type: :bool

@@ -10,7 +10,7 @@ module JustimmoClient::V1
     #   @return [$2]
     attribute :proximity,     String
     attribute :federal_state, String
-    attribute :country,       String
+    attribute :country,       IsoCountryCodes::Code
     attribute :zip_code,      Integer
     attribute :latitude,      Float
     attribute :longitude,     Float

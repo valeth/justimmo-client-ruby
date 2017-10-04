@@ -7,6 +7,6 @@ module JustimmoClient::V1
     # @!macro [attach] attribute
     #   @return [$2]
     attribute :id,   Integer
-    attribute :name, String
+    attribute :name, Symbol
   end
 end

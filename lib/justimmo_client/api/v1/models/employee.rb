@@ -27,6 +27,10 @@ module JustimmoClient::V1
 
     # @!group Instance Method Summary
 
+    def image
+      picture
+    end
+
     def full_name(surname_first: false, with_salutation: true)
       name = [first_name, last_name]
       name.reverse! if surname_first

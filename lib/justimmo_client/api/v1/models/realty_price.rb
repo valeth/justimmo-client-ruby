@@ -68,6 +68,8 @@ module JustimmoClient::V1
     end
 
     def commission
+      return nil unless @commission
+
       if purcase?
         (get / 100 * @commission) * 1.20
       else
@@ -76,6 +78,7 @@ module JustimmoClient::V1
     end
 
     def rent_vat
+      return nil unless rent? && rent_net
       rent_net / 100 * @rent_vat
     end
 
@@ -83,8 +86,12 @@ module JustimmoClient::V1
       @purcase || @rent
     end
 
+    def to_f
+      get.to_f
+    end
+
     def to_s
-      on_demand? ? "on demand" : "#{get} #{get.symbol}"
+      on_demand? ? "on demand" : get.format
     end
 
     def inspect

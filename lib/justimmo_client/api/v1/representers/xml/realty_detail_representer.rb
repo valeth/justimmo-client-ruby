@@ -20,6 +20,10 @@ module JustimmoClient::V1
           parse_filter: ->(_fragment, options) { options[:doc].css("user_defined_simplefield[feldname=aktualisiert_am]").text }
       end
 
+      nested :zustand_angaben do
+        property :construction_year, as: :baujahr
+      end
+
       property :geo,
         decorator: GeoLocationRepresenter,
         class: GeoLocation
