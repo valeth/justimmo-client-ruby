@@ -32,10 +32,10 @@ module JustimmoClient
 
       def validate
         missing = REQUIRED.select { |r| @_config[r].nil? }
-        raise MissingConfiguration, missing unless missing.empty?
+        raise JustimmoClient::MissingConfiguration, missing unless missing.empty?
 
         supported_ver = SUPPORTED_API_VERSIONS.include?(api_ver)
-        raise UnsupportedAPIVersion, api_ver unless supported_ver
+        raise JustimmoClient::UnsupportedAPIVersion, api_ver unless supported_ver
       end
 
       def url

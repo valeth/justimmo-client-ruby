@@ -33,7 +33,7 @@ module JustimmoClient
       out = {}
 
       options.each do |key, value|
-        raise ArgumentError, "Invalid option: #{key}" unless @options.key?(key.to_sym)
+        raise JustimmoClient::InvalidOption, key unless @options.key?(key.to_sym)
         group = group_of(key)
 
         if group

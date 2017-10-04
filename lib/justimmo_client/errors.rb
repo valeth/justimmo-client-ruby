@@ -3,7 +3,6 @@
 # Exceptions for internal use
 module JustimmoClient::Errors
   JustimmoError = Class.new(StandardError)
-  InitializationError = Class.new(JustimmoError)
 
   # Raised when configuration validation fails.
   ConfigurationError = Class.new(JustimmoError)
@@ -22,37 +21,24 @@ module JustimmoClient::Errors
     end
   end
 
-  # A mapping could not be found in the mappings hash.
-  class MappingNotFound < JustimmoError
-    def initialize(map)
-      super("Could not find #{map} mapping.")
-    end
-  end
-
-  # A key could not be found in the specified mapping.
-  class KeyNotFound < JustimmoError
-    def initialize(key, map)
-      super("Key #{key} not found in #{map} mapping.")
-    end
-  end
-
-  class NotImplemented < JustimmoError
-    def initialize(meth)
-      super("Method #{meth} not implemented!")
+  # Raised when the option parser rejects an option
+  class InvalidOption < JustimmoError
+    def initialize(key)
+      super("Option '#{key}' not supported")
     end
   end
 
   # Raised when an unsupported API version is set.
   class UnsupportedAPIVersion < ConfigurationError
     def initialize(version)
-      super("API Version #{version} not supported.")
+      super("API Version #{version} not supported")
     end
   end
 
   # Raised on missing required configuration options.
   class MissingConfiguration < ConfigurationError
     def initialize(missing)
-      super("Required configuration missing: #{missing}.")
+      super("Required configuration missing: #{missing}")
     end
   end
 end
