@@ -18,7 +18,7 @@ module JustimmoClient::V1
       type: :objektart,
       subtype: :subobjektart,
       tag: :tagname,
-      room_count: :zimmer,
+      rooms: :zimmer,
       area: :flaeche,
       living_area: :wohnflaeche,
       floor_area: :nutzflaeche,
@@ -148,8 +148,8 @@ module JustimmoClient::V1
           f.add :zip_code
           f.add :zip_code_min
           f.add :zip_code_max
-          f.add :room_count_min
-          f.add :room_count_max
+          f.add :rooms_min
+          f.add :rooms_max
           f.add :number
           f.add :number_min
           f.add :number_max
