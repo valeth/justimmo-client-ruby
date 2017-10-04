@@ -30,6 +30,7 @@ module JustimmoClient::V1
     attribute :videos,                Array
     attribute :images360,             Array
     attribute :links,                 Array
+    attribute :construction_year,     Integer
     attribute :available,             DateTime
     attribute :created_at,            DateTime
     attribute :updated_at,            DateTime
