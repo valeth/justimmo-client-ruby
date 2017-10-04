@@ -36,7 +36,9 @@ module JustimmoClient::V1
       last_name: :nachname,
       phone: :tel,
       location: :ort,
-      all: :alle
+      all: :alle,
+      rent: :miete,
+      purcase: :kauf
     }.freeze
 
     module_function
@@ -166,6 +168,8 @@ module JustimmoClient::V1
           f.add :project_id
           f.add :type
           f.add :parent_id
+          f.add :rent, type: :bool
+          f.add :purcase, type: :bool
           f.add :updated_at_min, as: :aktualisiert_am_von
           f.add :updated_at_max, as: :aktualisiert_am_bis
         end
