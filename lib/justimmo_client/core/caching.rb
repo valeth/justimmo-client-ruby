@@ -27,7 +27,7 @@ module JustimmoClient
 
       def default_cache
         cache = JustimmoClient::Config.cache || NullCache.new
-        log.info("Using default cache #{cache.class}")
+        log.debug("Using default cache #{cache.class}")
         cache
       end
     end
