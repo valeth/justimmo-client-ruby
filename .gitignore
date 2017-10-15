@@ -15,3 +15,4 @@
 coverage
 
 *.gem
+/.ruby-version

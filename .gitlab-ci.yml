@@ -53,7 +53,7 @@ pages:
       - public
     expire_in: 30 days
   only:
-    - master
+    - master@exacting/justimmo_client
 
 deploy:rubygems:
   stage: deploy
@@ -64,4 +64,4 @@ deploy:rubygems:
   script:
     - dpl --provider=rubygems --api-key=$RUBYGEMS_API_KEY
   only:
-    - tags
+    - tags@exacting/justimmo_client
