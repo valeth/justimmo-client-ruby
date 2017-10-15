@@ -25,6 +25,8 @@ module JustimmoClient::V1
       with_retries do
         with_request_error_handler do
           log.debug("Requesting #{uri} with params #{options[:params]}")
+          RestClient.proxy = JustimmoClient::Config.proxy
+          log.debug("Using proxy: #{RestClient.proxy}") if RestClient.proxy
           response = RestClient.get(uri, options)
           response.body
         end
