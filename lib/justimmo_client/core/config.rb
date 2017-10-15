@@ -27,18 +27,21 @@ module JustimmoClient
       def configure
         super
         self.credentials = Base64.urlsafe_encode64("#{username}:#{password}")
-        validate
+        validate_api_version
       end
 
-      def validate
+      def validate_credentials
         missing = REQUIRED.select { |r| @_config[r].nil? }
         raise JustimmoClient::MissingConfiguration, missing unless missing.empty?
+      end
 
+      def validate_api_version
         supported_ver = SUPPORTED_API_VERSIONS.include?(api_ver)
         raise JustimmoClient::UnsupportedAPIVersion, api_ver unless supported_ver
       end
 
       def url
+        validate_credentials
         "#{secure ? 'https' : 'http'}://#{base_url}/v#{api_ver}"
       end
     end
