@@ -16,13 +16,13 @@ module JustimmoClient
     config_accessor(:base_url) { "api.justimmo.at/rest" }
     config_accessor(:secure) { true }
     config_accessor(:api_ver) { 1 }
-    config_accessor(:username)
-    config_accessor(:password)
+    config_accessor(:username) { ENV.fetch("JUSTIMMO_USERNAME", nil) }
+    config_accessor(:password) { ENV.fetch("JUSTIMMO_PASSWORD", nil) }
     config_accessor(:credentials)
     config_accessor(:debug) { false }
     config_accessor(:cache) { nil }
     config_accessor(:request_retries) { 3 }
-    config_accessor(:proxy) { nil }
+    config_accessor(:proxy) { ENV.fetch("JUSTIMMO_PROXY", nil) }
 
     class << self
       def configure
