@@ -23,7 +23,7 @@ module JustimmoClient::V1
       }
 
       with_retries do
-        with_error_handler do
+        with_request_error_handler do
           log.debug("Requesting #{uri} with params #{options[:params]}")
           response = RestClient.get(uri, options)
           response.body
@@ -31,13 +31,13 @@ module JustimmoClient::V1
       end
     end
 
-    def with_error_handler
+    def with_request_error_handler
       yield
     rescue RestClient::Unauthorized
       log.error("Authentication failed, check your configuration.")
       raise JustimmoClient::AuthenticationFailed
-    rescue RestClient::BadRequest, RestClient::NotFound, RestClient::InternalServerError => e
-      raise JustimmoClient::RetrievalFailed, e.message
+    rescue RestClient::Exception, SocketError, Errno::ECONNREFUSED => e
+      raise JustimmoClient::RetrievalFailed, e
     end
 
     def with_retries
