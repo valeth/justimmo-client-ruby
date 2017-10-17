@@ -1,46 +1,99 @@
-.test_job: &test_job
-  environment: testing
+image: "ruby:2.4"
+
+stages:
+  - prepare
+  - test
+  - deploy
+
+# Templates
+
+.ruby_2_4_cache: &ruby_2_4_cache
   cache:
+    key: "$CI_COMMIT_REF_NAME-ruby_2_4"
     paths:
-      - cache/bundler
-  before_script:
-    - bundle install --without development -j $(nproc) --path=cache/bundler
+      - vendor/bundle
+
+.ruby_2_3_cache: &ruby_2_3_cache
+  cache:
+    key: "$CI_COMMIT_REF_NAME-ruby_2_3"
+    paths:
+      - vendor/bundle
+
+.pull_cache: &pull_cache
+  cache:
+    policy: pull
+
+.push_cache: &push_cache
+  cache:
+    policy: push
+
+.ruby_2_3: &ruby_2_3
+  image: "ruby:2.3"
+  <<: *ruby_2_3_cache
+
+.ruby_2_4: &ruby_2_4
+  image: "ruby:2.4"
+  <<: *ruby_2_4_cache
+
+.test_job: &test_job
+  <<: *pull_cache
+  variables:
+    BUNDLE_PATH: "vendor/bundle"
+  stage: test
+  environment: testing
+
+.prepare_job: &prepare_job
+  <<: *push_cache
+  variables:
+    BUNDLE_PATH: "vendor/bundle"
+  stage: prepare
+  script:
+    - bundle install -j $(nproc)
   tags:
     - ruby
 
-.test_job_2_3: &test_job_2_3
-  image: 'ruby:2.3'
-  <<: *test_job
+# Jobs: Prepare
 
-.test_job_2_4: &test_job_2_4
-  image: 'ruby:2.4'
-  <<: *test_job
+prepare:bundler_2_4:
+  <<: *prepare_job
+  <<: *ruby_2_4
 
-test:rubocop_2_3:
-  <<: *test_job_2_3
-  script: bundle exec rubocop
+prepare:bundler_2_3:
+  <<: *prepare_job
+  <<: *ruby_2_3
+
+# Jobs: Test
+
+test:rubocop:
+  <<: *test_job
+  <<: *ruby_2_4
+  script:
+    - bundle exec rubocop
   only:
     - dev
-
-test:rubocop_2_4:
-  <<: *test_job_2_4
-  script: bundle exec rubocop
-  only:
-    - dev
+  tags:
+    - ruby
 
 test:rspec_2_3:
-  <<: *test_job_2_3
-  script: bundle exec rspec
-  artifacts:
-    paths:
-      - coverage/
+  <<: *test_job
+  <<: *ruby_2_3
+  script:
+    - bundle exec rspec
+  tags:
+    - ruby
 
 test:rspec_2_4:
-  <<: *test_job_2_4
-  script: bundle exec rspec
+  <<: *test_job
+  <<: *ruby_2_4
+  script:
+    - bundle exec rspec
   artifacts:
     paths:
       - coverage/
+  tags:
+    - ruby
+
+# Jobs: deploy
 
 pages:
   stage: deploy
@@ -57,8 +110,6 @@ pages:
 
 deploy:rubygems:
   stage: deploy
-  dependencies:
-    - test:rspec_2_4
   before_script:
     - gem install dpl
   script:
