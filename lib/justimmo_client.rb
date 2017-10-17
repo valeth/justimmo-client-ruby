@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "justimmo_client/autoload"
+require "justimmo_client/interface"
 
 # The Justimmo API.
 module JustimmoClient

@@ -176,7 +176,7 @@ module JustimmoClient::V1
           f.add :type do |key, *values|
             values = [values].flatten.map(&:to_sym)
             log.debug(values)
-            types = JustimmoClient::Realty.types
+            types = RealtyInterface.types
             [:type_id, types.select { |x| values.include?(x.name) }.map(&:id)]
           end
           f.add :sub_type_id
@@ -209,7 +209,7 @@ module JustimmoClient::V1
           f.add :updated_at_min, as: :aktualisiert_am_von
           f.add :updated_at_max, as: :aktualisiert_am_bis
           f.add :location do |key, value|
-            cities = JustimmoClient::Realty.zip_codes_and_cities
+            cities = RealtyInterface.zip_codes_and_cities
             [:zip_code, cities.select { |x| x.location == value }.first&.zip_code]
           end
         end

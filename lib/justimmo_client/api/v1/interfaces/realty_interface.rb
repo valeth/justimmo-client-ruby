@@ -2,9 +2,9 @@
 
 require "json"
 
-module JustimmoClient
+module JustimmoClient::V1
   # Public realty query interface
-  module Realty
+  module RealtyInterface
     extend JustimmoClient::Utils
 
     module_function
@@ -53,9 +53,7 @@ module JustimmoClient
     # @option options [DateTime] :updated_at_min
     # @option options [DateTime] :updated_at_max
     # @option options [String] :location
-    # @example Filter by zip code and limit to three results.
-    #    JustimmoClient::Realty.list(zip_code: 6800, limit: 3)
-    # @return [Array<Object>] An array of basic realty objects, or an empty array on error.
+    # @return [Array<Realty>] An array of basic realty objects, or an empty array on error.
     def list(options = {})
       xml_response = request(:realty).list(options)
       model = Struct.new(:realties).new
@@ -66,7 +64,7 @@ module JustimmoClient
 
     # @param [Integer] id
     # @param [Symbol, String] lang
-    # @return [Object, nil] A detailed realty object, or nil if it could not be found.
+    # @return [Realty, nil] A detailed realty object, or nil if it could not be found.
     def detail(id, lang: nil)
       xml_response = request(:realty).detail(id, lang: lang)
       model = Struct.new(:realty).new
@@ -76,12 +74,12 @@ module JustimmoClient
     end
 
     # @see list
-    # @return [Array<Object>] An array of detailed realty objects, or an empty array on error.
+    # @return [Array<Realty>] An array of detailed realty objects, or an empty array on error.
     def details(options = {})
       ids(options).map { |id| detail(id) }
     end
 
-    # @see list
+    # @option (see list)
     # @return [Array<Integer>] An array of realty ids, empty array if no results.
     def ids(options = {})
       json_response = request(:realty).ids(options)
@@ -91,7 +89,7 @@ module JustimmoClient
     end
 
     # @option options [Boolean] :all (false)
-    # @return [Array<Object>]
+    # @return [Array<RealtyCategory>]
     def categories(options = {})
       xml_response = request(:realty).categories(options)
       representer(:realty_category).for_collection.new([]).from_xml(xml_response)
@@ -100,7 +98,7 @@ module JustimmoClient
     end
 
     # @option options [Boolean] :all (false)
-    # @return [Array<Object>]
+    # @return [Array<RealtyType>]
     def types(options = {})
       xml_response = request(:realty).types(options)
       representer(:realty_type).for_collection.new([]).from_xml(xml_response)
@@ -109,7 +107,7 @@ module JustimmoClient
     end
 
     # @option options [Boolean] :all (false)
-    # @return [Array<Object>]
+    # @return [Array<Country>]
     def countries(options = {})
       xml_response = request(:realty).countries(options)
       representer(:country).for_collection.new([]).from_xml(xml_response)
@@ -119,7 +117,7 @@ module JustimmoClient
 
     # @option options [Boolean] :all (false)
     # @option options [Integer] :country (nil)
-    # @return [Array<Object>]
+    # @return [Array<FederalState>]
     def federal_states(options = {})
       xml_response = request(:realty).federal_states(options)
       representer(:federal_state).for_collection.new([]).from_xml(xml_response)
@@ -130,7 +128,7 @@ module JustimmoClient
     # @option options [Boolean] :all (false)
     # @option options [Integer] :country (nil)
     # @option options [Integer] :federal_state (nil)
-    # @return [Array<Object>]
+    # @return [Array<Region>]
     def regions(options = {})
       xml_response = request(:realty).regions(options)
       representer(:region).for_collection.new([]).from_xml(xml_response)
@@ -141,7 +139,7 @@ module JustimmoClient
     # @option options [Boolean] :all (false)
     # @option options [Integer] :country (nil)
     # @option options [Integer] :federal_state (nil)
-    # @return [Array<Object>]
+    # @return [Array<City>]
     def zip_codes_and_cities(options = {})
       xml_response = request(:realty).zip_codes_and_cities(options)
       representer(:city).for_collection.new([]).from_xml(xml_response)

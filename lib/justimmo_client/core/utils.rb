@@ -34,5 +34,9 @@ module JustimmoClient
     def request(name)
       versioned_api("#{name.to_s.classify}Request")
     end
+
+    def interface(name)
+      versioned_api("#{name.to_s.classify}Interface")
+    end
   end
 end

@@ -12,5 +12,6 @@ module JustimmoClient
     autoload_dir "#{API_PATH}/models/*.rb"
     autoload_dir "#{API_PATH}/representers/*.rb"
     autoload_dir "#{API_PATH}/requests/*_request.rb"
+    autoload_dir "#{API_PATH}/interfaces/*_interface.rb"
   end
 end

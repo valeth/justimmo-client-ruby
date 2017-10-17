@@ -1,14 +1,13 @@
 # frozen_string_literal: true
 
-module JustimmoClient
+module JustimmoClient::V1
   # Public employee query interface
-  module Employee
+  module EmployeeInterface
     extend JustimmoClient::Utils
 
     module_function
 
-    # Retrieve a list of employee data.
-    # @return [Array<Object>]
+    # @return [Array<Employee>]
     def list
       xml_response = request(:employee).list
       model = Struct.new(:employees).new
@@ -17,9 +16,7 @@ module JustimmoClient
       []
     end
 
-    # Retrieve detailed information about a single employee.
-    # @param id [Integer] The ID of the employee
-    # @return [Object]
+    # @return [Employee]
     def detail(id)
       xml_response = request(:employee).detail(id)
       model = model(:employee).new
@@ -28,7 +25,7 @@ module JustimmoClient
       nil
     end
 
-    # @return [Array<Integer>] An array of employee IDs
+    # @return [Array<Integer>]
     def ids
       json_response = request(:employee).ids
       ::JSON.parse(json_response).map(&:to_i)
