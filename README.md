@@ -1,8 +1,7 @@
-[![build status](https://gitlab.com/exacting/justimmo-client-ruby/badges/master/build.svg)](https://gitlab.com/exacting/justimmo-client-ruby/pipelines)
-[![coverage report](https://gitlab.com/exacting/justimmo-client-ruby/badges/master/coverage.svg)](https://valeth.gitlab.io/justimmo-client-ruby)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/7cfe6c9965214c439470cc0a480e0e49)](https://www.codacy.com/app/exacting/justimmo-client-ruby?utm_source=gitlab.com&amp;utm_medium=referral&amp;utm_content=exacting/justimmo-client-ruby&amp;utm_campaign=Badge_Grade)
+[![pipeline status](https://gitlab.com/exacting/justimmo_client/badges/master/pipeline.svg)](https://gitlab.com/exacting/justimmo_client/commits/master)
+[![coverage report](https://gitlab.com/exacting/justimmo_client/badges/master/coverage.svg)](https://exacting.gitlab.io/justimmo_client)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d3b88fedb58d44048a527234f3541430)](https://www.codacy.com/app/Exacting/justimmo_client?utm_source=gitlab.com&amp;utm_medium=referral&amp;utm_content=exacting/justimmo_client&amp;utm_campaign=Badge_Grade)
 [![Inline docs](http://inch-ci.org/github/exacting/justimmo-client-ruby.svg?branch=master)](http://inch-ci.org/github/exacting/justimmo-client-ruby)
-
 
 # Justimmo Client
 
@@ -46,7 +45,7 @@ end
 ```ruby
 class RealtyController < ApplicationController
   def index
-    @realties = JustimmoClient::Realty.list(zip_code: 6020, limit: 5)
+    @realties = JustimmoClient.realties(zip_code: 6020, limit: 5)
   end
 end
 ```

@@ -13,4 +13,4 @@ JustimmoClient.configure do |config|
   config.cache    = ActiveSupport::Cache.lookup_store(:memory_store)
 end
 
-pp JustimmoClient::Realty.list(zip_code: 6800, limit: 5)
+pp JustimmoClient.realties(zip_code: 6800, limit: 5)
