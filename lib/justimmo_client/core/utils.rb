@@ -38,5 +38,9 @@ module JustimmoClient
     def interface(name)
       versioned_api("#{name.to_s.classify}Interface")
     end
+
+    def translate(text)
+      I18n.translate("justimmo_client.#{text}")
+    end
   end
 end

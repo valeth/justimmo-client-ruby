@@ -38,4 +38,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "activesupport", "~> 5.1"
   spec.add_dependency "iso_country_codes", "~> 0"
   spec.add_dependency "monetize", "~> 1"
+
+  # other
+  spec.add_dependency "i18n", ">= 0.7", "<= 0.9"
 end

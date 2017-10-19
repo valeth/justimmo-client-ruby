@@ -18,12 +18,16 @@ module JustimmoClient::V1
       tmp
     end
 
-    def to_s
-      to_a.join(", ")
-    end
-
     def map(&block)
       to_a.map(&block)
+    end
+
+    def translated
+      map { |x| translate(x) }
+    end
+
+    def to_s
+      translated.join(", ")
     end
   end
 end

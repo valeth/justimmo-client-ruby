@@ -6,6 +6,7 @@ module JustimmoClient::V1
   # @api private
   class JustimmoBase
     include JustimmoClient::Logging
+    include JustimmoClient::Utils
 
     # :nodoc:
     include Virtus.model do |mod|
