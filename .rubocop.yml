@@ -5,6 +5,7 @@ AllCops:
     - bin/**
     - cache/**/*
     - spec/**/*
+    - vendor/**/*
 
 # [Layout]
 Layout/CaseIndentation:
