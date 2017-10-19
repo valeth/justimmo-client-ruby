@@ -13,7 +13,7 @@ module JustimmoClient
     SUPPORTED_API_VERSIONS = [1].freeze
     REQUIRED = %i[username password].freeze
 
-    config_accessor(:base_url) { "api.justimmo.at/rest" }
+    config_accessor(:base_url) { ENV.fetch("JUSTIMMO_BASE_URL", "api.justimmo.at/rest") }
     config_accessor(:secure) { true }
     config_accessor(:api_ver) { 1 }
     config_accessor(:username) { ENV.fetch("JUSTIMMO_USERNAME", nil) }
@@ -43,6 +43,7 @@ module JustimmoClient
 
       def url
         validate_credentials
+        return "#{base_url}/v#{api_ver}" if self.base_url.start_with?("http")
         "#{secure ? 'https' : 'http'}://#{base_url}/v#{api_ver}"
       end
     end
