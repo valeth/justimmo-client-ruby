@@ -8,10 +8,9 @@ module JustimmoClient::V1
   # @api private
   module JustimmoRequest
     include JustimmoClient::Logging
-    include JustimmoClient::Caching
 
     def get(path, params = {})
-      with_cache(cache_key(path, params)) { request(path, params) }
+      request(path, params)
     end
 
     def request(path, params = {})
@@ -54,13 +53,6 @@ module JustimmoClient::V1
       }
 
       Retriable.retriable(options) { yield }
-    end
-
-    def cache_key(path, params)
-      key = Digest::SHA256.new
-      key << path
-      key << params.to_s
-      key.hexdigest
     end
   end
 end

@@ -35,21 +35,5 @@ module JustimmoClient
     def cache
       JustimmoClient::Caching.cache
     end
-
-    # TODO: JSON serialize/deserialize the cached value
-    def with_cache(key, **options)
-      log.debug("Looking up cache key #{key}")
-      data = cache.read(key)
-
-      if data.nil?
-        log.debug("Cache miss for #{key}")
-        data = yield
-        cache.write(key, data, options)
-      else
-        log.debug("Cache hit for #{key}")
-      end
-
-      data
-    end
   end
 end
