@@ -2,29 +2,14 @@
 
 module JustimmoClient::V1
   module JSON
-    class ContactRepresenter < JustimmoRepresenter
-      property :id
-      property :number
-      property :last_name
-      property :first_name
-      property :phone
-      property :phone_mobile
-      property :salutation
-      property :email
+    class ContactRepresenter < EmployeeRepresenter
       property :email_feedback
+      property :email
+      property :last_name
       property :company
-      property :street
-      property :zip_code
-      property :location
-      property :website
-
-      property :picture,
-               decorator: AttachmentImageRepresenter,
-               class: AttachmentImage
-
-      property :attachment,
-               decorator: AttachmentRepresenter,
-               class: Attachment
+      property :salutation
+      property :phone
+      property :mobile
     end
   end
 end

@@ -50,7 +50,7 @@ module JustimmoClient::V1
     # @param date [String]
     # @return [String, DateTime]
     def available=(date)
-      @available = DateTime.parse(date)
+      @available = DateTime.parse(date) unless date.nil?
     rescue ArgumentError
       log.error("Failed to convert date: #{date}")
       @available = date

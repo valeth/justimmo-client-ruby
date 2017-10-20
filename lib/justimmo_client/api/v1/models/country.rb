@@ -10,7 +10,7 @@ module JustimmoClient::V1
     #   @return [$2]
     attribute :id,     Integer
     attribute :alpha2, String
-    attribute :alpha2, String
+    attribute :alpha3, String
 
     # @!group Instance Method Summary
 

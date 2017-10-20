@@ -36,7 +36,7 @@ module JustimmoClient::V1
        rent rent_net rent_cold rent_including_heating rent_per_sqm deposit
     ].each do |meth|
       define_method("#{meth}=") do |amount|
-        log.debug("Using currency #{currency.name} for #{meth}")
+        # log.debug("Using currency #{currency.name} for #{meth}")
         instance_variable_set("@#{meth}", Monetize.parse(amount))
       end
     end
@@ -57,6 +57,7 @@ module JustimmoClient::V1
     end
 
     def currency=(cur)
+      return if cur.nil?
       @currency = Money::Currency.new(cur)
       Money.default_currency = @currency
       log.debug("Set currency to #{currency.name}")
