@@ -40,7 +40,9 @@ module JustimmoClient
     end
 
     def translate(text)
-      I18n.translate("justimmo_client.#{text}")
+      I18n.translate("justimmo_client.#{text}", raise: true)
+    rescue I18n::MissingTranslationData
+      text.split(".").last.capitalize
     end
   end
 end

@@ -5,3 +5,18 @@ de:
     living: Wohnen
     business: Gewerbe
     investment: Anlage
+
+    types:
+      room: Zimmer
+      apartment: Wohnung
+      house: Haus
+      property: Grundstück
+      office: Büro / Praxis
+      retail: Einzelhandel
+      hospitality: Gastgewerbe
+      business: Industrie / Gewerbe
+      agriculture: Land und Forstwirtschaft
+      other: Sonstige / Sonderobjekte
+      recreational_property_business: Freizeitimmobilie gewerblich
+      yield: Zinshaus / Renditeobjekt
+      parking: Parken
