@@ -40,7 +40,7 @@ module JustimmoClient::V1
     end
 
     def to_s
-      map_translated.join(", ")
+      translated.join(", ")
     end
   end
 end
