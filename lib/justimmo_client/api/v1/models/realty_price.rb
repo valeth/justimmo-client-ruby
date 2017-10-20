@@ -36,7 +36,7 @@ module JustimmoClient::V1
        rent rent_net rent_cold rent_including_heating rent_per_sqm deposit
     ].each do |meth|
       define_method("#{meth}=") do |amount|
-        # log.debug("Using currency #{currency.name} for #{meth}")
+        log.debug("Using currency #{currency&.name} for #{meth}")
         instance_variable_set("@#{meth}", Monetize.parse(amount))
       end
     end
@@ -57,9 +57,8 @@ module JustimmoClient::V1
     end
 
     def currency=(cur)
-      return if cur.nil?
-      @currency = Money::Currency.new(cur)
-      Money.default_currency = @currency
+      @currency = Money::Currency.new(cur) unless cur.nil?
+      Money.default_currency = @currency || :eur
       log.debug("Set currency to #{currency.name}")
     end
 
@@ -79,7 +78,7 @@ module JustimmoClient::V1
     end
 
     def rent_vat
-      return nil unless rent? && rent_net
+      return nil unless rent? && rent_net && @rent_vat
       rent_net / 100 * @rent_vat
     end
 
@@ -93,6 +92,10 @@ module JustimmoClient::V1
 
     def to_s
       on_demand? ? "on demand" : get.format
+    end
+
+    def as_json
+      @attributes.to_s
     end
 
     def inspect

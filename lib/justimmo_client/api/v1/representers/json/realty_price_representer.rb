@@ -1,30 +1,42 @@
 module JustimmoClient::V1
   module JSON
     class RealtyPriceRepresenter < JustimmoRepresenter
-      property :currency
-      property :purcase
-      property :purcase_net
-      property :on_demand
+      %i[
+        purcase
+        purcase_net
+        rent
+        rent_net
+        rent_cold
+        rent_including_heating
+        deposit
+        rent_per_sqm
+        operating_cost
+        operating_cost_net
+        operating_cost_per_sqm
+      ].each do |k|
+        property k,
+          setter: ->(represented:, fragment:, **) { represented.public_send("#{k}=", fragment) },
+          getter: ->(represented:, **) { represented.public_send(k)&.to_f }
+      end
 
-      property :rent
-      property :rent_net
-      property :rent_vat
+      property :currency,
+        setter: ->(represented:, fragment:, **) { represented.currency = fragment },
+        getter: ->(represented:, **) { represented.currency&.id }
 
-      property :deposit
-      property :rent_cold
-      property :rent_including_heating
-      property :rent_per_sqm
-      property :operating_cost_per_sqm
+      property :commission,
+        setter: ->(represented:, fragment:, **) { represented.commission = fragment },
+        getter: ->(represented:, **) { represented.instance_variable_get(:@commission) }
+
+      property :rent_vat,
+        setter: ->(represented:, fragment:, **) { represented.rent_vat = fragment },
+        getter: ->(represented:, **) { represented.instance_variable_get(:@rent_vat) }
 
       property :provision
       property :including_vat
-      property :commission
+      property :on_demand
 
       property :real_estate_taxes
       property :land_registry
-
-      property :operating_cost
-      property :operating_cost_net
       property :operating_cost_vat
     end
   end
