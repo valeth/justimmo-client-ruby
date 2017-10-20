@@ -69,8 +69,8 @@ test:rubocop:
   <<: *ruby_2_4
   script:
     - bundle exec rubocop
-  only:
-    - dev
+  except:
+    - master
   tags:
     - ruby
 
