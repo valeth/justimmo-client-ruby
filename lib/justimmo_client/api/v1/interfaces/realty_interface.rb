@@ -67,7 +67,7 @@ module JustimmoClient::V1
           model = Struct.new(:realties).new
           xml_response = request(:realty).list(options)
           represented = representer(:realty_list).new(model).from_xml(xml_response).realties
-          new_cache = representer(:realty, :json).for_collection.new(realties).to_json
+          new_cache = representer(:realty, :json).for_collection.new(represented).to_json
           [represented, new_cache]
         end
     rescue JustimmoClient::RetrievalFailed
@@ -78,15 +78,15 @@ module JustimmoClient::V1
     # @param [Symbol, String] lang
     # @return [Realty, nil] A detailed realty object, or nil if it could not be found.
     def detail(id, lang: nil)
-      with_cache cache_key("realty/detail", options),
+      with_cache cache_key("realty/detail", lang: lang),
         on_hit: ->(cached) do
-          representer(:realty, :json).new(model(:realty)).from_json(cached)
+          representer(:realty, :json).new(model(:realty).new).from_json(cached)
         end,
         on_miss: -> do
           xml_response = request(:realty).detail(id, lang: lang)
           model = Struct.new(:realty).new
           represented = representer(:realty_detail).new(model).from_xml(xml_response).realty
-          new_cache = representer(:realty, :json).new(realty).to_json
+          new_cache = representer(:realty, :json).new(represented).to_json
           [represented, new_cache]
         end
     rescue JustimmoClient::RetrievalFailed
