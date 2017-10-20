@@ -31,7 +31,7 @@ module JustimmoClient::V1
     end
 
     def to_s
-      ["#{zip_code} #{location}", federal_state, country&.name].compact.join(", ")
+      ["#{zip_code} #{location}", federal_state, country].compact.join(", ")
     end
 
     def inspect

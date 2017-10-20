@@ -78,7 +78,7 @@ module JustimmoClient::V1
     # @param [Symbol, String] lang
     # @return [Realty, nil] A detailed realty object, or nil if it could not be found.
     def detail(id, lang: nil)
-      with_cache cache_key("realty/detail", lang: lang),
+      with_cache cache_key("realty/detail", id: id, lang: lang),
         on_hit: ->(cached) do
           representer(:realty, :json).new(model(:realty).new).from_json(cached)
         end,
