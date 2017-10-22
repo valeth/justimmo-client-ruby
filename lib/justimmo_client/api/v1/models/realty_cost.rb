@@ -55,8 +55,8 @@ module JustimmoClient::V1
       { currency: currency.id, amount: amount.to_f }
     end
 
-    def to_json(*args)
-      to_h.to_json(args)
+    def to_json(options = nil)
+      to_h.to_json(options)
     end
 
     alias as_json to_json
