@@ -22,14 +22,13 @@ module JustimmoClient::V1
     attribute :status_id,             Integer
     attribute :floor,                 String
     attribute :openimmo_id,           String
-    attribute :contact,               Employee
-    attribute :description_furniture, Array[String]
-    attribute :furniture,             Array[String]
-    attribute :images,                Array[Image]
-    attribute :documents,             Array
-    attribute :videos,                Array
-    attribute :images360,             Array
-    attribute :links,                 Array
+    attribute :description_furniture, Array[String], default: []
+    attribute :furniture,             Array[String], default: []
+    attribute :attachments,           Array[Attachment], default: []
+    attribute :documents,             Array, default: []
+    attribute :videos,                Array, default: []
+    attribute :images360,             Array, default: []
+    attribute :links,                 Array, default: []
     attribute :construction_year,     Integer
     attribute :available,             DateTime
     attribute :created_at,            DateTime
@@ -37,14 +36,12 @@ module JustimmoClient::V1
 
     # @!group Instance Method Summary
 
-    def initialize(**options)
-      super(options)
-      @area       = RealtyArea.new
-      @room_count = RealtyRoomCount.new
-      @geo        = GeoLocation.new
-      @usage      = RealtyUsage.new
-      @marketing  = RealtyMarketing.new
-      @price      = RealtyPrice.new
+    def images
+      attachments.select { |x| x.type == "pic" }
+    end
+
+    def title_image
+      attachments.select { |x| x.category == :title_image }.first
     end
 
     # @param date [String]

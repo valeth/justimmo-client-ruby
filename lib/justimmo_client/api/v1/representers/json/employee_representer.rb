@@ -18,13 +18,9 @@ module JustimmoClient::V1
       property :location
       property :website
 
-      property :picture, class: Image do
-        %i[small medium big pfad_medium].each do |size|
-          property size,
-            setter: ->(represented:, fragment:, **) { represented.add_url(fragment, default: :user_big) },
-            getter: ->(represented:, **) { represented[size] }
-        end
-      end
+      collection :attachments,
+        decorator: AttachmentRepresenter,
+        class: Attachment
 
       collection_representer class: Employee
     end

@@ -20,16 +20,23 @@ module JustimmoClient::V1
     attribute :zip_code,    Integer
     attribute :location,    String
     attribute :email_feedback, String
-    attribute :website,     String
-    attribute :picture,     Image
-    attribute :attachment,  Image
-    attribute :position,    String
+    attribute :website,        String
+    attribute :position,       String
+    attribute :attachments,    Array[Attachment], default: []
 
     # @!group Instance Method Summary
 
-    def image
-      picture
+    def images
+      attachments.select { |x| x.type == "pic" }
     end
+
+    alias pictures images
+
+    def image(index = 0)
+      images[index]
+    end
+
+    alias picture image
 
     def full_name(surname_first: false, with_salutation: true)
       name = [first_name, last_name]

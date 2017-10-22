@@ -18,29 +18,18 @@ module JustimmoClient::V1
       property :location,     as: :ort
       property :website,      as: :url
 
-      property :picture,
-        as: :bild,
-        class: Image do
-          %i[small medium big pfad_medium].each do |size|
-            property size, setter: ->(represented:, fragment:, **) { represented.add_url(fragment, default: :user_big) }
-          end
-        end
+      collection :attachments,
+        as: :anhang,
+        wrap: :anhaenge,
+        decorator: AttachmentRepresenter,
+        class: Attachment
 
-      # NOTE: Just contains the picture again
-      #       Comment it out for now in case we still need it later.
-      #
-      # nested :user_defined_anyfield do
-      #   property :attachment,
-      #     as: :anhang,
-      #     class: Image do
-      #       property :category, as: :gruppe, attribute: true
-      #       property :origin, as: :location, attribute: true
-      #       property :title, as: :anhangtitel
-      #       nested :daten do
-      #         property :path, as: :pfad, setter: ->(represented:, fragment:, **) { represented.add_url(fragment, default: :user_big) }
-      #       end
-      #     end
-      # end
+      nested :bild do
+        property :pfad,
+          setter: ->(fragment:, represented:, **) do
+            represented.attachments << Attachment.new(url: fragment)
+          end
+      end
     end
   end
 end
