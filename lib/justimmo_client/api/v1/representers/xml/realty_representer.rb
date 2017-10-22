@@ -113,7 +113,7 @@ module JustimmoClient::V1
         decorator: GeoLocationRepresenter,
         class: GeoLocation
 
-      property :contact, as: :kontaktperson, class: Employee do
+      property :contact, as: :kontaktperson, decorator: EmployeeRepresenter, class: Employee do
         property :email_feedback
         property :email, as: :email_direkt
         property :last_name, as: :name
@@ -121,6 +121,12 @@ module JustimmoClient::V1
         property :salutation, as: :anrede
         property :phone, as: :tel_zentrale
         property :mobile, as: :tel_handy
+
+        nested :bild do
+          property :big, setter: ->(fragment:, represented:, **) do
+            represented.attachments << Attachment.new(url: fragment)
+          end
+        end
       end
 
       property :price,

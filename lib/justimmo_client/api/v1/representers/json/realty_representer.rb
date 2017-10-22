@@ -78,15 +78,9 @@ module JustimmoClient::V1
         property :total
       end
 
-      property :contact, decorator: EmployeeRepresenter, class: Employee do
-        property :email_feedback
-        property :email
-        property :last_name
-        property :company
-        property :salutation
-        property :phone
-        property :mobile
-      end
+      property :contact,
+        decorator: EmployeeRepresenter,
+        class: Employee
 
       property :price, class: RealtyPrice do
         property :purcase
