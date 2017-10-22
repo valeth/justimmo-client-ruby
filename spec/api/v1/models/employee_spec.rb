@@ -30,7 +30,7 @@ describe "JustimmoClient::V1::Employee" do
       email_feedback: be_nil,
       website:        be_nil,
       picture:        be_nil,
-      attachment:     be_nil,
+      attachments:    be_empty,
       position:       be_nil
     )
   end

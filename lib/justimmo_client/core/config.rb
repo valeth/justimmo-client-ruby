@@ -3,6 +3,7 @@
 require "base64"
 require "active_support/configurable"
 require "justimmo_client/errors"
+require "money"
 
 module JustimmoClient
   # Configuration options storage
@@ -23,6 +24,7 @@ module JustimmoClient
     config_accessor(:cache) { nil }
     config_accessor(:request_retries) { 3 }
     config_accessor(:proxy) { ENV.fetch("JUSTIMMO_PROXY", nil) }
+    config_accessor(:default_currency) { ::Money.default_currency = ::Money::Currency.new(:eur) }
 
     class << self
       def configure
@@ -41,8 +43,12 @@ module JustimmoClient
         raise JustimmoClient::UnsupportedAPIVersion, api_ver unless supported_ver
       end
 
-      def url
+      def credentials
         validate_credentials
+        @_config[:credentials]
+      end
+
+      def url
         return "#{base_url}/v#{api_ver}" if self.base_url.start_with?("http")
         "#{secure ? 'https' : 'http'}://#{base_url}/v#{api_ver}"
       end

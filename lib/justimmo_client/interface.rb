@@ -1,5 +1,6 @@
 module JustimmoClient
   extend JustimmoClient::Utils
+  extend JustimmoClient::API
 
   module_function
 

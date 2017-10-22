@@ -4,6 +4,7 @@ module JustimmoClient::V1
   module JustimmoInterface
     include JustimmoClient::Caching
     include JustimmoClient::Logging
+    include JustimmoClient::API
 
     def cache_key(endpoint, params = {})
       key = Digest::SHA256.new

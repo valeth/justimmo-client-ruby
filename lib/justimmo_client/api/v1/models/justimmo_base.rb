@@ -10,6 +10,7 @@ module JustimmoClient::V1
 
     # :nodoc:
     include Virtus.model do |mod|
+      mod.nullify_blank = true
       mod.coercer.config.string.boolean_map = { "0" => false, "1" => true }
     end
   end
