@@ -19,12 +19,7 @@ module JustimmoClient::V1
       property :website
 
       property :email_feedback
-      property :email
-      property :last_name
       property :company
-      property :salutation
-      property :phone
-      property :mobile
 
       collection :attachments,
         decorator: AttachmentRepresenter,

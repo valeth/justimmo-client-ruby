@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
-module JustimmoClient
-  VERSION = "0.6.7"
+module JustimmoC8ient
+  VERSION = "0.6.8"
 end

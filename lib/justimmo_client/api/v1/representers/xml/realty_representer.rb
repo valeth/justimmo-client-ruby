@@ -108,26 +108,31 @@ module JustimmoClient::V1
       end
     end
 
+    class ContactRepresenter < EmployeeRepresenter
+      property :email_feedback
+      property :email,      as: :email_direkt
+      property :last_name,  as: :name
+      property :company,    as: :firma
+      property :salutation, as: :anrede
+      property :phone,      as: :tel_zentrale
+      property :mobile,     as: :tel_handy
+
+      nested :bild do
+        property :big, setter: ->(fragment:, represented:, **) do
+          represented.attachments << Attachment.new(url: fragment)
+        end
+      end
+    end
+
     class RealtyRepresenter < RealtyListRepresenter
       property :geo,
         decorator: GeoLocationRepresenter,
         class: GeoLocation
 
-      property :contact, as: :kontaktperson, decorator: EmployeeRepresenter, class: Employee do
-        property :email_feedback
-        property :email, as: :email_direkt
-        property :last_name, as: :name
-        property :company, as: :firma
-        property :salutation, as: :anrede
-        property :phone, as: :tel_zentrale
-        property :mobile, as: :tel_handy
-
-        nested :bild do
-          property :big, setter: ->(fragment:, represented:, **) do
-            represented.attachments << Attachment.new(url: fragment)
-          end
-        end
-      end
+      property :contact,
+        as: :kontaktperson,
+        decorator: ContactRepresenter,
+        class: Employee
 
       property :price,
         as: :preise,
