@@ -6,6 +6,7 @@ module JustimmoClient::V1
       property :id
       property :alpha2
       property :alpha3
+      property :name
 
       collection_representer class: Country
     end

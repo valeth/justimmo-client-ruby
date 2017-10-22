@@ -16,23 +16,43 @@ module JustimmoClient::V1
     # @!group Instance Method Summary
 
     def initialize(**options)
-      @country = find_country(options[:name])
-      return unless @country
-      options.update(name: @country.name, alpha2: @country.alpha2, alpha3: @country.alpha3)
       super(options)
+      find_country(options[:name])
+      find_country(options[:alpha3])
+      find_country(options[:alpha2])
+      @name   = @country&.name
+      @alpha3 = @country&.alpha3
+      @alpha2 = @country&.alpha2
     end
 
     def alpha2=(code)
-      @alpha2 ||= @country.alpha2
+      find_country(code)
+      @alpha2 ||= @country&.alpha2
     end
 
     def alpha3=(code)
-      @alpha3 ||= @country.alpha3
+      find_country(code)
+      @alpha3 ||= @country&.alpha3
+    end
+
+    def name=(country_name)
+      find_country(country_name)
+      @name ||= @country&.name
     end
 
     def to_s
       name
     end
+
+    def to_h
+      attributes
+    end
+
+    def to_json(options = nil)
+      to_h.to_json(options)
+    end
+
+    alias as_json to_json
 
     def inspect
       "#<#{self.class} #{self}>"
@@ -41,11 +61,14 @@ module JustimmoClient::V1
     private
 
     def find_country(name_or_code)
-      if name_or_code.size <= 3
-        IsoCountryCodes.find(name_or_code)
-      else
-        IsoCountryCodes.search_by_name(name_or_code)
-      end
+      return if name_or_code.nil?
+
+      @country ||=
+        if name_or_code.size <= 3
+          IsoCountryCodes.find(name_or_code)
+        else
+          IsoCountryCodes.search_by_name(name_or_code).first
+        end
     rescue IsoCountryCodes::UnknownCodeError
       nil
     end

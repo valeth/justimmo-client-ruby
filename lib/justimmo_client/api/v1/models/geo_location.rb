@@ -20,8 +20,12 @@ module JustimmoClient::V1
 
     # @!group Instance Method Summary
 
-    def country=(name)
-      @country = Country.new(name: name)
+    def country=(code)
+      @country = Country.new(alpha3: code)
+    end
+
+    def country
+      @country&.alpha3
     end
 
     def floor=(flr)
