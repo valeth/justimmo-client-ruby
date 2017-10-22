@@ -71,6 +71,7 @@ test:rubocop:
     - bundle exec rubocop
   except:
     - master
+    - tag
   tags:
     - ruby
 
