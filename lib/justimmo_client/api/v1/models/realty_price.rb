@@ -1,50 +1,55 @@
 # frozen_string_literal: true
 
-require "monetize"
-
 module JustimmoClient::V1
   class RealtyPrice < JustimmoBase
     # @!group Attributes
 
     # @!macro [attach] attribute
     #   @return [$2]
-    attribute :currency,               Money::Currency
+    attribute :currency,               Symbol, default: :EUR
     attribute :provision,              Boolean
     attribute :including_vat,          Boolean
     attribute :on_demand,              Boolean
     attribute :real_estate_taxes,      Float
     attribute :land_registry,          Float
-    attribute :commission,             Integer
-    attribute :purcase,                Money
-    attribute :purcase_net,            Money
+    attribute :commission,             String
     attribute :rent_vat,               Integer
-    attribute :rent,                   Money
-    attribute :rent_net,               Money
-    attribute :rent_cold,              Money
-    attribute :rent_including_heating, Money
-    attribute :rent_per_sqm,           Money
-    attribute :deposit,                Money
     attribute :operating_cost_vat,     Integer
-    attribute :operating_cost,         Money
-    attribute :operating_cost_net,     Money
-    attribute :operating_cost_per_sqm, Money
+    attribute :purcase,                RealtyCost
+    attribute :purcase_net,            RealtyCost
+    attribute :rent,                   RealtyCost
+    attribute :rent_net,               RealtyCost
+    attribute :rent_cold,              RealtyCost
+    attribute :rent_cold_net,          RealtyCost
+    attribute :rent_including_heating, RealtyCost
+    attribute :rent_per_sqm,           RealtyCost
+    attribute :operating_cost,         RealtyCost
+    attribute :operating_cost_net,     RealtyCost
+    attribute :operating_cost_per_sqm, RealtyCost
+    attribute :deposit,                RealtyCost
 
     # @!group Instance Method Summary
 
-    %w[purcase purcase_net
-       operating_cost operating_cost_net operating_cost_per_sqm
-       rent rent_net rent_cold rent_including_heating rent_per_sqm deposit
+    %i[
+      purcase purcase_net deposit
+      rent rent_net rent_cold rent_cold_net rent_including_heating rent_per_sqm
+      operating_cost operating_cost_net operating_cost_per_sqm
     ].each do |meth|
-      define_method("#{meth}=") do |amount|
-        log.debug("Using currency #{currency&.name} for #{meth}")
-        instance_variable_set("@#{meth}", Monetize.parse(amount))
+      define_method("#{meth}=") do |args|
+        options =
+          case args
+          when Hash   then args.deep_symbolize_keys
+          when String then { amount: args, currency: @currency }
+          else return
+          end
+        instance_variable_set("@#{meth}", RealtyCost.new(options))
       end
     end
 
     def on_demand?
-      return on_demand unless on_demand.nil?
-      return purcase.zero? unless purcase.nil?
-      return rent.zero? unless rent.nil?
+      return on_demand if on_demand
+      return purcase.zero? if purcase
+      return rent.zero? if rent
       true
     end
 
@@ -56,30 +61,9 @@ module JustimmoClient::V1
       !purcase.nil?
     end
 
-    def currency=(cur)
-      @currency = Money::Currency.new(cur) unless cur.nil?
-      Money.default_currency = @currency || :eur
-      log.debug("Set currency to #{currency.name}")
-    end
-
-    # FIXME: this needs some proper analysis of the input string
-    def commission=(text)
-      @commission = text.to_i
-    end
-
-    def commission
-      return nil unless @commission
-
-      if purcase?
-        (get / 100 * @commission) * 1.20
-      else
-        (get * @commission) * 1.20
-      end
-    end
-
-    def rent_vat
-      return nil unless rent? && rent_net && @rent_vat
-      rent_net / 100 * @rent_vat
+    # TODO: add more additional costs
+    def additional
+      [operating_cost].map(&:to_f).sum
     end
 
     def get
@@ -91,15 +75,7 @@ module JustimmoClient::V1
     end
 
     def to_s
-      on_demand? ? "on demand" : get.format
-    end
-
-    def as_json
-      @attributes.to_s
-    end
-
-    def inspect
-      "#<#{self.class} #{self}>"
+      on_demand? ? translate("price.on_demand") : get.to_s
     end
   end
 end

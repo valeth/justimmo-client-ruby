@@ -10,7 +10,7 @@ module JustimmoClient::V1
     #   @return [$2]
     attribute :proximity,     String
     attribute :federal_state, String
-    attribute :country,       String
+    attribute :country,       Country
     attribute :zip_code,      Integer
     attribute :latitude,      Float
     attribute :longitude,     Float
@@ -20,10 +20,8 @@ module JustimmoClient::V1
 
     # @!group Instance Method Summary
 
-    def country=(iso3_or_name)
-      @country = IsoCountryCodes.find(iso3_or_name).name
-    rescue IsoCountryCodes::UnknownCodeError
-      @country = iso3_or_name
+    def country=(name)
+      @country = Country.new(name: name)
     end
 
     def floor=(flr)

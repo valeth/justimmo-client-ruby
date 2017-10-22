@@ -173,6 +173,51 @@ module JustimmoClient::V1
             options[:doc].css("user_defined_simplefield[feldname=sub_objektart_id]").text
           end
       end
+
+      nested :ausstattung do
+      end
+
+      nested :zustand_angaben do
+        property :construction_year, as: :baujahr
+      end
+
+      nested :freitexte do
+        property :title, as: :objekttitel
+
+        property :description,
+          as: :objektbeschreibung,
+          parse_filter: FILTERS[:sanitize_newline]
+
+        property :description_furniture,
+          as: :ausstatt_beschr,
+          parse_filter: FILTERS[:str_to_a]
+
+        nested :user_defined_anyfield do
+          property :furniture, as: :justimmo_moeblierung
+        end
+      end
+
+      nested :verwaltung_objekt do
+        property :available, as: :verfuegbar_ab
+
+        property :status_id
+
+        property :created_at,
+          as: :user_defined_simplefield,
+          parse_filter: ->(_fragment, options) { options[:doc].css("user_defined_simplefield[feldname=erstellt_am]").text }
+
+        property :updated_at,
+          as: :user_defined_simplefield,
+          parse_filter: ->(_fragment, options) { options[:doc].css("user_defined_simplefield[feldname=aktualisiert_am]").text }
+      end
+
+      nested :verwaltung_techn do
+        property :id,          as: :objektnr_intern
+        property :number,      as: :objektnr_extern
+        property :openimmo_id, as: :openimmo_obid
+      end
+
+      collection_representer class: Realty
     end
   end
 end

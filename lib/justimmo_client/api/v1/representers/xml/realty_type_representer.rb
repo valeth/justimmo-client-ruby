@@ -21,6 +21,8 @@ module JustimmoClient::V1
         "Parken" => :parking
       }.freeze
 
+      private_constant :TRANSLATION_MAPPING
+
       property :id
       property :name,
         parse_filter: ->(fragment, **) { TRANSLATION_MAPPING[fragment] }

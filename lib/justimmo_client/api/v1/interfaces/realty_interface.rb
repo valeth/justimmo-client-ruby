@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "json"
+require "nokogiri"
 
 module JustimmoClient::V1
   # Public realty query interface
@@ -64,9 +65,10 @@ module JustimmoClient::V1
           representer(:realty, :json).for_collection.new([]).from_json(cached)
         end,
         on_miss: -> do
-          model = Struct.new(:realties).new
-          xml_response = request(:realty).list(options)
-          represented = representer(:realty_list).new(model).from_xml(xml_response).realties
+          doc = Nokogiri::XML(request(:realty).list(options))
+          doc.at_css("query-result").remove
+          xml_response = doc.to_xml
+          represented = representer(:realty).for_collection.new([]).from_xml(xml_response)
           new_cache = representer(:realty, :json).for_collection.new(represented).to_json
           [represented, new_cache]
         end
@@ -84,8 +86,7 @@ module JustimmoClient::V1
         end,
         on_miss: -> do
           xml_response = request(:realty).detail(id, lang: lang)
-          model = Struct.new(:realty).new
-          represented = representer(:realty_detail).new(model).from_xml(xml_response).realty
+          represented = representer(:realty).for_collection.new([]).from_xml(xml_response).first
           new_cache = representer(:realty, :json).new(represented).to_json
           [represented, new_cache]
         end

@@ -12,10 +12,7 @@ module JustimmoClient::V1
     # @!group Instance Method Summary
 
     def to_a
-      tmp = []
-      tmp << :buy if buy?
-      tmp << :rent if rent?
-      tmp
+      attributes.select { |_k, v| v }.keys
     end
 
     def map(&block)

@@ -6,19 +6,19 @@ module JustimmoClient::V1
 
     # @!macro [attach] attribute
     #   @return [$2]
-    attribute :id,          Integer
-    attribute :number,      Integer
-    attribute :email,       String
-    attribute :phone,       String
-    attribute :mobile,      String
-    attribute :fax,         String
-    attribute :last_name,   String
-    attribute :first_name,  String
-    attribute :salutation,  String
-    attribute :company,     String
-    attribute :street,      String
-    attribute :zip_code,    Integer
-    attribute :location,    String
+    attribute :id,             Integer
+    attribute :number,         Integer
+    attribute :email,          String
+    attribute :phone,          String
+    attribute :mobile,         String
+    attribute :fax,            String
+    attribute :last_name,      String
+    attribute :first_name,     String
+    attribute :salutation,     String
+    attribute :company,        String
+    attribute :street,         String
+    attribute :zip_code,       Integer
+    attribute :location,       String
     attribute :email_feedback, String
     attribute :website,        String
     attribute :position,       String

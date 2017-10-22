@@ -6,7 +6,7 @@ module JustimmoClient::V1
 
     # @!macro [attach] attribute
     #   @return [$2]
-    attribute :id, Integer
+    attribute :id,               Integer
     attribute :country_id,       Integer
     attribute :region_id,        Integer
     attribute :zip_code,         Integer

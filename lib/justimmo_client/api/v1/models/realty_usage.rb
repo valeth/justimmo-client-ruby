@@ -24,11 +24,7 @@ module JustimmoClient::V1
     # @!group Instance Method Summary
 
     def to_a
-      tmp = []
-      tmp << :living if living?
-      tmp << :business if business?
-      tmp << :investment if investment?
-      tmp
+      attributes.select { |_k, v| v }.keys
     end
 
     def map(&block)

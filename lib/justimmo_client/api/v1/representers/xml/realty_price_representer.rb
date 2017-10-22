@@ -7,8 +7,10 @@ module JustimmoClient::V1
         property :currency, as: :iso_waehrung, attribute: true
       end
 
-      property :purcase,     as: :kaufpreis
+      property :purcase, as: :kaufpreis
       property :purcase_net, as: :kaufpreisnetto
+      # property :purcase_per_sqm, as: :kaufpreis_pro_qm
+
       nested :kaufpreis do
         property :on_demand, as: :auf_anfrage, attribute: true
       end
@@ -21,6 +23,7 @@ module JustimmoClient::V1
 
       property :deposit,                as: :kaution
       property :rent_cold,              as: :kaltmiete
+      property :rent_cold_net,          as: :nettokaltmiete
       property :rent_including_heating, as: :warmmiete
       property :rent_per_sqm,           as: :mietpreis_pro_qm
       property :operating_cost_per_sqm, as: :betriebskosten_pro_qm
