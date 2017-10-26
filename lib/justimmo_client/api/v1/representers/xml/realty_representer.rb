@@ -147,10 +147,18 @@ module JustimmoClient::V1
         REALTY_ROOMS.each { |k, v| property k, as: v }
       end
 
-      property :documents, as: :dokumente
-      property :videos
-      property :images360, as: :bilder360
-      property :links
+      property :documents,
+        as: :dokumente,
+        parse_filter: ->(fragment, _options) { fragment.empty? ? nil : fragment }
+
+      property :videos,
+        parse_filter: ->(fragment, _options) { fragment.empty? ? nil : fragment }
+
+      property :images360, as: :bilder360,
+        parse_filter: ->(fragment, _options) { fragment.empty? ? nil : fragment }
+
+      property :links,
+        parse_filter: ->(fragment, _options) { fragment.empty? ? nil : fragment }
 
       collection :attachments,
         as: :anhang,

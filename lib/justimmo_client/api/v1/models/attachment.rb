@@ -14,10 +14,14 @@ module JustimmoClient::V1
     attribute :format,   String
     attribute :type,     String
     attribute :file,     String
+    attribute :size,     Symbol
 
+    # FIXME: the attachment can be something other than a image file
+    #        maybe move type detection into representer?
     def url=(value)
       path = URI.parse(value).path.sub("/public/", "")
       @type, size, file = path.split("/")
+      return if file.nil?
       @format ||= ::File.extname(file).tr(".", "")
       @file = ::File.basename(file, ".#{@format}")
       @size = size.start_with?("user") ? :user_big : :big

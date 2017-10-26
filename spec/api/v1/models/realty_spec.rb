@@ -1,49 +1,43 @@
 require "spec_helper"
 
-describe "JustimmoClient::V1::Realty" do
-  let(:realty) do
-    JustimmoClient::V1::Realty.new({
-      id:           "100000",
-      number:       "100",
-      title:        "Title",
-      teaser:       "",
-      description:  "<ul>\n<li>one</li>\n<li>two</li>\n<li>three</li>\n</ul>\nTest description &amp; HTML excapes",
-      type_id:      "5",
-      created_at:   "01-01-2017",
-      updated_at:   "01-10-2017"
-    })
+RSpec.describe JustimmoClient::V1::Realty do
+  let(:model) { JustimmoClient::V1::Realty.new }
+  let(:xml_representer) { JustimmoClient::V1::XML::RealtyRepresenter }
+  let(:json_representer) { JustimmoClient::V1::JSON::RealtyRepresenter }
+
+  context "detail" do
+    let(:realty) { build :realty, id: 123456, number: 123 }
+    let(:xml) { fixture("api/v1/realty_detail.xml") }
+    let(:represented) do
+      xml_representer.for_collection.new([]).from_xml(xml).first
+    end
+
+    it "can represent detailed information" do
+      expect(represented).to eq(realty)
+    end
+
+    it "can be JSON serialized" do
+      json = json_representer.new(represented).to_json
+      converted = json_representer.new(model).from_json(json)
+      expect(converted).to eq(realty)
+    end
   end
 
-  it "has valid attributes" do
-    expect(realty).to have_attributes(
-      id:           be_an(Integer),
-      number:       be_an(Integer),
-      title:        be_a(String),
-      description:  "Test description &amp; HTML excapes",
-      teaser:       ["one", "two", "three"],
-      usage:        be_nil,
-      marketing:    be_nil,
-      type_id:      be_an(Integer),
-      sub_type_id:  be_nil,
-      geo:          be_nil,
-      area:         be_nil,
-      room_count:   be_nil,
-      price:        be_nil,
-      status_id:    be_nil,
-      openimmo_id:  be_nil,
-      contact:      be_nil,
-      description_furniture:  be_an(Array),
-      furniture:    be_an(Array),
-      attachments:  be_an(Array),
-      documents:    be_an(Array),
-      videos:       be_an(Array),
-      images360:    be_an(Array),
-      links:        be_an(Array),
-      available:    be_nil,
-      created_at:   be_a(DateTime),
-      updated_at:   be_a(DateTime)
-    )
+  context "list" do
+    let(:realties) { build_list(:realty_list, 3) }
+    let(:xml) { fixture("api/v1/realty_list.xml") }
+    let(:represented) do
+      xml_representer.for_collection.new([]).from_xml(xml)[1..-1]
+    end
+
+    it "can represent a list with basic information" do
+      expect(represented).to eq(realties)
+    end
+
+    it "can be JSON serialized" do
+      json = json_representer.for_collection.new(represented).to_json
+      converted = json_representer.for_collection.new([]).from_json(json)
+      expect(converted).to eq(represented)
+    end
   end
-
-
 end

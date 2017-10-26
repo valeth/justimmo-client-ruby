@@ -1,44 +1,44 @@
 require "spec_helper"
 
-describe "JustimmoClient::V1::Employee" do
-  let(:employee) do
-    JustimmoClient::V1::Employee.new({
-      id:         "123456",
-      number:     "1",
-      first_name: "John",
-      last_name:  "Doe",
-      salutation: "Mr.",
-      zip_code:   "1234"
-    })
+RSpec.describe JustimmoClient::V1::Employee do
+  let(:model)     { JustimmoClient::V1::Employee.new }
+  let(:json_repr) { JustimmoClient::V1::JSON::EmployeeRepresenter }
+
+  context "detail" do
+    let(:xml) { fixture("api/v1/employee_detail.xml") }
+    let(:xml_representer) { JustimmoClient::V1::XML::EmployeeRepresenter }
+    let(:employee) { build(:employee_detail) }
+    let(:represented) do
+      xml_representer.new(model).from_xml(xml)
+    end
+
+    it "represents detailed employee information" do
+      expect(represented).to eq(employee)
+    end
+
+    it "can be JSON serialized" do
+      json = json_repr.new(represented).to_json
+      converted = json_repr.new(model).from_json(json)
+      expect(converted).to eq(represented)
+    end
   end
 
-  it "has valid attributes" do
-    expect(employee).to have_attributes(
-      id:             be_an(Integer),
-      number:         be_an(Integer),
-      first_name:     "John",
-      last_name:      "Doe",
-      email:          be_nil,
-      phone:          be_nil,
-      mobile:         be_nil,
-      fax:            be_nil,
-      salutation:     "Mr.",
-      company:        be_nil,
-      street:         be_nil,
-      zip_code:       be_an(Integer),
-      location:       be_nil,
-      email_feedback: be_nil,
-      website:        be_nil,
-      picture:        be_nil,
-      attachments:    be_empty,
-      position:       be_nil
-    )
-  end
+  context "list" do
+    let(:xml) { fixture("api/v1/employee_list.xml") }
+    let(:xml_representer) { JustimmoClient::V1::XML::EmployeeListRepresenter }
+    let(:employees) { build_list(:employee_list, 3) }
+    let(:represented) do
+      xml_representer.new(Struct.new(:employees).new).from_xml(xml).employees
+    end
 
-  it "can display the full name" do
-    expect(employee.full_name).to eq("Mr. John Doe")
-    expect(employee.full_name surname_first: true).to eq("Mr. Doe John")
-    expect(employee.full_name with_salutation: false).to eq("John Doe")
-    expect(employee.full_name surname_first: true, with_salutation: false).to eq("Doe John")
+    it "represents a list of employees" do
+      expect(represented).to eq(employees)
+    end
+
+    it "can be JSON serialized" do
+      json = json_repr.for_collection.new(represented).to_json
+      converted = json_repr.for_collection.new([]).from_json(json)
+      expect(converted).to eq(represented)
+    end
   end
 end

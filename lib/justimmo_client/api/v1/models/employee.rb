@@ -14,7 +14,7 @@ module JustimmoClient::V1
     attribute :fax,            String
     attribute :last_name,      String
     attribute :first_name,     String
-    attribute :salutation,     String
+    attribute :salutation,     String, default: ""
     attribute :company,        String
     attribute :street,         String
     attribute :zip_code,       Integer
@@ -47,10 +47,6 @@ module JustimmoClient::V1
 
     def to_s
       full_name
-    end
-
-    def inspect
-      "#<#{self.class} #{self}>"
     end
   end
 end

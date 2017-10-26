@@ -15,7 +15,6 @@ module JustimmoClient::V1
     attribute :latitude,      Float
     attribute :longitude,     Float
     attribute :location,      String
-    attribute :proximity,     String
     attribute :floor,         Integer
 
     # @!group Instance Method Summary
@@ -38,10 +37,6 @@ module JustimmoClient::V1
 
     def inspect
       "#<#{self.class} #{self}>"
-    end
-
-    def to_h
-      { latitude: latitude, longitude: longitude }
     end
 
     def to_a

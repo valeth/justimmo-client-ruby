@@ -36,6 +36,17 @@ module JustimmoClient::V1
 
     # @!group Instance Method Summary
 
+    def initialize(**options)
+      super(options)
+      @contact ||= Employee.new
+      @usage ||= RealtyUsage.new
+      @marketing ||= RealtyMarketing.new
+      @geo ||= GeoLocation.new
+      @area ||= RealtyArea.new
+      @room_count ||= RealtyRoomCount.new
+      @price ||= RealtyPrice.new
+    end
+
     def images
       attachments.select { |x| x.type == "pic" }
     end
@@ -58,17 +69,19 @@ module JustimmoClient::V1
         if @teaser.empty?
           parts = desc.partition("</ul>\n")
           self.teaser = parts[0..1].join
-          parts.last
+          parts.last.strip
         else
-          desc
+          desc.strip
         end
     end
 
     def teaser=(tea)
       @teaser =
         case tea
-        when Array then tea
-        when String then tea&.gsub(/<\/?(ul|li)>/, "")&.strip&.split("\n")
+        when Array
+          tea.map(&:strip)
+        when String
+          tea.gsub(/<\/?(ul|li)>/, "").strip.split("\n").map(&:strip)
         else []
         end
     end
