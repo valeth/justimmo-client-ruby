@@ -5,6 +5,29 @@ module JustimmoClient
   class OptionParser
     include JustimmoClient::Logging
 
+    # Raised when option parsing fails
+    OptionParserError = Class.new(StandardError)
+
+    # Raised when the option parser rejects an option
+    class InvalidOption < OptionParserError
+      def initialize(key)
+        super "Option '#{key}' not supported"
+      end
+    end
+
+    # Raised when the option parser rejects a value
+    class InvalidValue < OptionParserError
+      def initialize(value)
+        super "'#{value}' is not in the list of accepted values"
+      end
+    end
+
+    class DuplicateKeyGroup < OptionParserError
+      def initialize(key, group)
+        super "Key #{key} is already in group #{group}"
+      end
+    end
+
     attr_accessor :range_suffix
     attr_accessor :mappings
 
@@ -33,14 +56,14 @@ module JustimmoClient
       out = {}
 
       options.each do |key, value|
-        raise JustimmoClient::InvalidOption, key unless @options.key?(key.to_sym)
+        raise InvalidOption, key unless @options.key?(key.to_sym)
         group = group_of(key)
 
         if group
           out[group] ||= {}
-          out[group].update(parse_option(key.to_sym, value))
+          out[group].update(parse_option(key.to_sym, value).reject { |_k, v| v.nil? })
         else
-          out.update(parse_option(key.to_sym, value))
+          out.update(parse_option(key.to_sym, value).reject { |_k, v| v.nil? })
         end
       end
 
@@ -50,6 +73,9 @@ module JustimmoClient
     private
 
     def add_option(key, **options, &block)
+      group = group_of(key)
+      raise DuplicateKeyGroup.new(key, group) unless group.nil?
+
       @options[key.to_sym] = {
         group: @context,
         type: options[:type],
@@ -94,7 +120,7 @@ module JustimmoClient
 
     def parse_option(key, value)
       values = @options.dig(key, :values)
-      raise JustimmoClient::InvalidValue, value unless values.nil? || values.include?(value)
+      raise InvalidValue, value unless values.nil? || values.include?(value)
 
       key, value = apply_mod(key.to_sym, value) if has_mod?(key)
 
