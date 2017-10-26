@@ -9,10 +9,12 @@ Gem::Specification.new do |spec|
   spec.name          = "justimmo_client"
   spec.version       = JustimmoClient::VERSION
   spec.author        = "Patrick Auernig"
-  spec.email         = "patrick.auernig@mykolab.com"
+  spec.email         = "dev.patrick.auernig@gmail.com"
   spec.license       = "MIT"
   spec.summary       = "API client for Justimmo"
   spec.homepage      = "https://gitlab.com/exacting/justimmo-client-ruby"
+
+  spec.required_ruby_version = ">= 2.3"
 
   spec.files = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})
@@ -26,18 +28,18 @@ Gem::Specification.new do |spec|
 
   # requests
   spec.add_dependency "rest-client", "~> 2"
-  spec.add_dependency "retriable",   "~> 2.0"
+  spec.add_dependency "retriable",   "~> 3.0"
 
   # parsing
-  spec.add_dependency "nokogiri", "~> 1.7"
-  spec.add_dependency "multi_json", "~> 1"
+  spec.add_dependency "nokogiri",      "~> 1.7"
+  spec.add_dependency "multi_json",    "~> 1"
   spec.add_dependency "representable", "~> 3.0"
 
   # models
-  spec.add_dependency "virtus", "~> 1"
-  spec.add_dependency "activesupport", "~> 5.1"
+  spec.add_dependency "virtus",            "~> 1"
+  spec.add_dependency "activesupport",     "~> 5.1"
   spec.add_dependency "iso_country_codes", "~> 0"
-  spec.add_dependency "monetize", "~> 1"
+  spec.add_dependency "monetize",          "~> 1"
 
   # other
   spec.add_dependency "i18n", ">= 0.7", "<= 0.9"

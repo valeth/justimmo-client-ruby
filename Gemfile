@@ -2,15 +2,16 @@
 
 source "https://rubygems.org"
 
-group :test do
-  # Test coverage reporting
-  gem "simplecov", require: false
+group :test, :development do
+  gem "rubocop", "0.51", require: false
+  gem "dotenv"
 end
 
-group :test, :development do
-  gem "rspec",   "~> 3.0"
-  gem "rubocop", "~> 0.48"
-  gem "dotenv"
+group :test do
+  gem "simplecov", require: false
+  gem "factory_girl", "4.8.1"
+  gem "rspec",        "~> 3.0"
+  gem "webmock",      "~> 3.1.0"
 end
 
 group :development do
