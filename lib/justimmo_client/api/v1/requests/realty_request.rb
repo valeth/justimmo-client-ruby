@@ -146,9 +146,6 @@ module JustimmoClient::V1
 
     def with_error_handler
       yield
-    rescue JustimmoClient::OptionParserError => e
-      log.error(e)
-      raise JustimmoClient::RetrievalFailed, e
     end
 
     # @!group Option Parsers

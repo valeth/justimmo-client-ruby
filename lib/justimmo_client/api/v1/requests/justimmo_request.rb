@@ -21,7 +21,7 @@ module JustimmoClient::V1
         Authorization: "Basic #{JustimmoClient::Config.credentials}"
       }
 
-      with_retries do
+      Retriable.retriable do
         with_request_error_handler do
           log.debug("Requesting #{uri} with params #{options[:params]}")
           RestClient.proxy = JustimmoClient::Config.proxy
@@ -39,20 +39,6 @@ module JustimmoClient::V1
       raise JustimmoClient::AuthenticationFailed
     rescue RestClient::Exception, SocketError, Errno::ECONNREFUSED => e
       raise JustimmoClient::RetrievalFailed, e
-    end
-
-    def with_retries
-      options = {
-        base_interval: 2.0,
-        tries: JustimmoClient::Config.request_retries,
-        on_retry: proc do |exception, try, elapsed_time, next_interval|
-          log.error("#{exception.class}: #{exception}")
-          log.error("Try #{try} in #{elapsed_time} seconds, retrying in #{next_interval} seconds.")
-        end,
-        on: JustimmoClient::RetrievalFailed
-      }
-
-      Retriable.retriable(options) { yield }
     end
   end
 end

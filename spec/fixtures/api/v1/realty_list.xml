@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<justimmo>
+  <query-result>
+    <count>3</count>
+  </query-result>
+
+  <immobilie>
+    <id>123456</id>
+    <objektnummer>123</objektnummer>
+    <objektkategorie>
+      <nutzungsart WOHNEN="1" GEWERBE="0" ANLAGE="0"/>
+      <vermarktungsart KAUF="1" MIETE_PACHT="0"/>
+      <user_defined_simplefield feldname="objektart_id">5</user_defined_simplefield>
+      <user_defined_simplefield feldname="sub_objektart_id">11</user_defined_simplefield>
+    </objektkategorie>
+    <titel>Test object</titel>
+    <objektbeschreibung>
+      &lt;ul&gt;&#13;
+      &lt;li&gt;point one&lt;/li&gt;&#13;
+      &lt;li&gt;point two&lt;/li&gt;&#13;
+      &lt;li&gt;point three&lt;/li&gt;&#13;
+      &lt;/ul&gt;&#13;
+      &lt;p&gt;Just a test object description.&lt;/p&gt;
+    </objektbeschreibung>
+    <ort>Some Place</ort>
+    <plz>1234</plz>
+    <status_id>5</status_id>
+    <erstellt_am>2017-01-01 00:00:00</erstellt_am>
+    <aktualisiert_am>2017-01-10 00:00:00</aktualisiert_am>
+  </immobilie>
+
+  <immobilie>
+    <id>123457</id>
+    <objektnummer>124</objektnummer>
+    <objektkategorie>
+      <nutzungsart WOHNEN="1" GEWERBE="0" ANLAGE="0"/>
+      <vermarktungsart KAUF="1" MIETE_PACHT="0"/>
+      <user_defined_simplefield feldname="objektart_id">5</user_defined_simplefield>
+      <user_defined_simplefield feldname="sub_objektart_id">11</user_defined_simplefield>
+    </objektkategorie>
+    <titel>Test object</titel>
+    <objektbeschreibung>
+      &lt;ul&gt;&#13;
+      &lt;li&gt;point one&lt;/li&gt;&#13;
+      &lt;li&gt;point two&lt;/li&gt;&#13;
+      &lt;li&gt;point three&lt;/li&gt;&#13;
+      &lt;/ul&gt;&#13;
+      &lt;p&gt;Just a test object description.&lt;/p&gt;
+    </objektbeschreibung>
+    <ort>Some Place</ort>
+    <plz>1234</plz>
+    <status_id>5</status_id>
+    <erstellt_am>2017-01-01 00:00:00</erstellt_am>
+    <aktualisiert_am>2017-01-10 00:00:00</aktualisiert_am>
+  </immobilie>
+
+  <immobilie>
+    <id>123458</id>
+    <objektnummer>125</objektnummer>
+    <objektkategorie>
+      <nutzungsart WOHNEN="1" GEWERBE="0" ANLAGE="0"/>
+      <vermarktungsart KAUF="1" MIETE_PACHT="0"/>
+      <user_defined_simplefield feldname="objektart_id">5</user_defined_simplefield>
+      <user_defined_simplefield feldname="sub_objektart_id">11</user_defined_simplefield>
+    </objektkategorie>
+    <titel>Test object</titel>
+    <objektbeschreibung>
+      &lt;ul&gt;&#13;
+      &lt;li&gt;point one&lt;/li&gt;&#13;
+      &lt;li&gt;point two&lt;/li&gt;&#13;
+      &lt;li&gt;point three&lt;/li&gt;&#13;
+      &lt;/ul&gt;&#13;
+      &lt;p&gt;Just a test object description.&lt;/p&gt;
+    </objektbeschreibung>
+    <ort>Some Place</ort>
+    <plz>1234</plz>
+    <status_id>5</status_id>
+    <erstellt_am>2017-01-01 00:00:00</erstellt_am>
+    <aktualisiert_am>2017-01-10 00:00:00</aktualisiert_am>
+  </immobilie>
+</justimmo>

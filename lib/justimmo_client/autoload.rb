@@ -2,10 +2,11 @@
 
 require "justimmo_client/version"
 require "justimmo_client/errors"
-require "justimmo_client/misc"
 
 module JustimmoClient
   include JustimmoClient::Errors
+
+  require "justimmo_client/misc"
 
   autoload :Config,   "justimmo_client/core/config"
   autoload :Logging,  "justimmo_client/core/logging"

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<justimmo>
+  <id>123456</id>
+  <bild>
+    <pfad>https://files.justimmo.at/public/pic/user_small/nonexistent.jpg</pfad>
+  </bild>
+  <personennummer>123</personennummer>
+  <vorname>John</vorname>
+  <nachname>Doe</nachname>
+  <titel>Dr.</titel>
+  <position>Test Dummy</postition>
+  <tel>+43 1234 56789</tel>
+  <email>john.doe@testlab.net</email>
+  <strasse>Crashlane 66</strasse>
+  <plz>1234</plz>
+  <ort>Somewhere</ort>
+  <url>https://example.com</url>
+  <anhaenge/>
+</justimmo>

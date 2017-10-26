@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<justimmo>
+  <kategorie name="something">
+    <mitarbeiter>
+      <id>123456</id>
+      <bild>
+        <pfad>https://files.justimmo.at/public/pic/user_small/nonexistent.jpg</pfad>
+      </bild>
+      <personennummer>123</personennummer>
+      <vorname>John</vorname>
+      <nachname>Doe</nachname>
+      <titel>Dr.</titel>
+      <position>Test Dummy</postition>
+      <tel>+43 1234 56789</tel>
+      <email>john.doe@testlab.net</email>
+      <strasse>Crashlane 66</strasse>
+      <plz>1234</plz>
+      <ort>Somewhere</ort>
+      <url>https://example.com</url>
+      <anhaenge/>
+    </mitarbeiter>
+
+    <mitarbeiter>
+      <id>123457</id>
+      <bild>
+        <pfad>https://files.justimmo.at/public/pic/user_small/nonexistent.jpg</pfad>
+      </bild>
+      <personennummer>124</personennummer>
+      <vorname>Jane</vorname>
+      <nachname>Doe</nachname>
+      <titel />
+      <position>Test Dummy</position>
+      <tel>+43 1234 65879</tel>
+      <email>jane.doe@testlab.net</email>
+      <strasse>Crashlane 66</strasse>
+      <plz>1234</plz>
+      <ort>Somewhere</ort>
+      <url>https://example.com</url>
+      <anhaenge/>
+    </mitarbeiter>
+
+    <mitarbeiter>
+      <id>123458</id>
+      <bild>
+        <pfad>https://files.justimmo.at/public/pic/user_small/nonexistent.jpg</pfad>
+      </bild>
+      <personennummer>125</personennummer>
+      <vorname>Dan</vorname>
+      <nachname>Deff</nachname>
+      <titel>Mag.</titel>
+      <position>Test Dummy</position>
+      <tel>+43 1234 96587</tel>
+      <email>dan.deff@testlab.net</email>
+      <strasse>Crashlane 66</strasse>
+      <plz>1234</plz>
+      <ort>Somewhere</ort>
+      <url>https://example.com</url>
+      <anhaenge/>
+    </mitarbeiter>
+  </kategorie>
+</justimmo>

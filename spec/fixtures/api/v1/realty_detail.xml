@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<justimmo>
+  <immobilie>
+    <objektkategorie>
+      <nutzungsart WOHNEN="1" GEWERBE="0" ANLAGE="0" />
+      <vermarktungsart KAUF="1" MIETE_PACHT="0" />
+      <user_defined_simplefield feldname="objektart_id">5</user_defined_simplefield>
+      <user_defined_simplefield feldname="sub_objektart_id">11</user_defined_simplefield>
+    </objektkategorie>
+    <geo>
+      <plz>1234</plz>
+      <ort>Some Place</ort>
+      <bundesland>Some State</bundesland>
+      <land iso_land="AUT" />
+      <user_defined_simplefield feldname="geokoordinaten_laengengrad_exakt">1.2345678</user_defined_simplefield>
+      <user_defined_simplefield feldname="geokoordinaten_breitengrad_exakt">8.7654321</user_defined_simplefield>
+    </geo>
+    <kontaktperson>
+    </kontaktperson>
+    <preise>
+    </preise>
+    <flaechen>
+    </flaechen>
+    <ausstattung>
+    </ausstattung>
+    <zustand_angaben>
+    </zustand_angaben>
+    <freitexte>
+      <objekttitel>Test object</objekttitel>
+        <!-- fuck this shit -->
+      <objektbeschreibung>
+        &lt;ul&gt;&#13;
+        &lt;li&gt;point one&lt;/li&gt;&#13;
+        &lt;li&gt;point two&lt;/li&gt;&#13;
+        &lt;li&gt;point three&lt;/li&gt;&#13;
+        &lt;/ul&gt;&#13;
+        &lt;p&gt;Just a test object description.&lt;/p&gt;
+      </objektbeschreibung>
+    </freitexte>
+    <anhaenge>
+    </anhaenge>
+    <verwaltung_objekt>
+      <status_id>5</status_id>
+      <user_defined_simplefield feldname="erstellt_am">2017-01-01 00:00:00</user_defined_simplefield>
+      <user_defined_simplefield feldname="aktualisiert_am">2017-01-10 00:00:00</user_defined_simplefield>
+    </verwaltung_objekt>
+    <verwaltung_techn>
+      <objektnr_intern>123456</objektnr_intern>
+      <objektnr_extern>123</objektnr_extern>
+    </verwaltung_techn>
+    <dokumente/>
+    <videos/>
+    <bilder360/>
+    <links/>
+  </immobilie>
+</justimmo>
